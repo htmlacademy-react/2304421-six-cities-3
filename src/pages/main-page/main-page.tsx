@@ -1,8 +1,12 @@
 import PlaceCard from '../../place-card/place-card';
 
-function MainPage(): JSX.Element {
+type MainPageProps = {
+  cardsCount: number;
+}
 
-  const cards = Array(5).fill(null);
+function MainPage({cardsCount}: MainPageProps): JSX.Element {
+
+  const cards = Array.from({ length: cardsCount }, (_, index) => ({ id: `card-${index + 1}`}));
 
   return (
     <div className="page page--gray page--main">
@@ -114,7 +118,7 @@ function MainPage(): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards.map((_, index) => <PlaceCard key={index} />)}
+                {cards.map((card) => <PlaceCard key={card.id} />)}
               </div>
             </section>
             <div className="cities__right-section">
