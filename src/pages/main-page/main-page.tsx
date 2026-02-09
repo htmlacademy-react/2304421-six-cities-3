@@ -1,6 +1,8 @@
 import PlaceCard from '../../components/place-card/place-card';
 import Header from '../../components/header/header';
 import LocationsList from './locations-list/locations-list';
+import { mockData } from '../../mock-data/mock-data';
+import { getRandomCards } from '../../utils/utils';
 
 type MainPageProps = {
   cardsCount: number;
@@ -8,7 +10,7 @@ type MainPageProps = {
 
 function MainPage({cardsCount}: MainPageProps): JSX.Element {
 
-  const cards = Array.from({ length: cardsCount }, (_, index) => ({ id: `card-${index + 1}`}));
+  const cards = getRandomCards(mockData, cardsCount);
 
   return (
     <div className="page page--gray page--main">
@@ -50,7 +52,7 @@ function MainPage({cardsCount}: MainPageProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards.map((card) => <PlaceCard key={card.id} />)}
+                {cards.map((card) => <PlaceCard key={card.id} id={card.id} title={card.title} offerType={card.offerType} rating={card.rating} price={card.price} isPremium={card.isPremium} isFavorite={card.isFavorite} previewImage={card.previewImage} />)}
               </div>
             </section>
             <div className="cities__right-section">
