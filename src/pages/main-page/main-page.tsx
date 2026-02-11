@@ -52,7 +52,7 @@ function MainPage({cardsCount}: MainPageProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {cards.map((card) => <PlaceCard key={card.id} id={card.id} title={card.title} offerType={card.offerType} rating={card.rating} price={card.price} isPremium={card.isPremium} isFavorite={card.isFavorite} previewImage={card.previewImage} />)}
+                {cards.map((card) => <PlaceCard key={card.id} variant='vertical' data={card} />)}
               </div>
             </section>
             <div className="cities__right-section">
