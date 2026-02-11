@@ -2,7 +2,7 @@ export const Setting = {
   cardsCount: 5
 };
 
-export const cities = [
+export const CITIES = [
   'Paris',
   'Cologne',
   'Brussels',

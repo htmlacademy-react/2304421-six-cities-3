@@ -1,8 +1,8 @@
 import PlaceCard from '../../components/place-card/place-card';
 import { Offer } from '../../types/offer';
-import { cities } from '../../const';
+import { CITIES } from '../../const';
 
-type CityName = typeof cities[number];
+type CityName = typeof CITIES[number];
 
 type FavoritePageItemProps = {
   city: CityName;

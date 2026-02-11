@@ -1,14 +1,14 @@
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FavoritePageItem from './favorites-page-item';
-import { cities } from '../../const';
+import { CITIES } from '../../const';
 import { getRandomCards, getRandomUniqueInteger } from '../../utils/utils';
 import { mockData } from '../../mock-data/mock-data';
 
 function FavoritesPage(): JSX.Element {
 
-  const itemsCount = getRandomUniqueInteger(1, cities.length);
-  const randomCities = getRandomCards(cities, itemsCount);
+  const itemsCount = getRandomUniqueInteger(1, CITIES.length);
+  const randomCities = getRandomCards(CITIES, itemsCount);
 
 
   return (
