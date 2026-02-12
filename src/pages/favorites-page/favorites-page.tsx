@@ -10,7 +10,6 @@ function FavoritesPage(): JSX.Element {
   const itemsCount = getRandomUniqueInteger(1, CITIES.length);
   const randomCities = getRandomCards(CITIES, itemsCount);
 
-
   return (
     <div className="page">
       <Header />
