@@ -3,6 +3,8 @@ import Header from '../../components/header/header';
 import LocationsList from './locations-list/locations-list';
 import { mockData } from '../../mock-data/mock-data';
 import { getRandomCards } from '../../utils/utils';
+import { OPTIONS } from '../../const';
+import PlacesOptionItem from './places-option-item';
 
 type MainPageProps = {
   cardsCount: number;
@@ -11,6 +13,7 @@ type MainPageProps = {
 function MainPage({cardsCount}: MainPageProps): JSX.Element {
 
   const cards = getRandomCards(mockData, cardsCount);
+  const activeOption: typeof OPTIONS[number] = 'Popular';
 
   return (
     <div className="page page--gray page--main">
@@ -34,21 +37,7 @@ function MainPage({cardsCount}: MainPageProps): JSX.Element {
                   </svg>
                 </span>
                 <ul className="places__options places__options--custom places__options--opened">
-                  <li
-                    className="places__option places__option--active"
-                    tabIndex={0}
-                  >
-                    Popular
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: low to high
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: high to low
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Top rated first
-                  </li>
+                  {OPTIONS.map((option) => <PlacesOptionItem key={option} option={option} isActive={option === activeOption} />)}
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
