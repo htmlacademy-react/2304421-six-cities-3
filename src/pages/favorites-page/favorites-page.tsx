@@ -1,4 +1,3 @@
-import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FavoritePageItem from './favorites-page-item';
 import { CITIES } from '../../const';
@@ -11,8 +10,7 @@ function FavoritesPage(): JSX.Element {
   const randomCities = getRandomCards(CITIES, itemsCount);
 
   return (
-    <div className="page">
-      <Header />
+    <>
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
@@ -24,7 +22,7 @@ function FavoritesPage(): JSX.Element {
         </div>
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
 
