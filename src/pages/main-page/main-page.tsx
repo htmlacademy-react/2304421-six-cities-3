@@ -4,6 +4,7 @@ import { mockData } from '../../mock-data/mock-data';
 import { getRandomCards } from '../../utils/utils';
 import { OPTIONS } from '../../const';
 import PlacesOptionItem from './places-option-item';
+import { Helmet } from 'react-helmet-async';
 
 type MainPageProps = {
   cardsCount: number;
@@ -15,6 +16,7 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
 
   return (
     <main className="page__main page__main--index">
+      <Helmet><title>Main Page</title></Helmet>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <LocationsList />

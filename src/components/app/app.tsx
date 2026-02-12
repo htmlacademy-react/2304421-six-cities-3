@@ -6,6 +6,7 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import { AuthorizationStatus } from '../../const';
+import {HelmetProvider} from 'react-helmet-async';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -15,17 +16,19 @@ type AppProps = {
 
 function App({cardsCount}: AppProps): JSX.Element {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout className="page page--gray page--main"/>}>
-          <Route index element={<MainPage cardsCount={cardsCount} />} />
-          <Route path="favorites" element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><FavoritesPage /></PrivateRoute>} />
-          <Route path="offer/:id" element={<OfferPage />} />
-        </Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="*" element={<NotFoundPage />}/>
-      </Routes>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout className="page page--gray page--main"/>}>
+            <Route index element={<MainPage cardsCount={cardsCount} />} />
+            <Route path="favorites" element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><FavoritesPage /></PrivateRoute>} />
+            <Route path="offer/:id" element={<OfferPage />} />
+          </Route>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<NotFoundPage />}/>
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

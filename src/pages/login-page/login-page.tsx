@@ -1,11 +1,15 @@
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+
 function LoginPage(): JSX.Element {
   return (
     <div className="page page--gray page--login">
+      <Helmet><title>Login page</title></Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
+              <Link className="header__logo-link" to="/">
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -13,7 +17,7 @@ function LoginPage(): JSX.Element {
                   width={81}
                   height={41}
                 />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
