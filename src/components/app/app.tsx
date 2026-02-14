@@ -19,7 +19,7 @@ function App({cardsCount}: AppProps): JSX.Element {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout className="page page--gray page--main"/>}>
+          <Route path="/" element={<Layout className="page--gray page--main"/>}>
             <Route index element={<MainPage cardsCount={cardsCount} />} />
             <Route path="favorites" element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><FavoritesPage /></PrivateRoute>} />
             <Route path="offer/:id" element={<OfferPage />} />
