@@ -2,6 +2,9 @@ import { Helmet } from 'react-helmet-async';
 import { mockData } from '../../mock-data/mock-data';
 import PlaceCard from '../../components/place-card/place-card';
 import { getRandomCards } from '../../utils/utils';
+import OfferImage from './offer-image';
+import { OfferImages, OfferInsideItems } from '../../const';
+import OfferInsideItem from './offer-inside-item';
 
 function OfferPage(): JSX.Element {
   const cards = getRandomCards(mockData, 3);
@@ -12,48 +15,7 @@ function OfferPage(): JSX.Element {
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            <div className="offer__image-wrapper">
-              <img
-                className="offer__image"
-                src="img/room.jpg"
-                alt="Photo studio"
-              />
-            </div>
-            <div className="offer__image-wrapper">
-              <img
-                className="offer__image"
-                src="img/apartment-01.jpg"
-                alt="Photo studio"
-              />
-            </div>
-            <div className="offer__image-wrapper">
-              <img
-                className="offer__image"
-                src="img/apartment-02.jpg"
-                alt="Photo studio"
-              />
-            </div>
-            <div className="offer__image-wrapper">
-              <img
-                className="offer__image"
-                src="img/apartment-03.jpg"
-                alt="Photo studio"
-              />
-            </div>
-            <div className="offer__image-wrapper">
-              <img
-                className="offer__image"
-                src="img/studio-01.jpg"
-                alt="Photo studio"
-              />
-            </div>
-            <div className="offer__image-wrapper">
-              <img
-                className="offer__image"
-                src="img/apartment-01.jpg"
-                alt="Photo studio"
-              />
-            </div>
+            {OfferImages.map((image) => <OfferImage key={image} img={image}/>)}
           </div>
         </div>
         <div className="offer__container container">
@@ -97,16 +59,7 @@ function OfferPage(): JSX.Element {
             <div className="offer__inside">
               <h2 className="offer__inside-title">What&apos;s inside</h2>
               <ul className="offer__inside-list">
-                <li className="offer__inside-item">Wi-Fi</li>
-                <li className="offer__inside-item">Washing machine</li>
-                <li className="offer__inside-item">Towels</li>
-                <li className="offer__inside-item">Heating</li>
-                <li className="offer__inside-item">Coffee machine</li>
-                <li className="offer__inside-item">Baby seat</li>
-                <li className="offer__inside-item">Kitchen</li>
-                <li className="offer__inside-item">Dishwasher</li>
-                <li className="offer__inside-item">Cabel TV</li>
-                <li className="offer__inside-item">Fridge</li>
+                {OfferInsideItems.map((item) => <OfferInsideItem key={item} option={item} />)}
               </ul>
             </div>
             <div className="offer__host">

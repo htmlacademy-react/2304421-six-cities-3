@@ -1,13 +1,17 @@
 import Header from '../header/header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
-type LayoutProps = {
-  className?: string;
-}
+function Layout(): JSX.Element {
+  const location = useLocation();
 
-function Layout({className}: LayoutProps): JSX.Element {
+  let pageClass = 'page';
+
+  if (location.pathname === '/') {
+    pageClass += ' page--gray page--main';
+  }
+
   return (
-    <div className={`page ${className ?? ''}`}>
+    <div className={pageClass}>
       <Header />
       <Outlet />
     </div>

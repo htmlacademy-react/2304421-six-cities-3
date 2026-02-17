@@ -30,3 +30,27 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const OfferImages = [
+  'img/room.jpg',
+  'img/apartment-01.jpg',
+  'img/apartment-02.jpg',
+  'img/apartment-03.jpg',
+  'img/studio-01.jpg',
+  'img/apartment-01.jpg'
+] as const;
+
+export const OfferInsideItems = [
+  'Wi-Fi',
+  'Washing machine',
+  'Towels',
+  'Heating',
+  'Coffee machine',
+  'Baby seat',
+  'Kitchen',
+  'Dishwasher',
+  'Cabel TV',
+  'Fridge',
+] as const;
+
+

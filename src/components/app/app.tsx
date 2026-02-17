@@ -7,6 +7,7 @@ import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import { AuthorizationStatus } from '../../const';
 import {HelmetProvider} from 'react-helmet-async';
+import { AppRoute } from '../../const';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -19,12 +20,12 @@ function App({cardsCount}: AppProps): JSX.Element {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout className="page--gray page--main"/>}>
+          <Route path={AppRoute.Root} element={<Layout />}>
             <Route index element={<MainPage cardsCount={cardsCount} />} />
-            <Route path="favorites" element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><FavoritesPage /></PrivateRoute>} />
-            <Route path="offer/:id" element={<OfferPage />} />
+            <Route path={AppRoute.Favorites} element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><FavoritesPage /></PrivateRoute>} />
+            <Route path={AppRoute.Offer} element={<OfferPage />} />
           </Route>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={AppRoute.Login} element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />}/>
         </Routes>
       </BrowserRouter>
