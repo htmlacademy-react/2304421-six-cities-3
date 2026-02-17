@@ -1,0 +1,23 @@
+.not-found {
+  min-height: 100vh;
+
+  background-image: url('../img/404-error-page.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found__content {
+  text-align: center;
+  color: white;
+
+  background: rgba(0,0,0,0.4);
+  padding: 40px;
+  border-radius: 16px;
+
+  backdrop-filter: blur(6px);
+}
