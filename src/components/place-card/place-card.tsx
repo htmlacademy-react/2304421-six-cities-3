@@ -1,4 +1,4 @@
-import { Offer } from '../../types/offer';
+import { Offer } from '../../types/types';
 
 const CARD_CONFIG = {
   vertical: {

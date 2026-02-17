@@ -13,12 +13,20 @@ function FavoritesPage(): JSX.Element {
   return (
     <>
       <main className="page__main page__main--favorites">
-        <Helmet><title>Favorites page</title></Helmet>
+        <Helmet>
+          <title>Favorites page</title>
+        </Helmet>
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {randomCities.map((city) => <FavoritePageItem key={city} city={city} offers={getRandomCards(mockData, getRandomUniqueInteger(1, 5))} />)}
+              {randomCities.map((city) => (
+                <FavoritePageItem
+                  key={city.name}
+                  city={city}
+                  offers={getRandomCards(mockData, getRandomUniqueInteger(1, 5))}
+                />
+              ))}
             </ul>
           </section>
         </div>

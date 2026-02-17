@@ -7,7 +7,7 @@ function LocationsList(): JSX.Element {
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
-        {CITIES.map((city) => <LocationsItem key={city} city={city} isActive={city === activeCity}/>)}
+        {CITIES.map((city) => <LocationsItem key={city.name} city={city} isActive={city.name === activeCity}/>)}
       </ul>
     </section>
   );

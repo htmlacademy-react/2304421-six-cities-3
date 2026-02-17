@@ -1,5 +1,7 @@
 import '../../../markup/css/404-page.css';
 import { Helmet } from 'react-helmet-async';
+import { AppRoute } from '../../const';
+import { Link } from 'react-router-dom';
 
 function NotFoundPage(): JSX.Element {
   return (
@@ -8,7 +10,7 @@ function NotFoundPage(): JSX.Element {
       <div className="not-found__content">
         <h1>404</h1>
         <p>Page not found</p>
-        <a href="/">Go home</a>
+        <Link to={AppRoute.Root}>Go home</Link>
       </div>
     </main>
   );
