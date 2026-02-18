@@ -22,10 +22,10 @@ function App({cardsCount}: AppProps): JSX.Element {
         <Routes>
           <Route path={AppRoute.Root} element={<Layout />}>
             <Route index element={<MainPage cardsCount={cardsCount} />} />
-            <Route path={AppRoute.Favorites} element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><FavoritesPage /></PrivateRoute>} />
+            <Route path={AppRoute.Favorites} element={<PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><FavoritesPage /></PrivateRoute>} />
             <Route path={AppRoute.Offer} element={<OfferPage />} />
+            <Route path={AppRoute.Login} element={<LoginPage />} />
           </Route>
-          <Route path={AppRoute.Login} element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />}/>
         </Routes>
       </BrowserRouter>

@@ -62,12 +62,12 @@ export const OPTIONS = [
   'Top rated first',
 ] as const;
 
-export enum AppRoute {
-  Root = '/',
-  Login = 'login',
-  Favorites = 'favorites',
-  Offer = 'offer/:id',
-}
+export const AppRoute = {
+  Root: '/',
+  Login: '/login',
+  Favorites: '/favorites',
+  Offer: '/offer/:id',
+} as const;
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
