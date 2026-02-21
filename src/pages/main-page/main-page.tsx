@@ -1,17 +1,18 @@
 import PlaceCard from '../../components/place-card/place-card';
 import LocationsList from './locations-list/locations-list';
-import { mockData } from '../../mock-data/mock-data';
 import { getRandomCards } from '../../utils/utils';
 import { OPTIONS } from '../../const';
 import PlacesOptionItem from './places-option-item';
 import { Helmet } from 'react-helmet-async';
+import { Offer } from '../../types/types';
 
 type MainPageProps = {
   cardsCount: number;
+  offers: Offer[];
 };
 
-function MainPage({ cardsCount }: MainPageProps): JSX.Element {
-  const cards = getRandomCards(mockData, cardsCount);
+function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
+  const cards = getRandomCards(offers, cardsCount);
   const activeOption: (typeof OPTIONS)[number] = 'Popular';
 
   return (

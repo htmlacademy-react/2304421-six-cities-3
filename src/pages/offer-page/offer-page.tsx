@@ -1,13 +1,17 @@
 import { Helmet } from 'react-helmet-async';
-import { mockData } from '../../mock-data/mock-data';
 import PlaceCard from '../../components/place-card/place-card';
 import { getRandomCards } from '../../utils/utils';
 import OfferImage from './offer-image';
 import { OfferImages, OfferInsideItems } from '../../const';
 import OfferInsideItem from './offer-inside-item';
+import { Offer } from '../../types/types';
 
-function OfferPage(): JSX.Element {
-  const cards = getRandomCards(mockData, 3);
+type OfferPageProps = {
+  offers: Offer[];
+}
+
+function OfferPage({offers}: OfferPageProps): JSX.Element {
+  const cards = getRandomCards(offers, 3);
 
   return (
     <main className="page__main page__main--offer">

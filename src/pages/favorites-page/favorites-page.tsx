@@ -2,10 +2,14 @@ import Footer from '../../components/footer/footer';
 import FavoritePageItem from './favorites-page-item';
 import { CITIES } from '../../const';
 import { getRandomCards, getRandomUniqueInteger } from '../../utils/utils';
-import { mockData } from '../../mock-data/mock-data';
 import { Helmet } from 'react-helmet-async';
+import { Offer } from '../../types/types';
 
-function FavoritesPage(): JSX.Element {
+type FavoritesPageProps = {
+  offers: Offer[];
+}
+
+function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
 
   const itemsCount = getRandomUniqueInteger(1, CITIES.length);
   const randomCities = getRandomCards(CITIES, itemsCount);
@@ -24,7 +28,7 @@ function FavoritesPage(): JSX.Element {
                 <FavoritePageItem
                   key={city.name}
                   city={city}
-                  offers={getRandomCards(mockData, getRandomUniqueInteger(1, 5))}
+                  offers={getRandomCards(offers, getRandomUniqueInteger(1, 5))}
                 />
               ))}
             </ul>
