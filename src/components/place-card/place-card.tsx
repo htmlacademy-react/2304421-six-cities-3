@@ -18,15 +18,17 @@ const CARD_CONFIG = {
 type PlaceCardProps = {
 variant: 'vertical' | 'horizontal';
 data: Offer;
+onMouseEnter?: () => void;
+onMouseLeave?: () => void;
 }
 
-function PlaceCard({variant, data}: PlaceCardProps): JSX.Element {
+function PlaceCard({variant, data, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Element {
   const normalizedRating = Math.min(Math.max(data.rating, 0), 5);
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
 
   return (
-    <article data-id={data.id} className={articleClass}>
+    <article data-id={data.id} className={articleClass} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {data.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
