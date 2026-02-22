@@ -1,4 +1,6 @@
 import { Offer } from '../../types/types';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 const CARD_CONFIG = {
   vertical: {
@@ -35,7 +37,7 @@ function PlaceCard({variant, data, onMouseEnter, onMouseLeave}: PlaceCardProps):
         </div>
       )}
       <div className={imageWrapperClass}>
-        <a href="#">
+        <Link to={AppRoute.Offer.replace(':id', data.id)}>
           <img
             className="place-card__image"
             src={data.previewImage}
@@ -43,7 +45,7 @@ function PlaceCard({variant, data, onMouseEnter, onMouseLeave}: PlaceCardProps):
             height={imageHeight}
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -68,7 +70,7 @@ function PlaceCard({variant, data, onMouseEnter, onMouseLeave}: PlaceCardProps):
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{data.title}</a>
+          <Link to={AppRoute.Offer.replace(':id', data.id)}>{data.title}</Link>
         </h2>
         <p className="place-card__type">{data.offerType}</p>
       </div>

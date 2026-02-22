@@ -2,35 +2,47 @@ import { Helmet } from 'react-helmet-async';
 import PlaceCard from '../../components/place-card/place-card';
 import { getRandomCards } from '../../utils/utils';
 import OfferImage from './offer-image';
-import { OfferImages, OfferInsideItems } from '../../const';
+import { OfferImages, OfferInsideItems, AppRoute } from '../../const';
 import OfferInsideItem from './offer-inside-item';
 import { Offer } from '../../types/types';
+import { useParams, Navigate } from 'react-router-dom';
 
 type OfferPageProps = {
   offers: Offer[];
-}
+};
 
-function OfferPage({offers}: OfferPageProps): JSX.Element {
+function OfferPage({ offers }: OfferPageProps): JSX.Element {
   const cards = getRandomCards(offers, 3);
+
+  const { id } = useParams<{ id: string }>();
+  const offer = offers.find((o) => o.id === id);
+
+  if (!offer) {
+    return <Navigate to={AppRoute.Root} replace />;
+  }
 
   return (
     <main className="page__main page__main--offer">
-      <Helmet><title>Offer page</title></Helmet>
+      <Helmet>
+        <title>Offer page</title>
+      </Helmet>
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {OfferImages.map((image) => <OfferImage key={image} img={image}/>)}
+            {OfferImages.map((image) => (
+              <OfferImage key={image} img={image} />
+            ))}
           </div>
         </div>
         <div className="offer__container container">
           <div className="offer__wrapper">
-            <div className="offer__mark">
-              <span>Premium</span>
-            </div>
+            {offer.isPremium && (
+              <div className="offer__mark">
+                <span>Premium</span>
+              </div>
+            )}
             <div className="offer__name-wrapper">
-              <h1 className="offer__name">
-                Beautiful &amp; luxurious studio at great location
-              </h1>
+              <h1 className="offer__name">{offer.title}</h1>
               <button className="offer__bookmark-button button" type="button">
                 <svg className="offer__bookmark-icon" width={31} height={33}>
                   <use xlinkHref="#icon-bookmark" />
@@ -40,14 +52,14 @@ function OfferPage({offers}: OfferPageProps): JSX.Element {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{ width: '80%' }} />
+                <span style={{ width: `${offer.rating * 20}%` }} />
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">4.8</span>
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
-                Apartment
+                {offer.offerType}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
                 3 Bedrooms
@@ -57,13 +69,15 @@ function OfferPage({offers}: OfferPageProps): JSX.Element {
               </li>
             </ul>
             <div className="offer__price">
-              <b className="offer__price-value">€120</b>
+              <b className="offer__price-value">{offer.price}</b>
               <span className="offer__price-text">&nbsp;night</span>
             </div>
             <div className="offer__inside">
               <h2 className="offer__inside-title">What&apos;s inside</h2>
               <ul className="offer__inside-list">
-                {OfferInsideItems.map((item) => <OfferInsideItem key={item} option={item} />)}
+                {OfferInsideItems.map((item) => (
+                  <OfferInsideItem key={item} option={item} />
+                ))}
               </ul>
             </div>
             <div className="offer__host">
@@ -250,7 +264,9 @@ function OfferPage({offers}: OfferPageProps): JSX.Element {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            {cards.map((card) => <PlaceCard key={card.id} variant='vertical' data={card} />)}
+            {cards.map((card) => (
+              <PlaceCard key={card.id} variant="vertical" data={card} />
+            ))}
           </div>
         </section>
       </div>
