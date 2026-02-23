@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
-import { LABEL_TITLE } from '../../const';
+import { RATING } from '../../const';
 
 type FormDataType = {
   rating: number | null;
@@ -35,21 +35,21 @@ function OfferReviewForm(): JSX.Element {
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
-        {[5, 4, 3, 2, 1].map((star) => (
-          <Fragment key={star}>
+        {RATING.map(({value, label}) => (
+          <Fragment key={value}>
             <input
               className="form__rating-input visually-hidden"
               name="rating"
-              value={star}
-              id={`${star}-star`}
+              value={value}
+              id={`${value}-star`}
               type="radio"
-              checked={formData.rating === star}
+              checked={formData.rating === value}
               onChange={handleRatingChange}
             />
             <label
-              htmlFor={`${star}-star`}
+              htmlFor={`${value}-star`}
               className="reviews__rating-label form__rating-label"
-              title={LABEL_TITLE[star]}
+              title={label}
             >
               <svg className="form__star-image" width={37} height={33}>
                 <use xlinkHref="#icon-star" />

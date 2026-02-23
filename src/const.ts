@@ -97,10 +97,10 @@ export const OfferInsideItems = [
   'Fridge',
 ] as const;
 
-export const LABEL_TITLE: Record<number, string> = {
-  5: 'perfect',
-  4: 'good',
-  3: 'not bad',
-  2: 'badly',
-  1: 'terribly',
-};
+export const RATING = [
+  { value: 5, label: 'perfect' },
+  { value: 4, label: 'good' },
+  { value: 3, label: 'not bad' },
+  { value: 2, label: 'badly' },
+  { value: 1, label: 'terribly' },
+] as const;

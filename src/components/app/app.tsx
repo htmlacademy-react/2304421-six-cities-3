@@ -32,8 +32,8 @@ function App({cardsCount, offers}: AppProps): JSX.Element {
             />
             <Route path={AppRoute.Offer} element={<OfferPage offers={offers} />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
+            <Route path="*" element={<NotFoundPage />}/>
           </Route>
-          <Route path="*" element={<NotFoundPage />}/>
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
