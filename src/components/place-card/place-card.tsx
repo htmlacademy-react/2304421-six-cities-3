@@ -1,4 +1,6 @@
-import { Offer } from '../../types/offer';
+import { Offer } from '../../types/types';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 const CARD_CONFIG = {
   vertical: {
@@ -18,22 +20,24 @@ const CARD_CONFIG = {
 type PlaceCardProps = {
 variant: 'vertical' | 'horizontal';
 data: Offer;
+onMouseEnter?: () => void;
+onMouseLeave?: () => void;
 }
 
-function PlaceCard({variant, data}: PlaceCardProps): JSX.Element {
+function PlaceCard({variant, data, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Element {
   const normalizedRating = Math.min(Math.max(data.rating, 0), 5);
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
 
   return (
-    <article data-id={data.id} className={articleClass}>
+    <article data-id={data.id} className={articleClass} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {data.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
       <div className={imageWrapperClass}>
-        <a href="#">
+        <Link to={AppRoute.Offer.replace(':id', data.id)}>
           <img
             className="place-card__image"
             src={data.previewImage}
@@ -41,7 +45,7 @@ function PlaceCard({variant, data}: PlaceCardProps): JSX.Element {
             height={imageHeight}
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -66,7 +70,7 @@ function PlaceCard({variant, data}: PlaceCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{data.title}</a>
+          <Link to={AppRoute.Offer.replace(':id', data.id)}>{data.title}</Link>
         </h2>
         <p className="place-card__type">{data.offerType}</p>
       </div>

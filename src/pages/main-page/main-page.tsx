@@ -1,17 +1,18 @@
-import PlaceCard from '../../components/place-card/place-card';
 import LocationsList from './locations-list/locations-list';
-import { mockData } from '../../mock-data/mock-data';
 import { getRandomCards } from '../../utils/utils';
 import { OPTIONS } from '../../const';
 import PlacesOptionItem from './places-option-item';
 import { Helmet } from 'react-helmet-async';
+import { Offer } from '../../types/types';
+import OffersList from '../../components/offers-list/offers-list';
 
 type MainPageProps = {
   cardsCount: number;
+  offers: Offer[];
 };
 
-function MainPage({ cardsCount }: MainPageProps): JSX.Element {
-  const cards = getRandomCards(mockData, cardsCount);
+function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
+  const cards = getRandomCards(offers, cardsCount);
   const activeOption: (typeof OPTIONS)[number] = 'Popular';
 
   return (
@@ -45,9 +46,7 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              {cards.map((card) => (
-                <PlaceCard key={card.id} variant="vertical" data={card} />
-              ))}
+              <OffersList offers={cards} />
             </div>
           </section>
           <div className="cities__right-section">

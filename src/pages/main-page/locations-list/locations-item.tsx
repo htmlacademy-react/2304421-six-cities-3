@@ -1,14 +1,17 @@
+import { Link } from 'react-router-dom';
+import { City } from '../../../types/types';
+
 type LocationsItemProps = {
-  city: string;
+  city: City;
   isActive: boolean;
 };
 
 function LocationsItem({city, isActive}: LocationsItemProps): JSX.Element {
   return (
     <li className="locations__item">
-      <a className={`locations__item-link tabs__item ${isActive ? 'tabs__item--active' : ''}`} href="#">
-        <span>{city}</span>
-      </a>
+      <Link className={`locations__item-link tabs__item ${isActive ? 'tabs__item--active' : ''}`} to="#">
+        <span>{city.name}</span>
+      </Link>
     </li>
   );
 }

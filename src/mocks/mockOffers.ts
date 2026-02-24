@@ -1,6 +1,6 @@
-import { Offer } from '../types/offer';
+import { Offer } from '../types/types';
 
-export const mockData: Offer[] = [
+export const mockOffers: Offer[] = [
   {
     id: '25fcb3f5-2f6e-4b8f-935d-b130fbb8cd0c',
     title: 'Nice, cozy, warm big bed apartment',
