@@ -7,6 +7,19 @@ export type Offer = {
   isPremium: boolean;
   isFavorite: boolean;
   previewImage: string;
+  city: {
+      name: string;
+      location: {
+        latitude: number;
+        longitude: number;
+        zoom: number;
+      };
+    };
+    location: {
+      latitude: number;
+      longitude: number;
+      zoom: number;
+    };
 }
 
 export type City = {
