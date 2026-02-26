@@ -5,6 +5,8 @@ import PlacesOptionItem from './places-option-item';
 import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../types/types';
 import OffersList from '../../components/offers-list/offers-list';
+import Map from '../../components/map/map';
+import { CITIES } from '../../const';
 
 type MainPageProps = {
   cardsCount: number;
@@ -12,8 +14,10 @@ type MainPageProps = {
 };
 
 function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
-  const cards = getRandomCards(offers, cardsCount);
   const activeOption: (typeof OPTIONS)[number] = 'Popular';
+  const currentCity = CITIES[3];
+  const currentOffers = offers.filter((offer) => offer.city.name === currentCity.name);
+  const cards = getRandomCards(currentOffers, cardsCount);
 
   return (
     <main className="page__main page__main--index">
@@ -26,7 +30,7 @@ function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">312 places to stay in Amsterdam</b>
+            <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
               <span className="places__sorting-type" tabIndex={0}>
@@ -50,7 +54,7 @@ function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
             </div>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map" />
+            <Map city={currentCity} offers={cards} />
           </div>
         </div>
       </div>
