@@ -6,4 +6,12 @@ export function getRandomUniqueInteger(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function formatReviewDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
 
