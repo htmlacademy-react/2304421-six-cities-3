@@ -1,4 +1,5 @@
 import { Offer } from '../types/types';
+import { locations } from '../const';
 
 export const mockOffers: Offer[] = [
   {
@@ -10,6 +11,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/17.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[0],
+      zoom: 13,
+    },
   },
   {
     id: '8601bd1f-d3f5-40b8-9b70-0318fafb2012',
@@ -20,6 +33,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/14.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[1],
+      zoom: 13,
+    },
   },
   {
     id: '0bf5ad9e-5b13-477f-bbbf-2d8bf7731117',
@@ -30,6 +55,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/2.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[2],
+      zoom: 13,
+    },
   },
   {
     id: '8ea0efa3-1b97-42eb-8c8c-580361d344e0',
@@ -40,6 +77,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/20.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[3],
+      zoom: 13,
+    },
   },
   {
     id: '23f888d1-a787-4e6d-a5e2-bd6407cac21f',
@@ -50,6 +99,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/4.jpg',
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[0],
+      zoom: 13,
+    },
   },
   {
     id: '8a0b8209-9532-4a16-aee7-36178898a788',
@@ -60,6 +121,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/4.jpg',
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[1],
+      zoom: 13,
+    },
   },
   {
     id: 'ad6c3c6a-773d-4d55-8993-499e2463296f',
@@ -70,6 +143,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/17.jpg',
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[2],
+      zoom: 13,
+    },
   },
   {
     id: 'd2199cb9-7164-40d0-9756-dd51991ec6bf',
@@ -80,6 +165,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/16.jpg',
+    city: {
+      name: 'Paris',
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[3],
+      zoom: 13,
+    },
   },
   {
     id: '7d651c8f-3862-41f6-abc3-7770e1f863a7',
@@ -90,6 +187,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/20.jpg',
+    city: {
+      name: 'Cologne',
+      location: {
+        latitude: 50.938361,
+        longitude: 6.959974,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[0],
+      zoom: 13,
+    },
   },
   {
     id: 'ec22a716-e88a-4b62-9bc5-ae9e815623e2',
@@ -100,6 +209,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/18.jpg',
+    city: {
+      name: 'Cologne',
+      location: {
+        latitude: 50.938361,
+        longitude: 6.959974,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[1],
+      zoom: 13,
+    },
   },
   {
     id: 'c8581bab-d630-4093-be0e-07e94b95c07c',
@@ -110,6 +231,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/4.jpg',
+    city: {
+      name: 'Cologne',
+      location: {
+        latitude: 50.938361,
+        longitude: 6.959974,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[2],
+      zoom: 13,
+    },
   },
   {
     id: 'e42730f4-440f-4b35-b5b2-8183ee9a2d14',
@@ -120,6 +253,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/5.jpg',
+    city: {
+      name: 'Cologne',
+      location: {
+        latitude: 50.938361,
+        longitude: 6.959974,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[3],
+      zoom: 13,
+    },
   },
   {
     id: '67c3f9db-6ad3-493e-a1ec-b21fffd350b1',
@@ -130,6 +275,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/4.jpg',
+    city: {
+      name: 'Brussels',
+      location: {
+        latitude: 50.846557,
+        longitude: 4.351697,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[0],
+      zoom: 13,
+    },
   },
   {
     id: '8262b814-7194-43bb-8cc6-921e18c02d22',
@@ -140,6 +297,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/8.jpg',
+    city: {
+      name: 'Brussels',
+      location: {
+        latitude: 50.846557,
+        longitude: 4.351697,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[1],
+      zoom: 13,
+    },
   },
   {
     id: '60460882-d45a-4f6b-b812-ba84f0817064',
@@ -150,6 +319,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/4.jpg',
+    city: {
+      name: 'Brussels',
+      location: {
+        latitude: 50.846557,
+        longitude: 4.351697,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[2],
+      zoom: 13,
+    },
   },
   {
     id: 'f72d48ec-2c41-4e47-9eb6-45b31b3579d2',
@@ -160,6 +341,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/20.jpg',
+    city: {
+      name: 'Brussels',
+      location: {
+        latitude: 50.846557,
+        longitude: 4.351697,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[3],
+      zoom: 13,
+    },
   },
   {
     id: '7c751e5c-afc1-4562-9100-e8ce342675a3',
@@ -170,6 +363,18 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/8.jpg',
+    city: {
+      name: 'Hamburg',
+      location: {
+        latitude: 53.550341,
+        longitude: 10.000654,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[0],
+      zoom: 13,
+    },
   },
   {
     id: 'ecf0b851-57de-479a-8dda-ff91d02c867a',
@@ -180,6 +385,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/9.jpg',
+    city: {
+      name: 'Hamburg',
+      location: {
+        latitude: 53.550341,
+        longitude: 10.000654,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[1],
+      zoom: 13,
+    },
   },
   {
     id: '84ea1922-af61-4002-9451-5dd5aa8c76de',
@@ -190,6 +407,18 @@ export const mockOffers: Offer[] = [
     isPremium: false,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/17.jpg',
+    city: {
+      name: 'Hamburg',
+      location: {
+        latitude: 53.550341,
+        longitude: 10.000654,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[2],
+      zoom: 13,
+    },
   },
   {
     id: '9ef01869-c003-4339-9132-a9a5b640c199',
@@ -200,5 +429,106 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     isFavorite: false,
     previewImage: 'https://15.design.htmlacademy.pro/static/hotel/6.jpg',
+    city: {
+      name: 'Hamburg',
+      location: {
+        latitude: 53.550341,
+        longitude: 10.000654,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[3],
+      zoom: 13,
+    },
+  },
+  {
+    id: 'a3f96367-c30b-4630-b8e2-f93ea4fd3d09',
+    title: 'Wood and stone place',
+    offerType: 'room',
+    rating: 3.7,
+    price: 240,
+    isFavorite: false,
+    isPremium: true,
+    previewImage: 'https://15.design.htmlacademy.pro/static/hotel/4.jpg',
+    city: {
+      name: 'Dusseldorf',
+      location: {
+        latitude: 51.225402,
+        longitude: 6.776314,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[0],
+      zoom: 13,
+    },
+  },
+  {
+    id: 'ad9ee182-cd10-4764-bc56-2a4b1e131d6d',
+    title: 'The Pondhouse - A Magical Place',
+    offerType: 'hotel',
+    rating: 2.5,
+    price: 218,
+    isFavorite: false,
+    isPremium: false,
+    previewImage: 'https://15.design.htmlacademy.pro/static/hotel/3.jpg',
+    city: {
+      name: 'Dusseldorf',
+      location: {
+        latitude: 51.225402,
+        longitude: 6.776314,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[1],
+      zoom: 13,
+    },
+  },
+  {
+    id: '69712355-aaf6-4277-9792-22d7f1d077ab',
+    title: 'Canal View Prinsengracht',
+    offerType: 'hotel',
+    rating: 3.8,
+    price: 330,
+    isFavorite: false,
+    isPremium: true,
+    previewImage: 'https://15.design.htmlacademy.pro/static/hotel/1.jpg',
+    city: {
+      name: 'Dusseldorf',
+      location: {
+        latitude: 51.225402,
+        longitude: 6.776314,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[2],
+      zoom: 13,
+    },
+  },
+  {
+    id: '734953b3-1a20-448c-ad68-fad732ecc2eb',
+    title: 'Amazing and Extremely Central Flat',
+    offerType: 'house',
+    rating: 4.4,
+    price: 774,
+    isFavorite: false,
+    isPremium: false,
+    previewImage: 'https://15.design.htmlacademy.pro/static/hotel/16.jpg',
+    city: {
+      name: 'Dusseldorf',
+      location: {
+        latitude: 51.225402,
+        longitude: 6.776314,
+        zoom: 13,
+      },
+    },
+    location: {
+      ...locations[3],
+      zoom: 13,
+    },
   },
 ];
+

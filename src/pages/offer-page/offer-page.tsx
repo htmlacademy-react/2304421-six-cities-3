@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import PlaceCard from '../../components/place-card/place-card';
 import { getRandomCards } from '../../utils/utils';
 import OfferImage from './offer-image';
 import { OfferImages, OfferInsideItems, AppRoute } from '../../const';
@@ -7,6 +6,9 @@ import OfferInsideItem from './offer-inside-item';
 import { Offer } from '../../types/types';
 import { useParams, Navigate } from 'react-router-dom';
 import OfferReviewForm from './offer-review-form';
+import ReviewsList from './reviews-list/reviews-list';
+import Map from '../../components/map/map';
+import OffersList from '../../components/offers-list/offers-list';
 
 type OfferPageProps = {
   offers: Offer[];
@@ -110,46 +112,14 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
               </div>
             </div>
             <section className="offer__reviews reviews">
-              <h2 className="reviews__title">
-                Reviews · <span className="reviews__amount">1</span>
-              </h2>
-              <ul className="reviews__list">
-                <li className="reviews__item">
-                  <div className="reviews__user user">
-                    <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                      <img
-                        className="reviews__avatar user__avatar"
-                        src="img/avatar-max.jpg"
-                        width={54}
-                        height={54}
-                        alt="Reviews avatar"
-                      />
-                    </div>
-                    <span className="reviews__user-name">Max</span>
-                  </div>
-                  <div className="reviews__info">
-                    <div className="reviews__rating rating">
-                      <div className="reviews__stars rating__stars">
-                        <span style={{ width: '80%' }} />
-                        <span className="visually-hidden">Rating</span>
-                      </div>
-                    </div>
-                    <p className="reviews__text">
-                      A quiet cozy and picturesque that hides behind a a river
-                      by the unique lightness of Amsterdam. The building is
-                      green and from 18th century.
-                    </p>
-                    <time className="reviews__time" dateTime="2019-04-24">
-                      April 2019
-                    </time>
-                  </div>
-                </li>
-              </ul>
+              <ReviewsList offer={offer}/>
               <OfferReviewForm />
             </section>
           </div>
         </div>
-        <section className="offer__map map" />
+        <section className="offer__map map">
+          <Map city={offer.city} offers={cards} className='offer__map map' />
+        </section>
       </section>
       <div className="container">
         <section className="near-places places">
@@ -157,9 +127,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            {cards.map((card) => (
-              <PlaceCard key={card.id} variant="vertical" data={card} />
-            ))}
+            <OffersList offers={cards}/>
           </div>
         </section>
       </div>
