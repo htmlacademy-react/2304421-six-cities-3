@@ -117,9 +117,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             </section>
           </div>
         </div>
-        <section className="offer__map map">
-          <Map city={offer.city} offers={cards} className='offer__map map' />
-        </section>
+        <Map city={offer.city} offers={cards} className='offer__map map' />
       </section>
       <div className="container">
         <section className="near-places places">
