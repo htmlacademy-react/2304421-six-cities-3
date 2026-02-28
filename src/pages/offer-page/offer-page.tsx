@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import PlaceCard from '../../components/place-card/place-card';
 import { getRandomCards } from '../../utils/utils';
 import OfferImage from './offer-image';
 import { OfferImages, OfferInsideItems, AppRoute } from '../../const';
@@ -8,6 +7,8 @@ import { Offer } from '../../types/types';
 import { useParams, Navigate } from 'react-router-dom';
 import OfferReviewForm from './offer-review-form';
 import ReviewsList from './reviews-list/reviews-list';
+import Map from '../../components/map/map';
+import OffersList from '../../components/offers-list/offers-list';
 
 type OfferPageProps = {
   offers: Offer[];
@@ -116,7 +117,9 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             </section>
           </div>
         </div>
-        <section className="offer__map map" />
+        <section className="offer__map map">
+          <Map city={offer.city} offers={cards} />
+        </section>
       </section>
       <div className="container">
         <section className="near-places places">
@@ -124,9 +127,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            {cards.map((card) => (
-              <PlaceCard key={card.id} variant="vertical" data={card} />
-            ))}
+            <OffersList offers={cards}/>
           </div>
         </section>
       </div>
