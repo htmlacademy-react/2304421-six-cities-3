@@ -6,9 +6,10 @@ import { Offer, City } from '../../types/types';
 type MapProps = {
   city: City;
   offers: Offer[];
+  className?: string;
 };
 
-function Map({ city, offers }: MapProps): JSX.Element {
+function Map({ city, offers, className }: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
@@ -43,7 +44,7 @@ function Map({ city, offers }: MapProps): JSX.Element {
     };
   }, [offers]);
 
-  return <div ref={mapRef} className="cities__map map" />;
+  return <div ref={mapRef} className={className} />;
 }
 
 export default Map;
