@@ -7,6 +7,7 @@ import { Offer } from '../../types/types';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import { CITIES } from '../../const';
+import { useState } from 'react';
 
 type MainPageProps = {
   cardsCount: number;
@@ -14,17 +15,19 @@ type MainPageProps = {
 };
 
 function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
+  const [currentCity, setCurrentCity] = useState(CITIES[3]);
+
   const activeOption: (typeof OPTIONS)[number] = 'Popular';
-  const currentCity = CITIES[3];
   const currentOffers = offers.filter((offer) => offer.city.name === currentCity.name);
   const cards = getRandomCards(currentOffers, cardsCount);
+
 
   return (
     <main className="page__main page__main--index">
       <Helmet><title>Main Page</title></Helmet>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
-        <LocationsList />
+        <LocationsList currentCity={currentCity} onCityChange={setCurrentCity}/>
       </div>
       <div className="cities">
         <div className="cities__places-container container">
