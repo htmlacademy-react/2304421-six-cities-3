@@ -8,6 +8,7 @@ import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import { CITIES } from '../../const';
 import { useState } from 'react';
+import { useMemo } from 'react';
 
 type MainPageProps = {
   cardsCount: number;
@@ -16,24 +17,39 @@ type MainPageProps = {
 
 function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
   const [currentCity, setCurrentCity] = useState(CITIES[3]);
+  const [activeCardId, setActiveCardId] = useState<string | null>(null);
 
   const activeOption: (typeof OPTIONS)[number] = 'Popular';
-  const currentOffers = offers.filter((offer) => offer.city.name === currentCity.name);
-  const cards = getRandomCards(currentOffers, cardsCount);
 
+  const currentOffers = useMemo(
+    () => offers.filter((offer) => offer.city.name === currentCity.name),
+    [offers, currentCity],
+  );
+
+  const cards = useMemo(
+    () => getRandomCards(currentOffers, cardsCount),
+    [currentOffers, cardsCount],
+  );
 
   return (
     <main className="page__main page__main--index">
-      <Helmet><title>Main Page</title></Helmet>
+      <Helmet>
+        <title>Main Page</title>
+      </Helmet>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
-        <LocationsList currentCity={currentCity} onCityChange={setCurrentCity}/>
+        <LocationsList
+          currentCity={currentCity}
+          onCityChange={setCurrentCity}
+        />
       </div>
       <div className="cities">
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{currentOffers.length} places to stay in {currentCity.name}</b>
+            <b className="places__found">
+              {currentOffers.length} places to stay in {currentCity.name}
+            </b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
               <span className="places__sorting-type" tabIndex={0}>
@@ -53,11 +69,16 @@ function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              <OffersList offers={cards} />
+              <OffersList offers={cards} onHover={setActiveCardId} />
             </div>
           </section>
           <div className="cities__right-section">
-            <Map city={currentCity} offers={cards} className='cities__map map' />
+            <Map
+              city={currentCity}
+              offers={cards}
+              className="cities__map map"
+              activeOfferId={activeCardId}
+            />
           </div>
         </div>
       </div>
