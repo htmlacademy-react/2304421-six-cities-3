@@ -43,6 +43,11 @@ function Map({
 
       mapInstanceRef.current = map;
     }
+
+    return () => {
+      mapInstanceRef.current?.remove();
+      mapInstanceRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
