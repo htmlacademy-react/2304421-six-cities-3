@@ -3,21 +3,25 @@ import { getRandomCards } from '../../utils/utils';
 import { OPTIONS } from '../../const';
 import PlacesOptionItem from './places-option-item';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offer';
+import { City } from '../../types/city';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
-import { CITIES } from '../../const';
 import { useState } from 'react';
 import { useMemo } from 'react';
+import { useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
+import { cityChange } from '../../store/action';
 
 type MainPageProps = {
   cardsCount: number;
-  offers: Offer[];
 };
 
-function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
-  const [currentCity, setCurrentCity] = useState(CITIES[3]);
+function MainPage({ cardsCount }: MainPageProps): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const currentCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offersList);
+  const dispatch = useAppDispatch();
+
 
   const activeOption: (typeof OPTIONS)[number] = 'Popular';
 
@@ -31,6 +35,10 @@ function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
     [currentOffers, cardsCount],
   );
 
+  const handleCityChange = (city: City) => {
+    dispatch(cityChange(city));
+  };
+
   return (
     <main className="page__main page__main--index">
       <Helmet>
@@ -40,7 +48,7 @@ function MainPage({ cardsCount, offers }: MainPageProps): JSX.Element {
       <div className="tabs">
         <LocationsList
           currentCity={currentCity}
-          onCityChange={setCurrentCity}
+          onCityChange={handleCityChange}
         />
       </div>
       <div className="cities">

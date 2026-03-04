@@ -25,7 +25,7 @@ function App({cardsCount, offers}: AppProps): JSX.Element {
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus}/>}>
-            <Route index element={<MainPage cardsCount={cardsCount} offers={offers} />} />
+            <Route index element={<MainPage cardsCount={cardsCount} />} />
             <Route path={AppRoute.Favorites} element={
               <PrivateRoute authorizationStatus={authorizationStatus}><FavoritesPage offers={offers} /></PrivateRoute>
             }

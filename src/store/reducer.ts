@@ -10,7 +10,7 @@ type State = {
 }
 
 const initialState: State = {
-  city: CITIES[3],
+  city: CITIES[0],
   offersList: []
 };
 
