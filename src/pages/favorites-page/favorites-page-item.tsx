@@ -1,7 +1,7 @@
 import PlaceCard from '../../components/place-card/place-card';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
-import { City } from '../../types/offer';
+import { City } from '../../types/city';
 
 type FavoritePageItemProps = {
   city: City;
