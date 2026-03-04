@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Offer, City } from '../../types/types';
+import { Offer } from '../../types/offer';
+import { City } from '../../types/city';
 import { URL_MARKER_DEFAULT } from '../../const';
 import { URL_MARKER_CURRENT } from '../../const';
 

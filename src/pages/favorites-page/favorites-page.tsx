@@ -3,7 +3,7 @@ import FavoritePageItem from './favorites-page-item';
 import { CITIES } from '../../const';
 import { getRandomCards, getRandomUniqueInteger } from '../../utils/utils';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/types';
+import { Offer } from '../../types/offer';
 
 type FavoritesPageProps = {
   offers: Offer[];

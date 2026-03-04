@@ -1,5 +1,5 @@
 import { mockOffers } from '../mocks/mockOffers';
-import { Offer } from '../types/types';
+import { Offer } from '../types/offer';
 
 export function getRandomCards<T>(data: readonly T[], count: number): T[] {
   return [...data].sort(() => Math.random() - 0.5).slice(0, count);

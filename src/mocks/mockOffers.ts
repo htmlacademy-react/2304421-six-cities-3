@@ -1,4 +1,4 @@
-import { Offer } from '../types/types';
+import { Offer } from '../types/offer';
 import { locations } from '../const';
 
 export const mockOffers: Offer[] = [

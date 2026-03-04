@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import OfferImage from './offer-image';
 import { OfferImages, OfferInsideItems, AppRoute } from '../../const';
 import OfferInsideItem from './offer-inside-item';
-import { Offer } from '../../types/types';
+import { Offer } from '../../types/offer';
 import { useParams, Navigate } from 'react-router-dom';
 import OfferReviewForm from './offer-review-form';
 import ReviewsList from './reviews-list/reviews-list';

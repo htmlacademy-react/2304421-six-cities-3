@@ -3,7 +3,7 @@ import { getRandomCards } from '../../utils/utils';
 import { OPTIONS } from '../../const';
 import PlacesOptionItem from './places-option-item';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/types';
+import { Offer } from '../../types/offer';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import { CITIES } from '../../const';

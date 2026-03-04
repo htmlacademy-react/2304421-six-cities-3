@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { City } from '../../../types/types';
+import { City } from '../../../types/city';
 
 type LocationsItemProps = {
   city: City;

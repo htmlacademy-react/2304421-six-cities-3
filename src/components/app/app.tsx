@@ -7,7 +7,7 @@ import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import { AuthorizationStatus, AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
-import { Offer } from '../../types/types';
+import { Offer } from '../../types/offer';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
