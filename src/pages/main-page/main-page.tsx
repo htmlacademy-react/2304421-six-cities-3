@@ -1,7 +1,4 @@
 import LocationsList from './locations-list/locations-list';
-import { getRandomCards } from '../../utils/utils';
-import { OPTIONS } from '../../const';
-import PlacesOptionItem from './places-option-item';
 import { Helmet } from 'react-helmet-async';
 import { City } from '../../types/city';
 import OffersList from '../../components/offers-list/offers-list';
@@ -11,6 +8,9 @@ import { useMemo } from 'react';
 import { useAppSelector } from '../../hooks';
 import { useAppDispatch } from '../../hooks';
 import { cityChange } from '../../store/action';
+import PlacesOptions from './places-options/places-options';
+import { shuffleArray } from '../../utils/utils';
+import { SortOption } from '../../types/options';
 
 type MainPageProps = {
   cardsCount: number;
@@ -18,25 +18,48 @@ type MainPageProps = {
 
 function MainPage({ cardsCount }: MainPageProps): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [activeOption, setActiveOption] = useState<SortOption>('Popular');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const currentCity = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offersList);
   const dispatch = useAppDispatch();
-
-
-  const activeOption: (typeof OPTIONS)[number] = 'Popular';
 
   const currentOffers = useMemo(
     () => offers.filter((offer) => offer.city.name === currentCity.name),
     [offers, currentCity],
   );
 
+  const sortedOffers = useMemo(() => {
+    switch (activeOption) {
+      case 'Popular':
+        return shuffleArray(currentOffers);
+      case 'Price: high to low':
+        return [...currentOffers].sort((a, b) => b.price - a.price);
+      case 'Price: low to high':
+        return [...currentOffers].sort((a, b) => a.price - b.price);
+      case 'Top rated first':
+        return [...currentOffers].sort((a, b) => b.rating - a.rating);
+      default:
+        return currentOffers;
+    }
+  }, [currentOffers, activeOption]);
+
   const cards = useMemo(
-    () => getRandomCards(currentOffers, cardsCount),
-    [currentOffers, cardsCount],
+    () => sortedOffers.slice(0, cardsCount),
+    [sortedOffers, cardsCount],
   );
 
   const handleCityChange = (city: City) => {
     dispatch(cityChange(city));
+  };
+
+  const handleSortChange = (option: SortOption) => {
+    setActiveOption(option);
+    setIsOpen(false);
+  };
+
+  const handleSortingToggle = () => {
+    setIsOpen((prev) => !prev);
   };
 
   return (
@@ -58,24 +81,7 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
             <b className="places__found">
               {currentOffers.length} places to stay in {currentCity.name}
             </b>
-            <form className="places__sorting" action="#" method="get">
-              <span className="places__sorting-caption">Sort by</span>
-              <span className="places__sorting-type" tabIndex={0}>
-                Popular
-                <svg className="places__sorting-arrow" width={7} height={4}>
-                  <use xlinkHref="#icon-arrow-select" />
-                </svg>
-              </span>
-              <ul className="places__options places__options--custom places__options--opened">
-                {OPTIONS.map((option) => (
-                  <PlacesOptionItem
-                    key={option}
-                    option={option}
-                    isActive={option === activeOption}
-                  />
-                ))}
-              </ul>
-            </form>
+            <PlacesOptions activeOption={activeOption} onOptionChange={handleSortChange} isOpen={isOpen} onSortingToggle={handleSortingToggle}/>
             <div className="cities__places-list places__list tabs__content">
               <OffersList offers={cards} onHover={setActiveCardId} />
             </div>
