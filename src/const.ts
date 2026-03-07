@@ -1,4 +1,4 @@
-import { City } from './types/types';
+import { City } from './types/city';
 
 export const Setting = {
   cardsCount: 5,
@@ -111,3 +111,6 @@ export const RATING = [
   { value: 2, label: 'badly' },
   { value: 1, label: 'terribly' },
 ] as const;
+
+export const URL_MARKER_DEFAULT = '../img/pin.svg';
+export const URL_MARKER_CURRENT = '../img/pin-active.svg';

@@ -2,7 +2,7 @@ import { mockComments } from '../../../mocks/mockComments';
 import { getRandomCards } from '../../../utils/utils';
 import { getRandomUniqueInteger } from '../../../utils/utils';
 import ReviewsItem from './reviews-item';
-import { Offer } from '../../../types/types';
+import { Offer } from '../../../types/offer';
 
 type ReviewsList = {
   offer: Offer;

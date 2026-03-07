@@ -1,21 +1,21 @@
 import { Helmet } from 'react-helmet-async';
-import { getRandomCards } from '../../utils/utils';
 import OfferImage from './offer-image';
 import { OfferImages, OfferInsideItems, AppRoute } from '../../const';
 import OfferInsideItem from './offer-inside-item';
-import { Offer } from '../../types/types';
+import { Offer } from '../../types/offer';
 import { useParams, Navigate } from 'react-router-dom';
 import OfferReviewForm from './offer-review-form';
 import ReviewsList from './reviews-list/reviews-list';
 import Map from '../../components/map/map';
 import OffersList from '../../components/offers-list/offers-list';
+import { getNearOffers } from '../../utils/utils';
 
 type OfferPageProps = {
   offers: Offer[];
 };
 
 function OfferPage({ offers }: OfferPageProps): JSX.Element {
-  const cards = getRandomCards(offers, 3);
+  // const cards = getRandomCards(offers, 3);
 
   const { id } = useParams<{ id: string }>();
   const offer = offers.find((o) => o.id === id);
@@ -23,6 +23,9 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
   if (!offer) {
     return <Navigate to={AppRoute.Root} replace />;
   }
+
+  const nearOffers = getNearOffers(offer);
+  const nearOffersPlusOffer = [...nearOffers, offer];
 
   return (
     <main className="page__main page__main--offer">
@@ -117,7 +120,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             </section>
           </div>
         </div>
-        <Map city={offer.city} offers={cards} className='offer__map map' />
+        <Map city={offer.city} offers={nearOffersPlusOffer} className='offer__map map' activeOfferId={offer.id} />
       </section>
       <div className="container">
         <section className="near-places places">
@@ -125,7 +128,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <OffersList offers={cards}/>
+            <OffersList offers={nearOffers}/>
           </div>
         </section>
       </div>
