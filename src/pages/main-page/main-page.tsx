@@ -5,8 +5,8 @@ import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { cityChange } from '../../store/action';
-import PlacesOptions from './places-options/places-options';
+import { setCity } from '../../store/action';
+import OffersSorting from './offers-sorting/offers-sorting';
 import { SortOption } from '../../types/options';
 import { selectFilteredSortedOffers } from '../../store/selectors';
 
@@ -24,7 +24,7 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
   const visibleOffers = filteredSortedOffers.slice(0, cardsCount);
 
   const handleCityChange = (city: City) => {
-    dispatch(cityChange(city));
+    dispatch(setCity(city));
   };
 
   const handleSortChange = (option: SortOption) => {
@@ -55,7 +55,7 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
             <b className="places__found">
               {selectFilteredSortedOffers.length} places to stay in {currentCity.name}
             </b>
-            <PlacesOptions activeOption={activeOption} onOptionChange={handleSortChange} isOpen={isOpen} onSortingToggle={handleSortingToggle}/>
+            <OffersSorting activeOption={activeOption} onOptionChange={handleSortChange} isOpen={isOpen} onSortingToggle={handleSortingToggle}/>
             <div className="cities__places-list places__list tabs__content">
               <OffersList offers={visibleOffers} onHover={setActiveCardId} />
             </div>

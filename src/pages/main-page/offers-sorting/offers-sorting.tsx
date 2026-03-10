@@ -1,16 +1,16 @@
-import PlacesOptionItem from './places-option-item';
+import OffersSortingItem from './offers-sorting-item';
 import { OPTIONS } from '../../../const';
 import { SortOption } from '../../../types/options';
-import './places-options.css';
+import './offers-sorting.css';
 
-type PlacesOptionsProps = {
+type OffersSortingProps = {
   activeOption: SortOption;
   onOptionChange: (option: SortOption) => void;
   isOpen: boolean;
   onSortingToggle: () => void;
 }
 
-function PlacesOptions({activeOption, onOptionChange, isOpen, onSortingToggle}: PlacesOptionsProps): JSX.Element {
+function OffersSorting({activeOption, onOptionChange, isOpen, onSortingToggle}: OffersSortingProps): JSX.Element {
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
@@ -22,7 +22,7 @@ function PlacesOptions({activeOption, onOptionChange, isOpen, onSortingToggle}: 
       </button>
       <ul className={`places__options places__options--custom ${isOpen ? 'places__options--opened' : ''}`}>
         {OPTIONS.map((option) => (
-          <PlacesOptionItem
+          <OffersSortingItem
             key={option}
             option={option}
             isActive={option === activeOption}
@@ -34,4 +34,4 @@ function PlacesOptions({activeOption, onOptionChange, isOpen, onSortingToggle}: 
   );
 }
 
-export default PlacesOptions;
+export default OffersSorting;

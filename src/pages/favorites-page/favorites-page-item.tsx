@@ -1,4 +1,4 @@
-import PlaceCard from '../../components/place-card/place-card';
+import OffersCard from '../../components/offers-card/offers-card';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import { City } from '../../types/city';
@@ -19,7 +19,7 @@ function FavoritePageItem({city, offers}: FavoritePageItemProps): JSX.Element {
         </div>
       </div>
       <div className="favorites__places">
-        {offers.map((card) => <PlaceCard key={card.id} variant='horizontal' data={card}/>)}
+        {offers.map((card) => <OffersCard key={card.id} variant='horizontal' data={card}/>)}
       </div>
     </li>
   );

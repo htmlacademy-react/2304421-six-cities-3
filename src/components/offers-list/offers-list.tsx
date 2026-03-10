@@ -1,4 +1,4 @@
-import PlaceCard from '../place-card/place-card';
+import OffersCard from '../offers-card/offers-card';
 import { Offer } from '../../types/offer';
 
 type OffersListProps = {
@@ -11,7 +11,7 @@ function OffersList({ offers, onHover }: OffersListProps): JSX.Element {
   return (
     <>
       {offers.map((offer) => (
-        <PlaceCard
+        <OffersCard
           key={offer.id}
           variant="vertical"
           data={offer}

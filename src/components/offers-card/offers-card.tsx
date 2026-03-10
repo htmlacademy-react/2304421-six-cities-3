@@ -17,14 +17,14 @@ const CARD_CONFIG = {
   },
 } as const;
 
-type PlaceCardProps = {
+type OffersCardProps = {
 variant: 'vertical' | 'horizontal';
 data: Offer;
 onMouseEnter?: () => void;
 onMouseLeave?: () => void;
 }
 
-function PlaceCard({variant, data, onMouseEnter, onMouseLeave}: PlaceCardProps): JSX.Element {
+function OffersCard({variant, data, onMouseEnter, onMouseLeave}: OffersCardProps): JSX.Element {
   const normalizedRating = Math.min(Math.max(data.rating, 0), 5);
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
@@ -78,4 +78,4 @@ function PlaceCard({variant, data, onMouseEnter, onMouseLeave}: PlaceCardProps):
   );
 }
 
-export default PlaceCard;
+export default OffersCard;
