@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { reducer } from './reducer';
-import { setOffers } from './action';
+import { appReducer, setOffers } from './slice';
 import { mockOffers } from '../mocks/mockOffers';
 
-export const store = configureStore({reducer});
+export const store = configureStore({
+  reducer: {
+    app: appReducer
+  }
+});
 store.dispatch(setOffers(mockOffers));

@@ -1,11 +1,11 @@
-import { State } from '../types/state';
+import { RootState } from '../types/state';
 import { SortOption } from '../types/options';
 import { createSelector } from '@reduxjs/toolkit';
 
 const selectFilteredSortedOffers = createSelector([
-  (state: State) => state.offersList,
-  (_: State, cityName: string) => cityName,
-  (_: State, __: string, activeOption: SortOption) => activeOption
+  (state: RootState) => state.app.offersList,
+  (_: RootState, cityName: string) => cityName,
+  (_: RootState, __: string, activeOption: SortOption) => activeOption
 ],
 (offers, cityName, activeOption) => {
   const filteredOffers = offers.filter(
