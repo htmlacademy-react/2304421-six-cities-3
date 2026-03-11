@@ -2,29 +2,31 @@ import { Helmet } from 'react-helmet-async';
 import OfferImage from './offer-image';
 import { OfferImages, OfferInsideItems, AppRoute } from '../../const';
 import OfferInsideItem from './offer-inside-item';
-import { Offer } from '../../types/offer';
 import { useParams, Navigate } from 'react-router-dom';
 import OfferReviewForm from './offer-review-form';
 import ReviewsList from './reviews-list/reviews-list';
 import Map from '../../components/map/map';
 import OffersList from '../../components/offers-list/offers-list';
-import { getNearOffers } from '../../utils/utils';
+import { useAppSelector } from '../../hooks';
 
-type OfferPageProps = {
-  offers: Offer[];
-};
-
-function OfferPage({ offers }: OfferPageProps): JSX.Element {
-  // const cards = getRandomCards(offers, 3);
+function OfferPage(): JSX.Element {
+  const offers = useAppSelector((state) => state.app.offersList);
 
   const { id } = useParams<{ id: string }>();
   const offer = offers.find((o) => o.id === id);
+
+  // if (!offers.length) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (!offer) {
     return <Navigate to={AppRoute.Root} replace />;
   }
 
-  const nearOffers = getNearOffers(offer);
+  const nearOffers = offers
+    .filter((o) => o.city.name === offer.city.name && o.id !== offer.id)
+    .slice(0, 3);
+
   const nearOffersPlusOffer = [...nearOffers, offer];
 
   return (

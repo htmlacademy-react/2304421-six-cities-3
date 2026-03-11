@@ -23,7 +23,7 @@ const appSlice = createSlice({
 
     setOffers(state, action: PayloadAction<Offer[]>) {
       state.offersList = action.payload;
-    }
+    },
   }
 });
 

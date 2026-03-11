@@ -16,9 +16,9 @@ type AppProps = {
   offers: Offer[];
 }
 
-function App({cardsCount, offers}: AppProps): JSX.Element {
+function App({cardsCount}: AppProps): JSX.Element {
 
-  const authorizationStatus = AuthorizationStatus.NoAuth;
+  const authorizationStatus = AuthorizationStatus.Auth;
 
   return (
     <HelmetProvider>
@@ -30,7 +30,7 @@ function App({cardsCount, offers}: AppProps): JSX.Element {
               <PrivateRoute authorizationStatus={authorizationStatus}><FavoritesPage offers={offers} /></PrivateRoute>
             }
             />
-            <Route path={AppRoute.Offer} element={<OfferPage offers={offers} />} />
+            <Route path={AppRoute.Offer} element={<OfferPage />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
             <Route path="*" element={<NotFoundPage />}/>
           </Route>

@@ -3,12 +3,13 @@ import { Helmet } from 'react-helmet-async';
 import { City } from '../../types/city';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { setCity } from '../../store/slice';
 import OffersSorting from './offers-sorting/offers-sorting';
 import { SortOption } from '../../types/options';
 import { selectFilteredSortedOffers } from '../../store/selectors';
+import { fetchOffersAction } from '../../store/api-actions';
 
 type MainPageProps = {
   cardsCount: number;
@@ -21,6 +22,11 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
   const currentCity = useAppSelector((state) => state.app.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchOffersAction());
+  }, [dispatch]);
+
   const visibleOffers = filteredSortedOffers.slice(0, cardsCount);
 
   const handleCityChange = (city: City) => {
