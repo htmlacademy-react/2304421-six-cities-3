@@ -1,6 +1,7 @@
 import { RootState } from '../types/state';
 import { SortOption } from '../types/options';
 import { createSelector } from '@reduxjs/toolkit';
+import { Offer } from '../types/offer';
 
 const selectFilteredSortedOffers = createSelector([
   (state: RootState) => state.app.offersList,
@@ -26,4 +27,28 @@ const selectFilteredSortedOffers = createSelector([
   }
 });
 
-export { selectFilteredSortedOffers };
+const selectFavoriteOffers = createSelector(
+  [(state: RootState) => state.app.offersList],
+  (offers) => offers.filter((offer) => offer.isFavorite)
+);
+
+const selectFavoritesByCity = createSelector(
+  [selectFavoriteOffers],
+  (offers) => {
+    const grouped: Record<string, Offer[]> = {};
+
+    offers.forEach((offer) => {
+      const city = offer.city.name;
+
+      if (!grouped[city]) {
+        grouped[city] = [];
+      }
+
+      grouped[city].push(offer);
+    });
+
+    return grouped;
+  }
+);
+
+export { selectFilteredSortedOffers, selectFavoritesByCity };

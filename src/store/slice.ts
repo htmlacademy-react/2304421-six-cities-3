@@ -6,11 +6,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 type AppState = {
   city: City;
   offersList: Offer[];
+  isOffersLoading: boolean;
 }
 
 const initialState: AppState = {
   city: CITIES[0],
-  offersList: []
+  offersList: [],
+  isOffersLoading: true,
 };
 
 const appSlice = createSlice({
@@ -24,8 +26,12 @@ const appSlice = createSlice({
     setOffers(state, action: PayloadAction<Offer[]>) {
       state.offersList = action.payload;
     },
+
+    setOffersLoading(state, action: PayloadAction<boolean>) {
+      state.isOffersLoading = action.payload;
+    }
   }
 });
 
-export const {setCity, setOffers} = appSlice.actions;
+export const {setCity, setOffers, setOffersLoading} = appSlice.actions;
 export const appReducer = appSlice.reducer;

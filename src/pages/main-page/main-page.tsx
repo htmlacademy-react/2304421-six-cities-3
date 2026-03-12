@@ -10,6 +10,7 @@ import OffersSorting from './offers-sorting/offers-sorting';
 import { SortOption } from '../../types/options';
 import { selectFilteredSortedOffers } from '../../store/selectors';
 import { fetchOffersAction } from '../../store/api-actions';
+import Spinner from '../../components/spinner/spinner';
 
 type MainPageProps = {
   cardsCount: number;
@@ -19,6 +20,7 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [activeOption, setActiveOption] = useState<SortOption>('Popular');
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const isOffersLoading = useAppSelector((state) => state.app.isOffersLoading);
   const currentCity = useAppSelector((state) => state.app.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
@@ -63,7 +65,11 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
             </b>
             <OffersSorting activeOption={activeOption} onOptionChange={handleSortChange} isOpen={isOpen} onSortingToggle={handleSortingToggle}/>
             <div className="cities__places-list places__list tabs__content">
-              <OffersList offers={visibleOffers} onHover={setActiveCardId} />
+              {isOffersLoading ? (
+                <Spinner />
+              ) : (
+                <OffersList offers={visibleOffers} onHover={setActiveCardId} />
+              )}
             </div>
           </section>
           <div className="cities__right-section">

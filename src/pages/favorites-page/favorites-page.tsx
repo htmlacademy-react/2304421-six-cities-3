@@ -1,18 +1,11 @@
 import Footer from '../../components/footer/footer';
 import FavoritePageItem from './favorites-page-item';
-import { CITIES } from '../../const';
-import { getRandomCards, getRandomUniqueInteger } from '../../utils/utils';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offer';
+import { useAppSelector } from '../../hooks';
+import { selectFavoritesByCity } from '../../store/selectors';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-}
-
-function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
-
-  const itemsCount = getRandomUniqueInteger(1, CITIES.length);
-  const randomCities = getRandomCards(CITIES, itemsCount);
+function FavoritesPage(): JSX.Element {
+  const favoritesByCity = useAppSelector(selectFavoritesByCity);
 
   return (
     <>
@@ -24,11 +17,11 @@ function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {randomCities.map((city) => (
+              {Object.entries(favoritesByCity).map(([cityName, offers]) => (
                 <FavoritePageItem
-                  key={city.name}
-                  city={city}
-                  offers={getRandomCards(offers, getRandomUniqueInteger(1, 5))}
+                  key={cityName}
+                  city={offers[0].city}
+                  offers={offers}
                 />
               ))}
             </ul>
