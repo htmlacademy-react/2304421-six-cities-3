@@ -2,17 +2,20 @@ import { CITIES } from '../const';
 import { Offer } from '../types/offer';
 import { City } from '../types/city';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AuthorizationStatus } from '../const';
 
 type AppState = {
   city: City;
   offersList: Offer[];
   isOffersLoading: boolean;
+  authorizationStatus: AuthorizationStatus;
 }
 
 const initialState: AppState = {
   city: CITIES[0],
   offersList: [],
   isOffersLoading: true,
+  authorizationStatus: AuthorizationStatus.NoAuth,
 };
 
 const appSlice = createSlice({
@@ -29,9 +32,13 @@ const appSlice = createSlice({
 
     setOffersLoading(state, action: PayloadAction<boolean>) {
       state.isOffersLoading = action.payload;
+    },
+
+    setAuthorizationStatus(state, action: PayloadAction<AuthorizationStatus>) {
+      state.authorizationStatus = action.payload;
     }
   }
 });
 
-export const {setCity, setOffers, setOffersLoading} = appSlice.actions;
+export const {setCity, setOffers, setOffersLoading, setAuthorizationStatus} = appSlice.actions;
 export const appReducer = appSlice.reducer;
