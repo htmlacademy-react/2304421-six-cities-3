@@ -5,17 +5,26 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
-import { AuthorizationStatus, AppRoute } from '../../const';
+import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { checkAuthAction } from '../../store/api-actions';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 type AppProps = {
   cardsCount: number;
 }
 
 function App({cardsCount}: AppProps): JSX.Element {
+  const dispatch = useAppDispatch();
 
-  const authorizationStatus = AuthorizationStatus.Auth;
+  const authorizationStatus = useAppSelector((state) => state.app.authorizationStatus);
+
+  useEffect(() => {
+    dispatch(checkAuthAction());
+  }, [dispatch]);
+
 
   return (
     <HelmetProvider>
