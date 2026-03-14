@@ -3,14 +3,14 @@ import { Helmet } from 'react-helmet-async';
 import { City } from '../../types/city';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
-import { useState } from 'react';
-import { useMemo } from 'react';
-import { useAppSelector } from '../../hooks';
-import { useAppDispatch } from '../../hooks';
-import { cityChange } from '../../store/action';
-import PlacesOptions from './places-options/places-options';
-import { shuffleArray } from '../../utils/utils';
+import { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { setCity } from '../../store/slice';
+import OffersSorting from './offers-sorting/offers-sorting';
 import { SortOption } from '../../types/options';
+import { selectFilteredSortedOffers } from '../../store/selectors';
+import { fetchOffersAction } from '../../store/api-actions';
+import Spinner from '../../components/spinner/spinner';
 
 type MainPageProps = {
   cardsCount: number;
@@ -20,37 +20,19 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [activeOption, setActiveOption] = useState<SortOption>('Popular');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const currentCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offersList);
+  const isOffersLoading = useAppSelector((state) => state.app.isOffersLoading);
+  const currentCity = useAppSelector((state) => state.app.city);
+  const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
 
-  const currentOffers = useMemo(
-    () => offers.filter((offer) => offer.city.name === currentCity.name),
-    [offers, currentCity],
-  );
+  useEffect(() => {
+    dispatch(fetchOffersAction());
+  }, [dispatch]);
 
-  const sortedOffers = useMemo(() => {
-    switch (activeOption) {
-      case 'Popular':
-        return shuffleArray(currentOffers);
-      case 'Price: high to low':
-        return [...currentOffers].sort((a, b) => b.price - a.price);
-      case 'Price: low to high':
-        return [...currentOffers].sort((a, b) => a.price - b.price);
-      case 'Top rated first':
-        return [...currentOffers].sort((a, b) => b.rating - a.rating);
-      default:
-        return currentOffers;
-    }
-  }, [currentOffers, activeOption]);
-
-  const cards = useMemo(
-    () => sortedOffers.slice(0, cardsCount),
-    [sortedOffers, cardsCount],
-  );
+  const visibleOffers = filteredSortedOffers.slice(0, cardsCount);
 
   const handleCityChange = (city: City) => {
-    dispatch(cityChange(city));
+    dispatch(setCity(city));
   };
 
   const handleSortChange = (option: SortOption) => {
@@ -79,17 +61,21 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
             <b className="places__found">
-              {currentOffers.length} places to stay in {currentCity.name}
+              {filteredSortedOffers.length} places to stay in {currentCity.name}
             </b>
-            <PlacesOptions activeOption={activeOption} onOptionChange={handleSortChange} isOpen={isOpen} onSortingToggle={handleSortingToggle}/>
+            <OffersSorting activeOption={activeOption} onOptionChange={handleSortChange} isOpen={isOpen} onSortingToggle={handleSortingToggle}/>
             <div className="cities__places-list places__list tabs__content">
-              <OffersList offers={cards} onHover={setActiveCardId} />
+              {isOffersLoading ? (
+                <Spinner />
+              ) : (
+                <OffersList offers={visibleOffers} onHover={setActiveCardId} />
+              )}
             </div>
           </section>
           <div className="cities__right-section">
             <Map
               city={currentCity}
-              offers={cards}
+              offers={visibleOffers}
               className="cities__map map"
               activeOfferId={activeCardId}
             />

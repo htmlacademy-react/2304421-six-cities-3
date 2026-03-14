@@ -1,12 +1,12 @@
 import { SortOption } from '../../../types/options';
 
-type PlacesOptionItemProps = {
+type OffersSortingItemProps = {
   option: SortOption;
   isActive: boolean;
   onClick: () => void;
 }
 
-function PlacesOptionItem({option, isActive, onClick}: PlacesOptionItemProps): JSX.Element {
+function OffersSortingItem({option, isActive, onClick}: OffersSortingItemProps): JSX.Element {
   return (
     <li className={`places__option ${isActive ? 'places__option--active' : ''}`} tabIndex={0} onClick={onClick}>
       {option}
@@ -14,4 +14,4 @@ function PlacesOptionItem({option, isActive, onClick}: PlacesOptionItemProps): J
   );
 }
 
-export default PlacesOptionItem;
+export default OffersSortingItem;
