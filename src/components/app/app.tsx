@@ -33,7 +33,7 @@ function App({cardsCount}: AppProps): JSX.Element {
           <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus}/>}>
             <Route index element={<MainPage cardsCount={cardsCount} />} />
             <Route path={AppRoute.Favorites} element={
-              <PrivateRoute authorizationStatus={authorizationStatus}><FavoritesPage /></PrivateRoute>
+              <PrivateRoute><FavoritesPage /></PrivateRoute>
             }
             />
             <Route path={AppRoute.Offer} element={<OfferPage />} />
