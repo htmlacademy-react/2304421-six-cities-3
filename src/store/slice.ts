@@ -9,6 +9,7 @@ type AppState = {
   offersList: Offer[];
   isOffersLoading: boolean;
   authorizationStatus: AuthorizationStatus;
+  error: string | null;
 }
 
 const initialState: AppState = {
@@ -16,6 +17,7 @@ const initialState: AppState = {
   offersList: [],
   isOffersLoading: true,
   authorizationStatus: AuthorizationStatus.NoAuth,
+  error: null,
 };
 
 const appSlice = createSlice({
@@ -36,9 +38,13 @@ const appSlice = createSlice({
 
     setAuthorizationStatus(state, action: PayloadAction<AuthorizationStatus>) {
       state.authorizationStatus = action.payload;
+    },
+
+    setError(state, action: PayloadAction<string | null>) {
+      state.error = action.payload;
     }
   }
 });
 
-export const {setCity, setOffers, setOffersLoading, setAuthorizationStatus} = appSlice.actions;
+export const {setCity, setOffers, setOffersLoading, setAuthorizationStatus, setError} = appSlice.actions;
 export const appReducer = appSlice.reducer;
