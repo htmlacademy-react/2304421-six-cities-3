@@ -22,6 +22,8 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
       dispatch(setOffersLoading(true));
       const {data} = await api.get<Offer[]>(APIRoute.Offers);
       dispatch(setOffers(data));
+    } catch {
+      dispatch(setError('Failed to load offers'));
     } finally {
       dispatch(setOffersLoading(false));
     }
@@ -51,9 +53,13 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-    saveToken(token);
-    dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+    try {
+      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+      saveToken(token);
+      dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+    } catch {
+      dispatch(setError('Login failed'));
+    }
   }
 );
 
