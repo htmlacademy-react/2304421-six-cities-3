@@ -6,7 +6,7 @@ import {APIRoute} from '../const';
 import { setOffers, setOffersLoading, setAuthorizationStatus, setError } from './slice.js';
 import { AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data.js';
-import { UserData } from '../types/user-data.js';
+import { AuthInfo } from '../types/user-data.js';
 import { saveToken, dropToken } from '../services/token.js';
 import { TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './index.js';
@@ -54,7 +54,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   'user/login',
   async({login: email, password}, {dispatch, extra: api}) => {
     try {
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+      const {data: {token}} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
       saveToken(token);
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
     } catch {
