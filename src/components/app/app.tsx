@@ -12,11 +12,7 @@ import { useEffect } from 'react';
 import { checkAuthAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
-type AppProps = {
-  cardsCount: number;
-}
-
-function App({cardsCount}: AppProps): JSX.Element {
+function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.app.authorizationStatus);
@@ -31,7 +27,7 @@ function App({cardsCount}: AppProps): JSX.Element {
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus}/>}>
-            <Route index element={<MainPage cardsCount={cardsCount} />} />
+            <Route index element={<MainPage />} />
             <Route path={AppRoute.Favorites} element={
               <PrivateRoute><FavoritesPage /></PrivateRoute>
             }

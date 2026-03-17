@@ -3,7 +3,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-import { setOffers, setOffersLoading, setAuthorizationStatus, setError } from './slice.js';
+import { setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading } from './slice.js';
 import { AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data.js';
 import { AuthInfo } from '../types/user-data.js';
@@ -54,11 +54,14 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   'user/login',
   async({login: email, password}, {dispatch, extra: api}) => {
     try {
+      dispatch(setLoginLoading(true));
       const {data: {token}} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
       saveToken(token);
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
     } catch {
       dispatch(setError('Login failed'));
+    } finally {
+      dispatch(setLoginLoading(false));
     }
   }
 );
