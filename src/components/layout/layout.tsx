@@ -1,13 +1,19 @@
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { AuthorizationStatus } from '../../const';
+import { logoutAction } from '../../store/api-actions';
+import { useAppDispatch } from '../../hooks';
+import './layout.css';
+import { useNavigate } from 'react-router-dom';
 
 type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
 }
 
 function Layout({authorizationStatus}: LayoutProps): JSX.Element {
+  const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   let pageClass = 'page';
   let logoLinkClass = 'header__logo-link';
@@ -23,6 +29,15 @@ function Layout({authorizationStatus}: LayoutProps): JSX.Element {
   if (isLoginPage) {
     pageClass += ' page--gray page--login';
   }
+
+  const handleLogOut = async () => {
+    await dispatch(logoutAction());
+    navigate(AppRoute.Login);
+  };
+
+  const handleLogOutClick = () => {
+    handleLogOut();
+  };
 
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
@@ -65,9 +80,12 @@ function Layout({authorizationStatus}: LayoutProps): JSX.Element {
                   </li>
                   <li className="header__nav-item">
                     {isAuth && (
-                      <Link className="header__nav-link" to={AppRoute.Login}>
+                      <button
+                        className="header__nav-link"
+                        onClick={handleLogOutClick}
+                      >
                         <span className="header__signout">Sign out</span>
-                      </Link>
+                      </button>
                     )}
                   </li>
                 </ul>
