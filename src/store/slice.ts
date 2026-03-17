@@ -1,8 +1,10 @@
 import { CITIES } from '../const';
 import { Offer } from '../types/offer';
+import { OfferDetails } from '../types/offer-details';
 import { City } from '../types/city';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthorizationStatus } from '../const';
+import { Comment } from '../types/comment';
 
 type AppState = {
   city: City;
@@ -11,6 +13,10 @@ type AppState = {
   authorizationStatus: AuthorizationStatus;
   error: string | null;
   isLoginLoading: boolean;
+  currentOffer: OfferDetails | null;
+  nearbyOffers: Offer[];
+  comments: Comment[];
+  isOfferLoading: boolean;
 }
 
 const initialState: AppState = {
@@ -20,6 +26,10 @@ const initialState: AppState = {
   authorizationStatus: AuthorizationStatus.NoAuth,
   error: null,
   isLoginLoading: false,
+  currentOffer: null,
+  nearbyOffers: [],
+  comments: [],
+  isOfferLoading: false,
 };
 
 const appSlice = createSlice({
@@ -48,9 +58,25 @@ const appSlice = createSlice({
 
     setLoginLoading(state, action: PayloadAction<boolean>) {
       state.isLoginLoading = action.payload;
+    },
+
+    setCurrentOffer(state, action: PayloadAction<OfferDetails | null>) {
+      state.currentOffer = action.payload;
+    },
+
+    setNearbyOffers(state, action: PayloadAction<Offer[]>) {
+      state.nearbyOffers = action.payload;
+    },
+
+    setComments(state, action: PayloadAction<Comment[]>) {
+      state.comments = action.payload;
+    },
+
+    setOfferLoading(state, action: PayloadAction<boolean>) {
+      state.isOfferLoading = action.payload;
     }
   }
 });
 
-export const {setCity, setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading} = appSlice.actions;
+export const {setCity, setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading, setCurrentOffer} = appSlice.actions;
 export const appReducer = appSlice.reducer;
