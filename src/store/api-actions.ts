@@ -3,13 +3,15 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-import { setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading } from './slice.js';
+import { setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setCommentsLoading, setComments } from './slice.js';
 import { AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data.js';
 import { AuthInfo } from '../types/user-data.js';
 import { saveToken, dropToken } from '../services/token.js';
 import { TIMEOUT_SHOW_ERROR } from '../const';
 import { store } from './index.js';
+import { OfferDetails } from '../types/offer-details.js';
+import { Comment } from '../types/comment.js';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -28,6 +30,63 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
       dispatch(setOffersLoading(false));
     }
   },
+);
+
+export const fetchOfferByIdAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'offer/fetchById',
+  async (offerId, {dispatch, extra: api}) => {
+    try{
+      dispatch(setOfferLoading(true));
+      const {data} = await api.get<OfferDetails>(`${APIRoute.Offers}/${offerId}`);
+      dispatch(setCurrentOffer(data));
+    } catch {
+      dispatch(setError('Failed to load current offer'));
+    } finally {
+      dispatch(setOfferLoading(false));
+    }
+  }
+);
+
+export const fetchNearbyOffersAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'offer/fetchNearby',
+  async (offerId, {dispatch, extra: api}) => {
+    try{
+      dispatch(setNearbyLoading(true));
+      const {data} = await api.get<Offer[]>(`${APIRoute.Offers}/${offerId}/nearby`);
+      dispatch(setNearbyOffers(data));
+    } catch {
+      dispatch(setError('Failed to load nearby offers'));
+    } finally {
+      dispatch(setNearbyLoading(false));
+    }
+  }
+);
+
+export const fetchCommentsAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'offer/fetchComments',
+  async (offerId, {dispatch, extra: api}) => {
+    try{
+      dispatch(setCommentsLoading(true));
+      const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
+      dispatch(setComments(data));
+    } catch {
+      dispatch(setError('Failed to load offer comments'));
+    } finally {
+      dispatch(setCommentsLoading(false));
+    }
+  }
 );
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
