@@ -12,11 +12,7 @@ import { selectFilteredSortedOffers } from '../../store/selectors';
 import { fetchOffersAction } from '../../store/api-actions';
 import Spinner from '../../components/spinner/spinner';
 
-type MainPageProps = {
-  cardsCount: number;
-};
-
-function MainPage({ cardsCount }: MainPageProps): JSX.Element {
+function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [activeOption, setActiveOption] = useState<SortOption>('Popular');
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -29,8 +25,7 @@ function MainPage({ cardsCount }: MainPageProps): JSX.Element {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
-  const visibleOffers = filteredSortedOffers.slice(0, cardsCount);
-
+  const visibleOffers = filteredSortedOffers;
   const handleCityChange = (city: City) => {
     dispatch(setCity(city));
   };

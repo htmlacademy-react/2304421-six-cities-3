@@ -1,16 +1,55 @@
 import { Helmet } from 'react-helmet-async';
+import { useRef, FormEvent } from 'react';
+import { useAppDispatch } from '../../hooks';
+import { loginAction } from '../../store/api-actions';
+import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { Navigate } from 'react-router-dom';
+import { AuthorizationStatus } from '../../const';
+import { setError } from '../../store/slice';
 
 function LoginPage(): JSX.Element {
+  const loginRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state) => state.app.authorizationStatus);
+  const isLoginLoading = useAppSelector((state) => state.app.isLoginLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return <Navigate to={AppRoute.Root} />;
+  }
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (loginRef.current !== null && passwordRef.current !== null) {
+      const email = loginRef.current.value;
+      const password = passwordRef.current.value.trim();
+
+      if (!password) {
+        dispatch(setError('Password must not be empty or contain only spaces'));
+        return;
+      }
+
+      dispatch(loginAction({
+        login: email,
+        password,
+      }));
+    }
+  };
+
   return (
     <main className="page__main page__main--login">
       <Helmet><title>Login page</title></Helmet>
       <div className="page__login-container container">
         <section className="login">
           <h1 className="login__title">Sign in</h1>
-          <form className="login__form form" action="#" method="post">
+          <form className="login__form form" action="#" method="post" onSubmit={handleSubmit}>
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">E-mail</label>
               <input
+                ref={loginRef}
                 className="login__input form__input"
                 type="email"
                 name="email"
@@ -21,6 +60,7 @@ function LoginPage(): JSX.Element {
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">Password</label>
               <input
+                ref={passwordRef}
                 className="login__input form__input"
                 type="password"
                 name="password"
@@ -28,8 +68,12 @@ function LoginPage(): JSX.Element {
                 required
               />
             </div>
-            <button className="login__submit form__submit button" type="submit">
-              Sign in
+            <button
+              className="login__submit form__submit button"
+              type="submit"
+              disabled={isLoginLoading}
+            >
+              {isLoginLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
         </section>
