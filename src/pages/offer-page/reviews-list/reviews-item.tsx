@@ -1,12 +1,10 @@
-import { Offer } from '../../../types/offer';
+import { Comment } from '../../../types/comment';
 
 type ReviewsItemProps = {
-  offer: Offer;
-  comment: string;
-  date: string;
+  review: Comment;
 }
 
-function ReviewsItem({offer, comment, date}: ReviewsItemProps): JSX.Element {
+function ReviewsItem({review}: ReviewsItemProps): JSX.Element {
 
   return (
     <li className="reviews__item">
@@ -14,26 +12,29 @@ function ReviewsItem({offer, comment, date}: ReviewsItemProps): JSX.Element {
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
           <img
             className="reviews__avatar user__avatar"
-            src="img/avatar-max.jpg"
+            src={review.user.avatarUrl}
             width={54}
             height={54}
             alt="Reviews avatar"
           />
         </div>
-        <span className="reviews__user-name">Max</span>
+        <span className="reviews__user-name">{review.user.name}</span>
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{ width: `${offer.rating * 20}%` }} />
+            <span style={{ width: `${review.rating * 20}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <p className="reviews__text">
-          {comment}
+          {review.comment}
         </p>
-        <time className="reviews__time" dateTime={date}>
-          {date}
+        <time className="reviews__time" dateTime={review.date}>
+          {new Date(review.date).toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric',
+          })}
         </time>
       </div>
     </li>

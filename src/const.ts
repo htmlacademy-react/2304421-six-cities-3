@@ -74,6 +74,7 @@ export const AppRoute = {
   Login: '/login',
   Favorites: '/favorites',
   Offer: '/offer/:id',
+  NotFound: '/not-found',
 } as const;
 
 export enum AuthorizationStatus {
@@ -123,3 +124,5 @@ export enum APIRoute {
 }
 
 export const TIMEOUT_SHOW_ERROR = 2000;
+export const VISIBLE_NEARBY_OFFERS_COUNT = 3;
+export const MAX_REVIEWS = 10;

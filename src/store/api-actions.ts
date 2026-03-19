@@ -3,7 +3,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-import { setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setCommentsLoading, setComments } from './slice.js';
+import { setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setCommentsLoading, setComments, setOfferNotFound } from './slice.js';
 import { AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data.js';
 import { AuthInfo } from '../types/user-data.js';
@@ -41,10 +41,12 @@ export const fetchOfferByIdAction = createAsyncThunk<void, string, {
   async (offerId, {dispatch, extra: api}) => {
     try{
       dispatch(setOfferLoading(true));
+      dispatch(setOfferNotFound(false));
+
       const {data} = await api.get<OfferDetails>(`${APIRoute.Offers}/${offerId}`);
       dispatch(setCurrentOffer(data));
     } catch {
-      dispatch(setError('Failed to load current offer'));
+      dispatch(setOfferNotFound(true));
     } finally {
       dispatch(setOfferLoading(false));
     }
@@ -83,6 +85,27 @@ export const fetchCommentsAction = createAsyncThunk<void, string, {
       dispatch(setComments(data));
     } catch {
       dispatch(setError('Failed to load offer comments'));
+    } finally {
+      dispatch(setCommentsLoading(false));
+    }
+  }
+);
+
+export const postCommentAction = createAsyncThunk<void, {offerId: string; rating: number; comment:string},
+{
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'comments/post',
+  async ({offerId, rating, comment}, {dispatch, extra: api}) => {
+    try{
+      dispatch(setCommentsLoading(true));
+      await api.post<Comment[]>(`${APIRoute.Comments}/${offerId}`, {rating, comment});
+      dispatch(fetchCommentsAction(offerId));
+    } catch (error) {
+      dispatch(setError('Failed to post comment'));
+      throw error;
     } finally {
       dispatch(setCommentsLoading(false));
     }

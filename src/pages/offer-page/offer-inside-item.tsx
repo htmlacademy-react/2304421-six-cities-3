@@ -1,7 +1,5 @@
-import { OfferInsideItems } from '../../const';
-
 type OfferInsideItemProps = {
-  option: typeof OfferInsideItems[number];
+  option: string;
 }
 
 function OfferInsideItem({option}: OfferInsideItemProps): JSX.Element {

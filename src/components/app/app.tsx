@@ -7,7 +7,7 @@ import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { checkAuthAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -34,7 +34,8 @@ function App(): JSX.Element {
             />
             <Route path={AppRoute.Offer} element={<OfferPage />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />}/>
+            <Route path={AppRoute.NotFound} element={<NotFoundPage />} />
+            <Route path="*" element={<Navigate to={AppRoute.NotFound} replace />}/>
           </Route>
         </Routes>
       </BrowserRouter>

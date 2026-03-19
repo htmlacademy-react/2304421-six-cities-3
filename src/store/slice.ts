@@ -19,6 +19,7 @@ type AppState = {
   isOfferLoading: boolean;
   isNearbyLoading: boolean;
   isCommentsLoading: boolean;
+  isOfferNotFound: boolean;
 }
 
 const initialState: AppState = {
@@ -34,6 +35,7 @@ const initialState: AppState = {
   isOfferLoading: false,
   isNearbyLoading: false,
   isCommentsLoading: false,
+  isOfferNotFound: false,
 };
 
 const appSlice = createSlice({
@@ -68,6 +70,10 @@ const appSlice = createSlice({
       state.currentOffer = action.payload;
     },
 
+    setOfferNotFound(state, action: PayloadAction<boolean>) {
+      state.isOfferNotFound = action.payload;
+    },
+
     setNearbyOffers(state, action: PayloadAction<Offer[]>) {
       state.nearbyOffers = action.payload;
     },
@@ -90,5 +96,5 @@ const appSlice = createSlice({
   }
 });
 
-export const {setCity, setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading, setCurrentOffer, setNearbyOffers, setComments, setOfferLoading, setNearbyLoading, setCommentsLoading} = appSlice.actions;
+export const {setCity, setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading, setCurrentOffer, setNearbyOffers, setComments, setOfferLoading, setNearbyLoading, setCommentsLoading, setOfferNotFound} = appSlice.actions;
 export const appReducer = appSlice.reducer;
