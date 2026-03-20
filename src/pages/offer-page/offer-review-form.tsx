@@ -3,8 +3,7 @@ import { RATING } from '../../const';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postCommentAction } from '../../store/api-actions';
-import { setError } from '../../store/slice';
-
+import { setError } from '../../store/error/error-slice';
 type FormDataType = {
   rating: number | null;
   comment: string;
@@ -13,7 +12,7 @@ type FormDataType = {
 function OfferReviewForm(): JSX.Element {
   const { id } = useParams<{id: string }>();
   const dispatch = useAppDispatch();
-  const isSending = useAppSelector((store) => store.app.isCommentsLoading);
+  const isSending = useAppSelector((store) => store.comments.isCommentsLoading);
 
   const [formData, setFormData] = useState<FormDataType>({
     rating: null,
@@ -40,7 +39,7 @@ function OfferReviewForm(): JSX.Element {
         offerId: id,
         comment: formData.comment,
         rating: formData.rating,
-      }));
+      })).unwrap();
 
       setFormData({
         rating: null,

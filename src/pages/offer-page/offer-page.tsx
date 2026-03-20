@@ -16,13 +16,13 @@ import { VISIBLE_NEARBY_OFFERS_COUNT } from '../../const';
 import { AuthorizationStatus } from '../../const';
 
 function OfferPage(): JSX.Element {
-  const currentOffer = useAppSelector((state) => state.app.currentOffer);
-  const nearbyOffers = useAppSelector((state) => state.app.nearbyOffers).slice(0, VISIBLE_NEARBY_OFFERS_COUNT);
-  const comments = useAppSelector((state) => state.app.comments);
-  const isOfferLoading = useAppSelector((state) => state.app.isOfferLoading);
-  const authorizationStatus = useAppSelector((state) => state.app.authorizationStatus);
+  const currentOffer = useAppSelector((state) => state.offer.currentOffer);
+  const nearbyOffers = useAppSelector((state) => state.offer.nearbyOffers).slice(0, VISIBLE_NEARBY_OFFERS_COUNT);
+  const comments = useAppSelector((state) => state.comments.comments);
+  const isOfferLoading = useAppSelector((state) => state.offer.isOfferLoading);
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const dispatch = useAppDispatch();
-  const isOfferNotFound = useAppSelector((state) => state.app.isOfferNotFound);
+  const isOfferNotFound = useAppSelector((state) => state.offer.isOfferNotFound);
 
   const { id } = useParams<{ id: string }>();
 
@@ -98,10 +98,10 @@ function OfferPage(): JSX.Element {
                 {currentOffer.type}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
-                {`${currentOffer.bedrooms} Bedrooms`}
+                {`${currentOffer.bedrooms} ${currentOffer.bedrooms === 1 ? 'bedroom' : 'bedrooms'}`}
               </li>
               <li className="offer__feature offer__feature--adults">
-                {`Max ${currentOffer.maxAdults} adults`}
+                {`Max ${currentOffer.maxAdults} ${currentOffer.maxAdults === 1 ? 'adult' : 'adults'}`}
               </li>
             </ul>
             <div className="offer__price">

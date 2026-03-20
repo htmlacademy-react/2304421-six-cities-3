@@ -3,7 +3,10 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-import { setOffers, setOffersLoading, setAuthorizationStatus, setError, setLoginLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setCommentsLoading, setComments, setOfferNotFound } from './slice.js';
+import { setOffers, setOffersLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setOfferNotFound } from './offer/offer-slice.js';
+import { setAuthorizationStatus, setLoginLoading } from './user/user-slice.js';
+import { setComments, setCommentsLoading } from './comments/comments-slice.js';
+import { setError } from './error/error-slice.js';
 import { AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data.js';
 import { AuthInfo } from '../types/user-data.js';
@@ -24,8 +27,6 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
       dispatch(setOffersLoading(true));
       const {data} = await api.get<Offer[]>(APIRoute.Offers);
       dispatch(setOffers(data));
-    } catch {
-      dispatch(setError('Failed to load offers'));
     } finally {
       dispatch(setOffersLoading(false));
     }
@@ -103,9 +104,6 @@ export const postCommentAction = createAsyncThunk<void, {offerId: string; rating
       dispatch(setCommentsLoading(true));
       await api.post<Comment[]>(`${APIRoute.Comments}/${offerId}`, {rating, comment});
       dispatch(fetchCommentsAction(offerId));
-    } catch (error) {
-      dispatch(setError('Failed to post comment'));
-      throw error;
     } finally {
       dispatch(setCommentsLoading(false));
     }

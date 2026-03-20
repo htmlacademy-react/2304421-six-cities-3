@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector((state) => state.app.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
 
   useEffect(() => {
     dispatch(checkAuthAction());

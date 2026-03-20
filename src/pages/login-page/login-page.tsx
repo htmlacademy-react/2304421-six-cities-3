@@ -6,15 +6,14 @@ import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { Navigate } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
-import { setError } from '../../store/slice';
-
+import { setError } from '../../store/error/error-slice';
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.app.authorizationStatus);
-  const isLoginLoading = useAppSelector((state) => state.app.isLoginLoading);
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const isLoginLoading = useAppSelector((state) => state.user.isLoginLoading);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return <Navigate to={AppRoute.Root} />;
