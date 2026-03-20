@@ -15,7 +15,7 @@ import Spinner from '../../components/spinner/spinner';
 import { VISIBLE_NEARBY_OFFERS_COUNT } from '../../const';
 import { AuthorizationStatus } from '../../const';
 
-function OfferPage(): JSX.Element {
+function OfferPage(): JSX.Element | null {
   const currentOffer = useAppSelector((state) => state.offer.currentOffer);
   const nearbyOffers = useAppSelector((state) => state.offer.nearbyOffers).slice(0, VISIBLE_NEARBY_OFFERS_COUNT);
   const comments = useAppSelector((state) => state.comments.comments);
@@ -38,8 +38,12 @@ function OfferPage(): JSX.Element {
     return <Spinner />;
   }
 
-  if (isOfferNotFound || !currentOffer) {
+  if (isOfferNotFound) {
     return <Navigate to={AppRoute.NotFound} replace />;
+  }
+
+  if (!currentOffer) {
+    return null;
   }
 
   const nearOffersPlusOffer: MapOffer[] = [

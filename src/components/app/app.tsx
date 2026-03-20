@@ -16,6 +16,8 @@ function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const user = useAppSelector((state) => state.user.user);
+
 
   useEffect(() => {
     dispatch(checkAuthAction());
@@ -26,7 +28,7 @@ function App(): JSX.Element {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus}/>}>
+          <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus} email={user?.email}/>}>
             <Route index element={<MainPage />} />
             <Route path={AppRoute.Favorites} element={
               <PrivateRoute><FavoritesPage /></PrivateRoute>

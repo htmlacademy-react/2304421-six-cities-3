@@ -4,7 +4,7 @@ import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
 import { setOffers, setOffersLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setOfferNotFound } from './offer/offer-slice.js';
-import { setAuthorizationStatus, setLoginLoading } from './user/user-slice.js';
+import { setAuthorizationStatus, setLoginLoading, setUser } from './user/user-slice.js';
 import { setComments, setCommentsLoading } from './comments/comments-slice.js';
 import { setError } from './error/error-slice.js';
 import { AuthorizationStatus } from '../const';
@@ -118,7 +118,8 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
     try {
-      await api.get(APIRoute.Login);
+      const {data} = await api.get<AuthInfo>(APIRoute.Login);
+      dispatch(setUser(data));
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
     } catch {
       dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
@@ -135,8 +136,9 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   async({login: email, password}, {dispatch, extra: api}) => {
     try {
       dispatch(setLoginLoading(true));
-      const {data: {token}} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
-      saveToken(token);
+      const data = await api.post<AuthInfo>(APIRoute.Login, {email, password});
+      saveToken(data.data.token);
+      dispatch(setUser(data.data));
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
     } catch {
       dispatch(setError('Login failed'));
@@ -155,6 +157,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+    dispatch(setUser(null));
     dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
   },
 );
