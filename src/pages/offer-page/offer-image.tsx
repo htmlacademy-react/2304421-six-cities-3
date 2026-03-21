@@ -1,7 +1,5 @@
-import { OfferImages } from '../../const';
-
 type OfferImageProps = {
-  img: typeof OfferImages[number];
+  img: string;
   alt?: string;
 }
 

@@ -1,31 +1,26 @@
-import { mockComments } from '../../../mocks/mockComments';
-import { getRandomCards } from '../../../utils/utils';
-import { getRandomUniqueInteger } from '../../../utils/utils';
 import ReviewsItem from './reviews-item';
-import { Offer } from '../../../types/offer';
+import { Comment } from '../../../types/comment';
+import { MAX_REVIEWS } from '../../../const';
+import { useMemo } from 'react';
 
-type ReviewsList = {
-  offer: Offer;
+type ReviewsListProps = {
+  comments: Comment[];
 };
 
-function ReviewsList({ offer }: ReviewsList): JSX.Element {
-  const reviewDate = '2019-04-24';
-  const commentsCount = getRandomUniqueInteger(1, mockComments.length);
-  const currentComments = getRandomCards(mockComments, commentsCount);
+function ReviewsList({ comments }: ReviewsListProps): JSX.Element {
+  const visibleComments = useMemo(() => comments
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, MAX_REVIEWS), [comments]);
 
   return (
     <>
       <h2 className="reviews__title">
-        Reviews · <span className="reviews__amount">{commentsCount}</span>
+        Reviews · <span className="reviews__amount">{comments.length}</span>
       </h2>
       <ul className="reviews__list">
-        {currentComments.map((comment) => (
-          <ReviewsItem
-            key={comment}
-            offer={offer}
-            comment={comment}
-            date={reviewDate}
-          />
+        {visibleComments.map((comment) => (
+          <ReviewsItem key={comment.id} review={comment} />
         ))}
       </ul>
     </>

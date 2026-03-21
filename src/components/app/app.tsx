@@ -7,7 +7,7 @@ import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { checkAuthAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -15,7 +15,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector((state) => state.app.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const user = useAppSelector((state) => state.user.user);
+
 
   useEffect(() => {
     dispatch(checkAuthAction());
@@ -26,7 +28,7 @@ function App(): JSX.Element {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus}/>}>
+          <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus} email={user?.email}/>}>
             <Route index element={<MainPage />} />
             <Route path={AppRoute.Favorites} element={
               <PrivateRoute><FavoritesPage /></PrivateRoute>
@@ -34,7 +36,8 @@ function App(): JSX.Element {
             />
             <Route path={AppRoute.Offer} element={<OfferPage />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />}/>
+            <Route path={AppRoute.NotFound} element={<NotFoundPage />} />
+            <Route path="*" element={<Navigate to={AppRoute.NotFound} replace />}/>
           </Route>
         </Routes>
       </BrowserRouter>

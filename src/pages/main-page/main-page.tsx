@@ -5,7 +5,7 @@ import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { setCity } from '../../store/slice';
+import { setCity } from '../../store/city/city-slice';
 import OffersSorting from './offers-sorting/offers-sorting';
 import { SortOption } from '../../types/options';
 import { selectFilteredSortedOffers } from '../../store/selectors';
@@ -16,8 +16,8 @@ function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [activeOption, setActiveOption] = useState<SortOption>('Popular');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isOffersLoading = useAppSelector((state) => state.app.isOffersLoading);
-  const currentCity = useAppSelector((state) => state.app.city);
+  const isOffersLoading = useAppSelector((state) => state.offer.isOffersLoading);
+  const currentCity = useAppSelector((state) => state.city.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
 

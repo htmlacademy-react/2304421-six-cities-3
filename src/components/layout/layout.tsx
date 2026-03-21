@@ -8,9 +8,11 @@ import { useNavigate } from 'react-router-dom';
 
 type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
+  email?: string;
 }
 
-function Layout({authorizationStatus}: LayoutProps): JSX.Element {
+function Layout({authorizationStatus, email}: LayoutProps): JSX.Element {
+
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -69,7 +71,7 @@ function Layout({authorizationStatus}: LayoutProps): JSX.Element {
                       {isAuth ? (
                         <>
                           <span className="header__user-name user__name">
-                            Oliver.conner@gmail.com
+                            {email}
                           </span>
                           <span className="header__favorite-count">3</span>
                         </>

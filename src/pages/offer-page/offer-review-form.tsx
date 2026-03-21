@@ -1,12 +1,19 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import { RATING } from '../../const';
-
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { postCommentAction } from '../../store/api-actions';
+import { setError } from '../../store/error/error-slice';
 type FormDataType = {
   rating: number | null;
   comment: string;
 };
 
 function OfferReviewForm(): JSX.Element {
+  const { id } = useParams<{id: string }>();
+  const dispatch = useAppDispatch();
+  const isSending = useAppSelector((store) => store.comments.isCommentsLoading);
+
   const [formData, setFormData] = useState<FormDataType>({
     rating: null,
     comment: '',
@@ -20,16 +27,41 @@ function OfferReviewForm(): JSX.Element {
     setFormData({ ...formData, comment: evt.target.value });
   };
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+
+    if (!id || formData.rating === null) {
+      return;
+    }
+
+    try {
+      await dispatch(postCommentAction({
+        offerId: id,
+        comment: formData.comment,
+        rating: formData.rating,
+      })).unwrap();
+
+      setFormData({
+        rating: null,
+        comment: '',
+      });
+    } catch {
+      dispatch(setError('Failed to post comment'));
+    }
   };
+
+  const isDisabled =
+    isSending ||
+    formData.rating === null ||
+    formData.comment.length < 50 ||
+    formData.comment.length > 300;
 
   return (
     <form
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={handleSubmit}
+      onSubmit={(evt) => void handleSubmit(evt)}
     >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
@@ -45,6 +77,7 @@ function OfferReviewForm(): JSX.Element {
               type="radio"
               checked={formData.rating === value}
               onChange={handleRatingChange}
+              disabled={isSending}
             />
             <label
               htmlFor={`${value}-star`}
@@ -65,6 +98,7 @@ function OfferReviewForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={formData.comment}
         onChange={handleCommentChange}
+        disabled={isSending}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -75,9 +109,9 @@ function OfferReviewForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={formData.rating === null || formData.comment.length < 50}
+          disabled={isDisabled}
         >
-          Submit
+          {isSending ? 'Sending...' : 'Submit'}
         </button>
       </div>
     </form>

@@ -1,5 +1,5 @@
 import { store } from '../store';
-import { setError } from '../store/slice';
+import { setError } from '../store/error/error-slice';
 import { clearErrorAction } from '../store/api-actions';
 
 
