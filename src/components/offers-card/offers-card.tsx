@@ -22,9 +22,10 @@ variant: 'vertical' | 'horizontal';
 data: Offer;
 onMouseEnter?: () => void;
 onMouseLeave?: () => void;
+onClick: () => void;
 }
 
-function OffersCard({variant, data, onMouseEnter, onMouseLeave}: OffersCardProps): JSX.Element {
+function OffersCard({variant, data, onMouseEnter, onMouseLeave, onClick}: OffersCardProps): JSX.Element {
   const normalizedRating = Math.min(Math.max(data.rating, 0), 5);
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
@@ -56,6 +57,10 @@ function OffersCard({variant, data, onMouseEnter, onMouseLeave}: OffersCardProps
           <button
             className={`place-card__bookmark-button ${data.isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
             type="button"
+            onClick={(evt) => {
+              evt.stopPropagation();
+              onClick();
+            }}
           >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />

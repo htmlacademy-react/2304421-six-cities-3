@@ -11,6 +11,9 @@ import { SortOption } from '../../types/options';
 import { selectFilteredSortedOffers } from '../../store/selectors';
 import { fetchOffersAction } from '../../store/api-actions';
 import Spinner from '../../components/spinner/spinner';
+import { toggleFavoriteAction } from '../../store/api-actions';
+import { useNavigate } from 'react-router-dom';
+import { AuthorizationStatus, AppRoute } from '../../const';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -20,6 +23,8 @@ function MainPage(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchOffersAction());
@@ -37,6 +42,17 @@ function MainPage(): JSX.Element {
 
   const handleSortingToggle = () => {
     setIsOpen((prev) => !prev);
+  };
+
+  const handleFavoriteToggle = (offerId: string, isFavorite: boolean) => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      return;
+    }
+
+    const status = isFavorite ? 0 : 1;
+
+    dispatch(toggleFavoriteAction({offerId, status}));
   };
 
   return (
@@ -63,7 +79,7 @@ function MainPage(): JSX.Element {
               {isOffersLoading ? (
                 <Spinner />
               ) : (
-                <OffersList offers={visibleOffers} onHover={setActiveCardId} />
+                <OffersList offers={visibleOffers} onHover={setActiveCardId} onFavoriteToggleClick={handleFavoriteToggle}/>
               )}
             </div>
           </section>

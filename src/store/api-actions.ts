@@ -110,6 +110,26 @@ export const postCommentAction = createAsyncThunk<void, {offerId: string; rating
   }
 );
 
+export const toggleFavoriteAction = createAsyncThunk<void, {offerId: string; status: number},
+{
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'favorite/post',
+  async ({offerId, status}, {dispatch, extra: api}) => {
+    try{
+      await api.post(`${APIRoute.Favorites}/${offerId}/${status}`);
+      dispatch(fetchOffersAction());
+      dispatch(fetchNearbyOffersAction(offerId));
+      dispatch(fetchOfferByIdAction(offerId));
+    } catch {
+      dispatch(setError('Faild to post favorite offer'));
+    }
+  }
+);
+
+
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: RootState;

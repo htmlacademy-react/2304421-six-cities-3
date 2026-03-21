@@ -4,9 +4,10 @@ import { Offer } from '../../types/offer';
 type OffersListProps = {
   offers: Offer[];
   onHover?: (id: string | null) => void;
+  onFavoriteToggleClick: (offerId: string, isFavorite: boolean) => void;
 };
 
-function OffersList({ offers, onHover }: OffersListProps): JSX.Element {
+function OffersList({ offers, onHover, onFavoriteToggleClick }: OffersListProps): JSX.Element {
 
   return (
     <>
@@ -17,6 +18,7 @@ function OffersList({ offers, onHover }: OffersListProps): JSX.Element {
           data={offer}
           onMouseEnter={() => onHover?.(offer.id)}
           onMouseLeave={() => onHover?.(null)}
+          onClick={() => onFavoriteToggleClick(offer.id, offer.isFavorite)}
         />
       ))}
     </>
