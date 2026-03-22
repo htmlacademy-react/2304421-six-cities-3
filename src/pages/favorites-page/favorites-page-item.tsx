@@ -3,13 +3,15 @@ import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import { City } from '../../types/city';
 import { AppRoute } from '../../const';
+import { FavoriteParams } from '../../types/favorite';
 
 type FavoritePageItemProps = {
   city: City;
   offers: Offer[];
+  onFavoriteToggleClick: ({id, isFavorite}: FavoriteParams) => void;
 }
 
-function FavoritePageItem({city, offers}: FavoritePageItemProps): JSX.Element {
+function FavoritePageItem({city, offers, onFavoriteToggleClick}: FavoritePageItemProps): JSX.Element {
   return (
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
@@ -20,7 +22,7 @@ function FavoritePageItem({city, offers}: FavoritePageItemProps): JSX.Element {
         </div>
       </div>
       <div className="favorites__places">
-        {offers.map((card) => <OffersCard key={card.id} variant='horizontal' data={card}/>)}
+        {offers.map((card) => <OffersCard key={card.id} variant='horizontal' data={card} onClick={() => onFavoriteToggleClick({id: card.id, isFavorite: card.isFavorite})} />)}
       </div>
     </li>
   );

@@ -3,7 +3,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-import { setOffers, setOffersLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setOfferNotFound } from './offer/offer-slice.js';
+import { setOffers, setOffersLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setOfferNotFound, updateOffer, updateCurrentOffer } from './offer/offer-slice.js';
 import { setAuthorizationStatus, setLoginLoading, setUser } from './user/user-slice.js';
 import { setComments, setCommentsLoading } from './comments/comments-slice.js';
 import { setError } from './error/error-slice.js';
@@ -119,10 +119,9 @@ export const toggleFavoriteAction = createAsyncThunk<void, {offerId: string; sta
   'favorite/post',
   async ({offerId, status}, {dispatch, extra: api}) => {
     try{
-      await api.post(`${APIRoute.Favorites}/${offerId}/${status}`);
-      dispatch(fetchOffersAction());
-      dispatch(fetchNearbyOffersAction(offerId));
-      dispatch(fetchOfferByIdAction(offerId));
+      const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
+      dispatch(updateOffer(data));
+      dispatch(updateCurrentOffer(data));
     } catch {
       dispatch(setError('Faild to post favorite offer'));
     }

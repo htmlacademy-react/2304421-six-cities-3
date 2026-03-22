@@ -1,10 +1,11 @@
 import OffersCard from '../offers-card/offers-card';
 import { Offer } from '../../types/offer';
+import { FavoriteParams } from '../../types/favorite';
 
 type OffersListProps = {
   offers: Offer[];
   onHover?: (id: string | null) => void;
-  onFavoriteToggleClick: (offerId: string, isFavorite: boolean) => void;
+  onFavoriteToggleClick: ({id, isFavorite }: FavoriteParams) => void;
 };
 
 function OffersList({ offers, onHover, onFavoriteToggleClick }: OffersListProps): JSX.Element {
@@ -18,7 +19,7 @@ function OffersList({ offers, onHover, onFavoriteToggleClick }: OffersListProps)
           data={offer}
           onMouseEnter={() => onHover?.(offer.id)}
           onMouseLeave={() => onHover?.(null)}
-          onClick={() => onFavoriteToggleClick(offer.id, offer.isFavorite)}
+          onClick={() => onFavoriteToggleClick({id: offer.id, isFavorite: offer.isFavorite})}
         />
       ))}
     </>

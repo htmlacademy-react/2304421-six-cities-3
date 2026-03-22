@@ -3,9 +3,11 @@ import FavoritePageItem from './favorites-page-item';
 import { Helmet } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import { selectFavoritesByCity } from '../../store/selectors';
+import { useFavorite } from '../../hooks/useFavorite';
 
 function FavoritesPage(): JSX.Element {
   const favoritesByCity = useAppSelector(selectFavoritesByCity);
+  const toggleFavorite = useFavorite();
 
   return (
     <>
@@ -22,6 +24,7 @@ function FavoritesPage(): JSX.Element {
                   key={cityName}
                   city={offers[0].city}
                   offers={offers}
+                  onFavoriteToggleClick = {toggleFavorite}
                 />
               ))}
             </ul>

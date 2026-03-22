@@ -14,8 +14,7 @@ import { AppRoute } from '../../const';
 import Spinner from '../../components/spinner/spinner';
 import { VISIBLE_NEARBY_OFFERS_COUNT } from '../../const';
 import { AuthorizationStatus } from '../../const';
-import { useNavigate } from 'react-router-dom';
-import { toggleFavoriteAction } from '../../store/api-actions';
+import { useFavorite } from '../../hooks/useFavorite';
 
 function OfferPage(): JSX.Element | null {
   const currentOffer = useAppSelector((state) => state.offer.currentOffer);
@@ -25,7 +24,7 @@ function OfferPage(): JSX.Element | null {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const dispatch = useAppDispatch();
   const isOfferNotFound = useAppSelector((state) => state.offer.isOfferNotFound);
-  const navigate = useNavigate();
+  const toggleFavorite = useFavorite();
 
   const { id } = useParams<{ id: string }>();
 
@@ -60,17 +59,6 @@ function OfferPage(): JSX.Element | null {
     },
   ];
 
-  const handleFavoriteToggle = (offerId: string, isFavorite: boolean) => {
-    if (authorizationStatus !== AuthorizationStatus.Auth) {
-      navigate(AppRoute.Login);
-      return;
-    }
-
-    const status = isFavorite ? 0 : 1;
-
-    dispatch(toggleFavoriteAction({offerId, status}));
-  };
-
   return (
     <main className="page__main page__main--offer">
       <Helmet>
@@ -96,7 +84,7 @@ function OfferPage(): JSX.Element | null {
               <button
                 className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
                 type="button"
-                onClick={() => handleFavoriteToggle(currentOffer.id, currentOffer.isFavorite)}
+                onClick={() => toggleFavorite({id: currentOffer.id, isFavorite: currentOffer.isFavorite})}
               >
                 <svg className="offer__bookmark-icon" width={31} height={33}>
                   <use xlinkHref="#icon-bookmark" />
@@ -182,7 +170,7 @@ function OfferPage(): JSX.Element | null {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <OffersList offers={nearbyOffers} onFavoriteToggleClick={handleFavoriteToggle}/>
+            <OffersList offers={nearbyOffers} onFavoriteToggleClick={toggleFavorite}/>
           </div>
         </section>
       </div>
