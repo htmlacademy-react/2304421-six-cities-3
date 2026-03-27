@@ -22,7 +22,7 @@ function FavoritePageItem({city, offers, onFavoriteToggleClick}: FavoritePageIte
         </div>
       </div>
       <div className="favorites__places">
-        {offers.map((card) => <OffersCard key={card.id} variant='horizontal' data={card} onClick={() => onFavoriteToggleClick({id: card.id, isFavorite: card.isFavorite})} />)}
+        {offers.map((card) => <OffersCard key={card.id} variant='horizontal' data={card} onFavoriteClick={onFavoriteToggleClick} />)}
       </div>
     </li>
   );
