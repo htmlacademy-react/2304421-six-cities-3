@@ -1,8 +1,8 @@
 import LocationsList from './locations-list/locations-list';
 import { Helmet } from 'react-helmet-async';
 import { City } from '../../types/city';
-import OffersList from '../../components/offers-list/offers-list';
-import Map from '../../components/map/map';
+import MemorizedOffersList from '../../components/offers-list/offers-list';
+import MemorizedMap from '../../components/map/map';
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { setCity } from '../../store/city/city-slice';
@@ -12,6 +12,7 @@ import { selectFilteredSortedOffers } from '../../store/selectors';
 import { fetchOffersAction } from '../../store/api-actions';
 import Spinner from '../../components/spinner/spinner';
 import { useFavorite } from '../../hooks/useFavorite';
+import { useCallback } from 'react';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -28,6 +29,7 @@ function MainPage(): JSX.Element {
   }, [dispatch]);
 
   const visibleOffers = filteredSortedOffers;
+
   const handleCityChange = (city: City) => {
     dispatch(setCity(city));
   };
@@ -40,6 +42,10 @@ function MainPage(): JSX.Element {
   const handleSortingToggle = () => {
     setIsOpen((prev) => !prev);
   };
+
+  const handleHover = useCallback((id: string | null) => {
+    setActiveCardId(id);
+  }, []);
 
   return (
     <main className="page__main page__main--index">
@@ -65,12 +71,12 @@ function MainPage(): JSX.Element {
               {isOffersLoading ? (
                 <Spinner />
               ) : (
-                <OffersList offers={visibleOffers} onHover={setActiveCardId} onFavoriteToggleClick={toggleFavorite}/>
+                <MemorizedOffersList offers={visibleOffers} onHover={handleHover} onFavoriteToggleClick={toggleFavorite}/>
               )}
             </div>
           </section>
           <div className="cities__right-section">
-            <Map
+            <MemorizedMap
               city={currentCity}
               offers={visibleOffers}
               className="cities__map map"

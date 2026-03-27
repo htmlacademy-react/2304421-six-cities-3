@@ -1,6 +1,7 @@
-import OffersCard from '../offers-card/offers-card';
+import MemorizedOfferCard from '../offers-card/offers-card';
 import { Offer } from '../../types/offer';
 import { FavoriteParams } from '../../types/favorite';
+import { memo } from 'react';
 
 type OffersListProps = {
   offers: Offer[];
@@ -13,17 +14,17 @@ function OffersList({ offers, onHover, onFavoriteToggleClick }: OffersListProps)
   return (
     <>
       {offers.map((offer) => (
-        <OffersCard
+        <MemorizedOfferCard
           key={offer.id}
           variant="vertical"
           data={offer}
-          onMouseEnter={() => onHover?.(offer.id)}
-          onMouseLeave={() => onHover?.(null)}
-          onClick={() => onFavoriteToggleClick({id: offer.id, isFavorite: offer.isFavorite})}
+          onHover={onHover}
+          onFavoriteClick={onFavoriteToggleClick}
         />
       ))}
     </>
   );
 }
 
-export default OffersList;
+const MemorizedOffersList = memo(OffersList);
+export default MemorizedOffersList;

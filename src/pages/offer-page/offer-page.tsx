@@ -5,7 +5,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import OfferReviewForm from './offer-review-form';
 import ReviewsList from './reviews-list/reviews-list';
 import Map from '../../components/map/map';
-import OffersList from '../../components/offers-list/offers-list';
+import MemorizedOffersList from '../../components/offers-list/offers-list';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';
 import { MapOffer } from '../../types/map-offers';
@@ -170,7 +170,7 @@ function OfferPage(): JSX.Element | null {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <OffersList offers={nearbyOffers} onFavoriteToggleClick={toggleFavorite}/>
+            <MemorizedOffersList offers={nearbyOffers} onFavoriteToggleClick={toggleFavorite}/>
           </div>
         </section>
       </div>
