@@ -1,6 +1,7 @@
 import { CITIES } from '../../../const';
 import LocationsItem from './locations-item';
 import { City } from '../../../types/city';
+import { memo } from 'react';
 
 type LocationListProps = {
   currentCity: City;
@@ -16,12 +17,12 @@ function LocationsList({currentCity, onCityChange,}: LocationListProps): JSX.Ele
             key={city.name}
             city={city}
             isActive={city.name === currentCity.name}
-            onClick={() => onCityChange(city)}
+            onClick={onCityChange}
           />
         ))}
       </ul>
     </section>
   );
 }
-
-export default LocationsList;
+const LocationsListMemo = memo(LocationsList);
+export default LocationsListMemo;

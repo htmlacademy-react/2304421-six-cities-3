@@ -1,8 +1,8 @@
 import LocationsList from './locations-list/locations-list';
 import { Helmet } from 'react-helmet-async';
 import { City } from '../../types/city';
-import MemorizedOffersList from '../../components/offers-list/offers-list';
-import MemorizedMap from '../../components/map/map';
+import OffersList from '../../components/offers-list/offers-list';
+import Map from '../../components/map/map';
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { setCity } from '../../store/city/city-slice';
@@ -30,9 +30,9 @@ function MainPage(): JSX.Element {
 
   const visibleOffers = filteredSortedOffers;
 
-  const handleCityChange = (city: City) => {
+  const handleCityChange = useCallback((city: City) => {
     dispatch(setCity(city));
-  };
+  }, [dispatch]);
 
   const handleSortChange = (option: SortOption) => {
     setActiveOption(option);
@@ -71,12 +71,12 @@ function MainPage(): JSX.Element {
               {isOffersLoading ? (
                 <Spinner />
               ) : (
-                <MemorizedOffersList offers={visibleOffers} onHover={handleHover} onFavoriteToggleClick={toggleFavorite}/>
+                <OffersList offers={visibleOffers} onHover={handleHover} onFavoriteToggleClick={toggleFavorite}/>
               )}
             </div>
           </section>
           <div className="cities__right-section">
-            <MemorizedMap
+            <Map
               city={currentCity}
               offers={visibleOffers}
               className="cities__map map"

@@ -1,13 +1,17 @@
 import { Link } from 'react-router-dom';
 import { City } from '../../../types/city';
+import { memo } from 'react';
 
 type LocationsItemProps = {
   city: City;
   isActive: boolean;
-  onClick: () => void;
+  onClick: (city: City) => void;
 };
 
 function LocationsItem({city, isActive, onClick,}: LocationsItemProps): JSX.Element {
+  const handleClick = () => {
+    onClick(city);
+  };
   return (
     <li className="locations__item">
       <Link
@@ -15,7 +19,7 @@ function LocationsItem({city, isActive, onClick,}: LocationsItemProps): JSX.Elem
         to="#"
         onClick={(evt) => {
           evt.preventDefault();
-          onClick();
+          handleClick();
         }}
       >
         <span>{city.name}</span>
@@ -24,4 +28,5 @@ function LocationsItem({city, isActive, onClick,}: LocationsItemProps): JSX.Elem
   );
 }
 
-export default LocationsItem;
+const LocationsItemMemo = memo(LocationsItem);
+export default LocationsItemMemo;
