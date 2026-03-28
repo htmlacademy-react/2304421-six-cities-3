@@ -22,7 +22,7 @@ function MainPage(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
-  const toggleFavorite = useFavorite();
+  const handleToggleFavorite = useFavorite();
 
   useEffect(() => {
     dispatch(fetchOffersAction());
@@ -43,7 +43,7 @@ function MainPage(): JSX.Element {
     setIsOpen((prev) => !prev);
   };
 
-  const handleHover = useCallback((id: string | null) => {
+  const handleOfferHover = useCallback((id: string | null) => {
     setActiveCardId(id);
   }, []);
 
@@ -71,7 +71,7 @@ function MainPage(): JSX.Element {
               {isOffersLoading ? (
                 <Spinner />
               ) : (
-                <OffersList offers={visibleOffers} onHover={handleHover} onFavoriteToggleClick={toggleFavorite}/>
+                <OffersList offers={visibleOffers} onHover={handleOfferHover} onFavoriteToggleClick={handleToggleFavorite}/>
               )}
             </div>
           </section>
