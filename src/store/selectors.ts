@@ -51,4 +51,9 @@ const selectFavoritesByCity = createSelector(
   }
 );
 
-export { selectFilteredSortedOffers, selectFavoritesByCity };
+const selectFavoritesCount = createSelector(
+  [(state: RootState) => state.offer.offersList],
+  (offers) => offers.filter((offer) => offer.isFavorite).length
+);
+
+export { selectFilteredSortedOffers, selectFavoritesByCity, selectFavoritesCount };

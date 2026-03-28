@@ -9,9 +9,10 @@ import { useNavigate } from 'react-router-dom';
 type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
   email?: string;
+  favoritesCount: number;
 }
 
-function Layout({authorizationStatus, email}: LayoutProps): JSX.Element {
+function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.Element {
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,7 +74,7 @@ function Layout({authorizationStatus, email}: LayoutProps): JSX.Element {
                           <span className="header__user-name user__name">
                             {email}
                           </span>
-                          <span className="header__favorite-count">3</span>
+                          <span className="header__favorite-count">{favoritesCount}</span>
                         </>
                       ) : (
                         <span className="header__login">Sign in</span>

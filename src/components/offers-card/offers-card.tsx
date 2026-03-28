@@ -1,6 +1,9 @@
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { memo, useCallback } from 'react';
+import { FavoriteParams } from '../../types/favorite';
+
 
 const CARD_CONFIG = {
   vertical: {
@@ -18,19 +21,35 @@ const CARD_CONFIG = {
 } as const;
 
 type OffersCardProps = {
-variant: 'vertical' | 'horizontal';
-data: Offer;
-onMouseEnter?: () => void;
-onMouseLeave?: () => void;
-}
+  variant: 'vertical' | 'horizontal';
+  data: Offer;
+  onHover?: (id: string | null) => void;
+  onFavoriteClick: (params: FavoriteParams) => void;
+};
 
-function OffersCard({variant, data, onMouseEnter, onMouseLeave}: OffersCardProps): JSX.Element {
+function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps): JSX.Element {
   const normalizedRating = Math.min(Math.max(data.rating, 0), 5);
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
 
+  const handleMouseEnter = useCallback(() => {
+    onHover?.(data.id);
+  }, [onHover, data.id]);
+
+  const handleMouseLeave = useCallback(() => {
+    onHover?.(null);
+  }, [onHover]);
+
+  const handleClick = useCallback((evt: React.MouseEvent<HTMLButtonElement>) => {
+    evt.stopPropagation();
+    onFavoriteClick({
+      id: data.id,
+      isFavorite: data.isFavorite
+    });
+  }, [onFavoriteClick, data.id, data.isFavorite]);
+
   return (
-    <article data-id={data.id} className={articleClass} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    <article data-id={data.id} className={articleClass} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {data.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -56,6 +75,7 @@ function OffersCard({variant, data, onMouseEnter, onMouseLeave}: OffersCardProps
           <button
             className={`place-card__bookmark-button ${data.isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
             type="button"
+            onClick={handleClick}
           >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
@@ -78,4 +98,5 @@ function OffersCard({variant, data, onMouseEnter, onMouseLeave}: OffersCardProps
   );
 }
 
-export default OffersCard;
+const MemorizedOfferCard = memo(OffersCard);
+export default MemorizedOfferCard;

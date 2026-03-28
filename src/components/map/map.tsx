@@ -5,6 +5,7 @@ import { City } from '../../types/city';
 import { URL_MARKER_DEFAULT } from '../../const';
 import { URL_MARKER_CURRENT } from '../../const';
 import { MapOffer } from '../../types/map-offers';
+import { memo } from 'react';
 
 type MapProps = {
   city: City;
@@ -81,4 +82,6 @@ function Map({
   return <div ref={mapRef} className={className} />;
 }
 
-export default Map;
+const MemorizedMap = memo(Map);
+
+export default MemorizedMap;

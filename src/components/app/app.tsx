@@ -11,12 +11,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { checkAuthAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectFavoritesCount } from '../../store/selectors';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const user = useAppSelector((state) => state.user.user);
+  const favoritesCount = useAppSelector(selectFavoritesCount);
 
 
   useEffect(() => {
@@ -28,7 +30,7 @@ function App(): JSX.Element {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus} email={user?.email}/>}>
+          <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus} email={user?.email} favoritesCount={favoritesCount}/>}>
             <Route index element={<MainPage />} />
             <Route path={AppRoute.Favorites} element={
               <PrivateRoute><FavoritesPage /></PrivateRoute>

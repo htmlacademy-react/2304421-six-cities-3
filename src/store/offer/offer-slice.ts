@@ -53,8 +53,24 @@ const offerSlice = createSlice({
     setNearbyLoading(state, action: PayloadAction<boolean>) {
       state.isNearbyLoading = action.payload;
     },
+
+    updateOffer(state, action: PayloadAction<Offer>) {
+      state.offersList = state.offersList.map((offer) =>
+        offer.id === action.payload.id ? action.payload : offer
+      );
+
+      state.nearbyOffers = state.nearbyOffers.map((offer) =>
+        offer.id === action.payload.id ? action.payload : offer
+      );
+    },
+
+    updateCurrentOffer(state, action: PayloadAction<Offer>) {
+      if (state.currentOffer && state.currentOffer.id === action.payload.id) {
+        state.currentOffer.isFavorite = action.payload.isFavorite;
+      }
+    }
   }
 });
 
-export const { setOffers, setOffersLoading, setCurrentOffer, setNearbyOffers, setOfferLoading, setNearbyLoading, setOfferNotFound } = offerSlice.actions;
+export const { setOffers, setOffersLoading, setCurrentOffer, setNearbyOffers, setOfferLoading, setNearbyLoading, setOfferNotFound, updateOffer, updateCurrentOffer } = offerSlice.actions;
 export const offerReducer = offerSlice.reducer;

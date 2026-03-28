@@ -3,7 +3,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-import { setOffers, setOffersLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setOfferNotFound } from './offer/offer-slice.js';
+import { setOffers, setOffersLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setOfferNotFound, updateOffer, updateCurrentOffer } from './offer/offer-slice.js';
 import { setAuthorizationStatus, setLoginLoading, setUser } from './user/user-slice.js';
 import { setComments, setCommentsLoading } from './comments/comments-slice.js';
 import { setError } from './error/error-slice.js';
@@ -109,6 +109,25 @@ export const postCommentAction = createAsyncThunk<void, {offerId: string; rating
     }
   }
 );
+
+export const toggleFavoriteAction = createAsyncThunk<void, {offerId: string; status: number},
+{
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'favorite/post',
+  async ({offerId, status}, {dispatch, extra: api}) => {
+    try{
+      const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
+      dispatch(updateOffer(data));
+      dispatch(updateCurrentOffer(data));
+    } catch {
+      dispatch(setError('Faild to post favorite offer'));
+    }
+  }
+);
+
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
