@@ -3,9 +3,11 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-import { setOffers, setOffersLoading, setOfferLoading, setCurrentOffer, setNearbyOffers, setNearbyLoading, setOfferNotFound, updateOffer, updateCurrentOffer } from './offer/offer-slice.js';
+import { setOffers, setOffersLoading, setUpdatedOffers } from './offers/offers-slice.js';
 import { setAuthorizationStatus, setLoginLoading, setUser } from './user/user-slice.js';
 import { setComments, setCommentsLoading } from './comments/comments-slice.js';
+import { setCurrentOffer, setCurrentOfferLoading, setCurrentOfferNotFound } from './current-offer/current-offer-slice.js';
+import { setNearbyOffers, setNearbyOffersLoading } from './nearby-offers/nearby-offers-slice.js';
 import { setError } from './error/error-slice.js';
 import { AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data.js';
@@ -41,15 +43,15 @@ export const fetchOfferByIdAction = createAsyncThunk<void, string, {
   'offer/fetchById',
   async (offerId, {dispatch, extra: api}) => {
     try{
-      dispatch(setOfferLoading(true));
-      dispatch(setOfferNotFound(false));
+      dispatch(setCurrentOfferLoading(true));
+      dispatch(setCurrentOfferNotFound(false));
 
       const {data} = await api.get<OfferDetails>(`${APIRoute.Offers}/${offerId}`);
       dispatch(setCurrentOffer(data));
     } catch {
-      dispatch(setOfferNotFound(true));
+      dispatch(setCurrentOfferNotFound(true));
     } finally {
-      dispatch(setOfferLoading(false));
+      dispatch(setCurrentOfferLoading(false));
     }
   }
 );
@@ -62,13 +64,13 @@ export const fetchNearbyOffersAction = createAsyncThunk<void, string, {
   'offer/fetchNearby',
   async (offerId, {dispatch, extra: api}) => {
     try{
-      dispatch(setNearbyLoading(true));
+      dispatch(setNearbyOffersLoading(true));
       const {data} = await api.get<Offer[]>(`${APIRoute.Offers}/${offerId}/nearby`);
       dispatch(setNearbyOffers(data));
     } catch {
       dispatch(setError('Failed to load nearby offers'));
     } finally {
-      dispatch(setNearbyLoading(false));
+      dispatch(setNearbyOffersLoading(false));
     }
   }
 );
@@ -110,7 +112,7 @@ export const postCommentAction = createAsyncThunk<void, {offerId: string; rating
   }
 );
 
-export const toggleFavoriteAction = createAsyncThunk<void, {offerId: string; status: number},
+export const postFavoriteAction = createAsyncThunk<void, {offerId: string; status: number},
 {
   dispatch: AppDispatch;
   state: RootState;
@@ -120,8 +122,7 @@ export const toggleFavoriteAction = createAsyncThunk<void, {offerId: string; sta
   async ({offerId, status}, {dispatch, extra: api}) => {
     try{
       const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
-      dispatch(updateOffer(data));
-      dispatch(updateCurrentOffer(data));
+      dispatch(setUpdatedOffers(data));
     } catch {
       dispatch(setError('Faild to post favorite offer'));
     }

@@ -18,7 +18,7 @@ function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [activeOption, setActiveOption] = useState<SortOption>('Popular');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isOffersLoading = useAppSelector((state) => state.offer.isOffersLoading);
+  const isOffersLoading = useAppSelector((state) => state.offers.isOffersLoading);
   const currentCity = useAppSelector((state) => state.city.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();

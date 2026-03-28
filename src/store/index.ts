@@ -1,17 +1,21 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { offerReducer } from './offer/offer-slice';
+import { offersReducer } from './offers/offers-slice';
 import { commentsReducer } from './comments/comments-slice';
 import { userReducer } from './user/user-slice';
 import { cityReducer } from './city/city-slice';
 import { errorReducer } from './error/error-slice';
 import { createAPI } from '../services/api';
+import { currentOfferReducer } from './current-offer/current-offer-slice';
+import { nearbyOffersReducer } from './nearby-offers/nearby-offers-slice';
 
 export const rootReducer = combineReducers({
-  offer: offerReducer,
+  offers: offersReducer,
   comments: commentsReducer,
   user: userReducer,
   city: cityReducer,
   error: errorReducer,
+  currentOffer: currentOfferReducer,
+  nearbyOffers: nearbyOffersReducer,
 });
 
 export const api = createAPI();

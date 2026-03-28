@@ -1,7 +1,7 @@
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { FavoriteParams } from '../../types/favorite';
 
 
@@ -40,13 +40,12 @@ function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps):
     onHover?.(null);
   };
 
-  const handleClick = useCallback((evt: React.MouseEvent<HTMLButtonElement>) => {
-    evt.stopPropagation();
+  const handleClick = () => {
     onFavoriteClick({
       id: data.id,
       isFavorite: data.isFavorite
     });
-  }, [onFavoriteClick, data.id, data.isFavorite]);
+  };
 
   return (
     <article data-id={data.id} className={articleClass} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

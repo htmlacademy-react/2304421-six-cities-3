@@ -4,7 +4,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { Offer } from '../types/offer';
 
 const selectFilteredSortedOffers = createSelector([
-  (state: RootState) => state.offer.offersList,
+  (state: RootState) => state.offers.offersList,
   (_: RootState, cityName: string) => cityName,
   (_: RootState, __: string, activeOption: SortOption) => activeOption
 ],
@@ -28,7 +28,7 @@ const selectFilteredSortedOffers = createSelector([
 });
 
 const selectFavoriteOffers = createSelector(
-  [(state: RootState) => state.offer.offersList],
+  [(state: RootState) => state.offers.offersList],
   (offers) => offers.filter((offer) => offer.isFavorite)
 );
 
@@ -52,7 +52,7 @@ const selectFavoritesByCity = createSelector(
 );
 
 const selectFavoritesCount = createSelector(
-  [(state: RootState) => state.offer.offersList],
+  [(state: RootState) => state.offers.offersList],
   (offers) => offers.filter((offer) => offer.isFavorite).length
 );
 
