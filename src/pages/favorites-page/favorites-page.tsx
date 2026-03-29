@@ -1,13 +1,21 @@
 import Footer from '../../components/footer/footer';
 import FavoritePageItem from './favorites-page-item';
 import { Helmet } from 'react-helmet-async';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { selectFavoritesByCity } from '../../store/selectors';
 import { useFavorite } from '../../hooks/useFavorite';
+import { useEffect } from 'react';
+import { fetchFavoriteOffersActions } from '../../store/api-actions';
 
 function FavoritesPage(): JSX.Element {
   const favoritesByCity = useAppSelector(selectFavoritesByCity);
   const toggleFavorite = useFavorite();
+  // const favorites = useAppSelector((state) => state.favoriteOffers.favorites);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavoriteOffersActions());
+  }, [dispatch]);
 
   return (
     <>

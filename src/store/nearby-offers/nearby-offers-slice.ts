@@ -22,8 +22,13 @@ const nearbyOfferSlice = createSlice({
     setNearbyOffersLoading(state, action: PayloadAction<boolean>) {
       state.isNearbyOffersLoading = action.payload;
     },
+
+    setUpdatedNearbyOffers(state, action: PayloadAction<Offer>) {
+      state.nearbyOffers = state.nearbyOffers.map((offer) =>
+        offer.id === action.payload.id ? action.payload : offer);
+    }
   }
 });
 
-export const { setNearbyOffers, setNearbyOffersLoading } = nearbyOfferSlice.actions;
+export const { setNearbyOffers, setNearbyOffersLoading, setUpdatedNearbyOffers } = nearbyOfferSlice.actions;
 export const nearbyOffersReducer = nearbyOfferSlice.reducer;

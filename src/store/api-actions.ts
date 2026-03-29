@@ -4,10 +4,11 @@ import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
 import { setOffers, setOffersLoading, setUpdatedOffers } from './offers/offers-slice.js';
+import { setUpdatedCurrentOffer } from './current-offer/current-offer-slice.js';
 import { setAuthorizationStatus, setLoginLoading, setUser } from './user/user-slice.js';
 import { setComments, setCommentsLoading } from './comments/comments-slice.js';
 import { setCurrentOffer, setCurrentOfferLoading, setCurrentOfferNotFound } from './current-offer/current-offer-slice.js';
-import { setNearbyOffers, setNearbyOffersLoading } from './nearby-offers/nearby-offers-slice.js';
+import { setNearbyOffers, setNearbyOffersLoading, setUpdatedNearbyOffers } from './nearby-offers/nearby-offers-slice.js';
 import { setError } from './error/error-slice.js';
 import { AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data.js';
@@ -33,6 +34,18 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
       dispatch(setOffersLoading(false));
     }
   },
+);
+
+export const fetchFavoriteOffersActions = createAsyncThunk<Offer[], undefined, {
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'favorite/fetch',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<Offer[]>(APIRoute.Favorites);
+    return data;
+  }
 );
 
 export const fetchOfferByIdAction = createAsyncThunk<void, string, {
@@ -123,6 +136,8 @@ export const postFavoriteAction = createAsyncThunk<void, {offerId: string; statu
     try{
       const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
       dispatch(setUpdatedOffers(data));
+      dispatch(setUpdatedCurrentOffer(data));
+      dispatch(setUpdatedNearbyOffers(data));
     } catch {
       dispatch(setError('Faild to post favorite offer'));
     }

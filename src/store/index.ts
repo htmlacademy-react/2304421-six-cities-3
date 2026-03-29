@@ -7,6 +7,7 @@ import { errorReducer } from './error/error-slice';
 import { createAPI } from '../services/api';
 import { currentOfferReducer } from './current-offer/current-offer-slice';
 import { nearbyOffersReducer } from './nearby-offers/nearby-offers-slice';
+import { favoriteOffersReducer } from './favorite-offers/favorite-offers-slice';
 
 export const rootReducer = combineReducers({
   offers: offersReducer,
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
   error: errorReducer,
   currentOffer: currentOfferReducer,
   nearbyOffers: nearbyOffersReducer,
+  favoriteOffers: favoriteOffersReducer,
 });
 
 export const api = createAPI();
