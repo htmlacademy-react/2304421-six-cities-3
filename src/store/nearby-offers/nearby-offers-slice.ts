@@ -1,5 +1,6 @@
 import { Offer } from '../../types/offer';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchNearbyOffersAction, postFavoriteAction } from '../api-actions';
 
 type OfferState = {
   nearbyOffers: Offer[];
@@ -14,21 +15,26 @@ const initialState: OfferState = {
 const nearbyOfferSlice = createSlice({
   name: 'nearby/offers',
   initialState,
-  reducers: {
-    setNearbyOffers(state, action: PayloadAction<Offer[]>) {
-      state.nearbyOffers = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchNearbyOffersAction.pending, (state) => {
+        state.isNearbyOffersLoading = true;
+      })
+      .addCase(fetchNearbyOffersAction.fulfilled, (state, action) => {
+        state.isNearbyOffersLoading = false;
+        state.nearbyOffers = action.payload;
+      })
+      .addCase(fetchNearbyOffersAction.rejected, (state) => {
+        state.isNearbyOffersLoading = false;
+      })
+      .addCase(postFavoriteAction.fulfilled, (state, action) => {
+        const updatedOffer = action.payload;
 
-    setNearbyOffersLoading(state, action: PayloadAction<boolean>) {
-      state.isNearbyOffersLoading = action.payload;
-    },
-
-    setUpdatedNearbyOffers(state, action: PayloadAction<Offer>) {
-      state.nearbyOffers = state.nearbyOffers.map((offer) =>
-        offer.id === action.payload.id ? action.payload : offer);
-    }
+        state.nearbyOffers = state.nearbyOffers.map((offer) =>
+          offer.id === updatedOffer.id ? updatedOffer : offer);
+      });
   }
 });
 
-export const { setNearbyOffers, setNearbyOffersLoading, setUpdatedNearbyOffers } = nearbyOfferSlice.actions;
 export const nearbyOffersReducer = nearbyOfferSlice.reducer;

@@ -1,29 +1,45 @@
 import { Comment } from '../../types/comment';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchCommentsAction, postCommentAction } from '../api-actions';
 
 type CommentsState = {
   comments: Comment[];
   isCommentsLoading: boolean;
+  isPostingComment: boolean;
 }
 
 const initialState: CommentsState = {
   comments: [],
   isCommentsLoading: false,
+  isPostingComment: false,
 };
 
 const commentsSlice = createSlice({
   name: 'comments',
   initialState,
-  reducers: {
-    setComments(state, action: PayloadAction<Comment[]>) {
-      state.comments = action.payload;
-    },
-
-    setCommentsLoading(state, action: PayloadAction<boolean>) {
-      state.isCommentsLoading = action.payload;
-    }
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCommentsAction.pending, (state) => {
+        state.isCommentsLoading = true;
+      })
+      .addCase(fetchCommentsAction.fulfilled, (state, action) => {
+        state.isCommentsLoading = false;
+        state.comments = action.payload;
+      })
+      .addCase(fetchCommentsAction.rejected, (state) => {
+        state.isCommentsLoading = false;
+      })
+      .addCase(postCommentAction.pending, (state) => {
+        state.isPostingComment = true;
+      })
+      .addCase(postCommentAction.fulfilled, (state) => {
+        state.isPostingComment = false;
+      })
+      .addCase(postCommentAction.rejected, (state) => {
+        state.isPostingComment = false;
+      });
   }
 });
 
-export const { setComments, setCommentsLoading } = commentsSlice.actions;
 export const commentsReducer = commentsSlice.reducer;

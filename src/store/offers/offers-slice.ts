@@ -1,10 +1,11 @@
 import { Offer } from '../../types/offer';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchOffersAction, postFavoriteAction } from '../api-actions';
 
 type OffersState = {
   offersList: Offer[];
   isOffersLoading: boolean;
-}
+};
 
 const initialState: OffersState = {
   offersList: [],
@@ -14,23 +15,28 @@ const initialState: OffersState = {
 const offersSlice = createSlice({
   name: 'offers',
   initialState,
-  reducers: {
-    setOffers(state, action: PayloadAction<Offer[]>) {
-      state.offersList = action.payload;
-    },
+  reducers: {},
 
-    setOffersLoading(state, action: PayloadAction<boolean>) {
-      state.isOffersLoading = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOffersAction.pending, (state) => {
+        state.isOffersLoading = true;
+      })
+      .addCase(fetchOffersAction.fulfilled, (state, action) => {
+        state.offersList = action.payload;
+        state.isOffersLoading = false;
+      })
+      .addCase(fetchOffersAction.rejected, (state) => {
+        state.isOffersLoading = false;
+      })
+      .addCase(postFavoriteAction.fulfilled, (state, action) => {
+        const updatedOffer = action.payload;
 
-    setUpdatedOffers(state, action: PayloadAction<Offer>) {
-      state.offersList = state.offersList.map((offer) =>
-        offer.id === action.payload.id ? action.payload : offer
-      );
-    },
-
-  }
+        state.offersList = state.offersList.map((offer) =>
+          offer.id === updatedOffer.id ? updatedOffer : offer
+        );
+      });
+  },
 });
 
-export const { setOffers, setOffersLoading, setUpdatedOffers } = offersSlice.actions;
 export const offersReducer = offersSlice.reducer;

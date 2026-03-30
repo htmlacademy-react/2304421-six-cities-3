@@ -1,12 +1,12 @@
 import { OfferDetails } from '../../types/offer-details';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Offer } from '../../types/offer';
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchOfferByIdAction, postFavoriteAction } from '../api-actions';
 
 type CurrentOfferState = {
   currentOffer: OfferDetails | null;
   isCurrentOfferLoading: boolean;
   isCurrentOfferNotFound: boolean;
-}
+};
 
 const initialState: CurrentOfferState = {
   currentOffer: null,
@@ -17,26 +17,30 @@ const initialState: CurrentOfferState = {
 const currentOfferSlice = createSlice({
   name: 'current/offer',
   initialState,
-  reducers: {
-    setCurrentOffer(state, action: PayloadAction<OfferDetails | null>) {
-      state.currentOffer = action.payload;
-    },
+  reducers: {},
 
-    setCurrentOfferNotFound(state, action: PayloadAction<boolean>) {
-      state.isCurrentOfferNotFound = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchOfferByIdAction.pending, (state) => {
+        state.isCurrentOfferLoading = true;
+        state.isCurrentOfferNotFound = false;
+      })
+      .addCase(fetchOfferByIdAction.fulfilled, (state, action) => {
+        state.isCurrentOfferLoading = false;
+        state.currentOffer = action.payload;
+      })
+      .addCase(fetchOfferByIdAction.rejected, (state) => {
+        state.isCurrentOfferLoading = false;
+        state.isCurrentOfferNotFound = true;
+      })
+      .addCase(postFavoriteAction.fulfilled, (state, action) => {
+        const updatedCurrentOffer = action.payload;
 
-    setCurrentOfferLoading(state, action: PayloadAction<boolean>) {
-      state.isCurrentOfferLoading = action.payload;
-    },
-
-    setUpdatedCurrentOffer(state, action: PayloadAction<Offer>) {
-      if (state.currentOffer && state.currentOffer.id === action.payload.id) {
-        state.currentOffer.isFavorite = action.payload.isFavorite;
-      }
-    }
-  }
+        if (state.currentOffer?.id === updatedCurrentOffer.id) {
+          state.currentOffer.isFavorite = updatedCurrentOffer.isFavorite;
+        }
+      });
+  },
 });
 
-export const { setCurrentOffer, setCurrentOfferLoading, setCurrentOfferNotFound, setUpdatedCurrentOffer } = currentOfferSlice.actions;
 export const currentOfferReducer = currentOfferSlice.reducer;

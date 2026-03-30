@@ -12,7 +12,7 @@ type FormDataType = {
 function OfferReviewForm(): JSX.Element {
   const { id } = useParams<{id: string }>();
   const dispatch = useAppDispatch();
-  const isSending = useAppSelector((store) => store.comments.isCommentsLoading);
+  const isSending = useAppSelector((store) => store.comments.isPostingComment);
 
   const [formData, setFormData] = useState<FormDataType>({
     rating: null,

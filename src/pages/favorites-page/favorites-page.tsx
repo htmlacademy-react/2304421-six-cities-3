@@ -10,7 +10,6 @@ import { fetchFavoriteOffersActions } from '../../store/api-actions';
 function FavoritesPage(): JSX.Element {
   const favoritesByCity = useAppSelector(selectFavoritesByCity);
   const toggleFavorite = useFavorite();
-  // const favorites = useAppSelector((state) => state.favoriteOffers.favorites);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
