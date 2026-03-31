@@ -1,7 +1,7 @@
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { FavoriteParams } from '../../types/favorite';
 
 
@@ -32,21 +32,20 @@ function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps):
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
 
-  const handleMouseEnter = useCallback(() => {
+  const handleMouseEnter = () => {
     onHover?.(data.id);
-  }, [onHover, data.id]);
+  };
 
-  const handleMouseLeave = useCallback(() => {
+  const handleMouseLeave = () => {
     onHover?.(null);
-  }, [onHover]);
+  };
 
-  const handleClick = useCallback((evt: React.MouseEvent<HTMLButtonElement>) => {
-    evt.stopPropagation();
+  const handleClick = () => {
     onFavoriteClick({
       id: data.id,
       isFavorite: data.isFavorite
     });
-  }, [onFavoriteClick, data.id, data.isFavorite]);
+  };
 
   return (
     <article data-id={data.id} className={articleClass} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -98,5 +97,5 @@ function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps):
   );
 }
 
-const MemorizedOfferCard = memo(OffersCard);
-export default MemorizedOfferCard;
+const OfferCardMemo = memo(OffersCard);
+export default OfferCardMemo;

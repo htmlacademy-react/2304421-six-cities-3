@@ -3,7 +3,7 @@ import { useAppSelector } from './index';
 import { useNavigate } from 'react-router-dom';
 import { AuthorizationStatus } from '../const';
 import { AppRoute } from '../const';
-import { toggleFavoriteAction } from '../store/api-actions';
+import { fetchFavoriteOffersActions, postFavoriteAction } from '../store/api-actions';
 import { FavoriteParams } from '../types/favorite';
 import { useCallback } from 'react';
 
@@ -20,7 +20,9 @@ export const useFavorite = () => {
 
     const status = isFavorite ? 0 : 1;
 
-    dispatch(toggleFavoriteAction({offerId: id, status}));
+    dispatch(postFavoriteAction({offerId: id, status})).then(() => {
+      dispatch(fetchFavoriteOffersActions());
+    });
   }, [authorizationStatus, dispatch, navigate]);
 
   return toggleFavorite;

@@ -1,8 +1,8 @@
 import LocationsList from './locations-list/locations-list';
 import { Helmet } from 'react-helmet-async';
 import { City } from '../../types/city';
-import MemorizedOffersList from '../../components/offers-list/offers-list';
-import MemorizedMap from '../../components/map/map';
+import OffersList from '../../components/offers-list/offers-list';
+import Map from '../../components/map/map';
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { setCity } from '../../store/city/city-slice';
@@ -13,26 +13,26 @@ import { fetchOffersAction } from '../../store/api-actions';
 import Spinner from '../../components/spinner/spinner';
 import { useFavorite } from '../../hooks/useFavorite';
 import { useCallback } from 'react';
+import MainEmpty from '../../components/main-empty/main-empty';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [activeOption, setActiveOption] = useState<SortOption>('Popular');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isOffersLoading = useAppSelector((state) => state.offer.isOffersLoading);
+  const isOffersLoading = useAppSelector((state) => state.offers.isOffersLoading);
   const currentCity = useAppSelector((state) => state.city.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
-  const toggleFavorite = useFavorite();
+  const handleToggleFavorite = useFavorite();
+  const isOffersNotAvailable = filteredSortedOffers.length === 0;
 
   useEffect(() => {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
-  const visibleOffers = filteredSortedOffers;
-
-  const handleCityChange = (city: City) => {
+  const handleCityChange = useCallback((city: City) => {
     dispatch(setCity(city));
-  };
+  }, [dispatch]);
 
   const handleSortChange = (option: SortOption) => {
     setActiveOption(option);
@@ -43,9 +43,17 @@ function MainPage(): JSX.Element {
     setIsOpen((prev) => !prev);
   };
 
-  const handleHover = useCallback((id: string | null) => {
+  const handleOfferHover = useCallback((id: string | null) => {
     setActiveCardId(id);
   }, []);
+
+  if (isOffersLoading) {
+    return <Spinner />;
+  }
+
+  if (isOffersNotAvailable) {
+    return <MainEmpty cityName={currentCity.name} />;
+  }
 
   return (
     <main className="page__main page__main--index">
@@ -71,14 +79,14 @@ function MainPage(): JSX.Element {
               {isOffersLoading ? (
                 <Spinner />
               ) : (
-                <MemorizedOffersList offers={visibleOffers} onHover={handleHover} onFavoriteToggleClick={toggleFavorite}/>
+                <OffersList offers={filteredSortedOffers} onHover={handleOfferHover} onFavoriteToggleClick={handleToggleFavorite}/>
               )}
             </div>
           </section>
           <div className="cities__right-section">
-            <MemorizedMap
+            <Map
               city={currentCity}
-              offers={visibleOffers}
+              offers={filteredSortedOffers}
               className="cities__map map"
               activeOfferId={activeCardId}
             />

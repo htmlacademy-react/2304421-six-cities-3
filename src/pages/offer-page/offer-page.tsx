@@ -5,7 +5,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import OfferReviewForm from './offer-review-form';
 import ReviewsList from './reviews-list/reviews-list';
 import Map from '../../components/map/map';
-import MemorizedOffersList from '../../components/offers-list/offers-list';
+import OffersList from '../../components/offers-list/offers-list';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';
 import { MapOffer } from '../../types/map-offers';
@@ -17,14 +17,14 @@ import { AuthorizationStatus } from '../../const';
 import { useFavorite } from '../../hooks/useFavorite';
 
 function OfferPage(): JSX.Element | null {
-  const currentOffer = useAppSelector((state) => state.offer.currentOffer);
-  const nearbyOffers = useAppSelector((state) => state.offer.nearbyOffers).slice(0, VISIBLE_NEARBY_OFFERS_COUNT);
+  const currentOffer = useAppSelector((state) => state.currentOffer.currentOffer);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers.nearbyOffers).slice(0, VISIBLE_NEARBY_OFFERS_COUNT);
   const comments = useAppSelector((state) => state.comments.comments);
-  const isOfferLoading = useAppSelector((state) => state.offer.isOfferLoading);
+  const isOfferLoading = useAppSelector((state) => state.currentOffer.isCurrentOfferLoading);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const dispatch = useAppDispatch();
-  const isOfferNotFound = useAppSelector((state) => state.offer.isOfferNotFound);
-  const toggleFavorite = useFavorite();
+  const isOfferNotFound = useAppSelector((state) => state.currentOffer.isCurrentOfferNotFound);
+  const onFavoriteButtonClick = useFavorite();
 
   const { id } = useParams<{ id: string }>();
 
@@ -84,7 +84,7 @@ function OfferPage(): JSX.Element | null {
               <button
                 className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
                 type="button"
-                onClick={() => toggleFavorite({id: currentOffer.id, isFavorite: currentOffer.isFavorite})}
+                onClick={() => onFavoriteButtonClick({id: currentOffer.id, isFavorite: currentOffer.isFavorite})}
               >
                 <svg className="offer__bookmark-icon" width={31} height={33}>
                   <use xlinkHref="#icon-bookmark" />
@@ -170,7 +170,7 @@ function OfferPage(): JSX.Element | null {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <MemorizedOffersList offers={nearbyOffers} onFavoriteToggleClick={toggleFavorite}/>
+            <OffersList offers={nearbyOffers} onFavoriteToggleClick={onFavoriteButtonClick}/>
           </div>
         </section>
       </div>

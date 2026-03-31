@@ -11,19 +11,27 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { checkAuthAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectFavoritesCount } from '../../store/selectors';
+import { fetchFavoriteOffersActions } from '../../store/api-actions';
+import { AuthorizationStatus } from '../../const';
+
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const user = useAppSelector((state) => state.user.user);
-  const favoritesCount = useAppSelector(selectFavoritesCount);
+  const favoritesCount = useAppSelector((state) => state.favoriteOffers.favorites).length;
 
 
   useEffect(() => {
     dispatch(checkAuthAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffersActions());
+    }
+  }, [authorizationStatus, dispatch]);
 
 
   return (
