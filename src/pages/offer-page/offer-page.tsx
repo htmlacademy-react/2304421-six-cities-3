@@ -24,7 +24,7 @@ function OfferPage(): JSX.Element | null {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const dispatch = useAppDispatch();
   const isOfferNotFound = useAppSelector((state) => state.currentOffer.isCurrentOfferNotFound);
-  const toggleFavorite = useFavorite();
+  const onFavoriteButtonClick = useFavorite();
 
   const { id } = useParams<{ id: string }>();
 
@@ -84,7 +84,7 @@ function OfferPage(): JSX.Element | null {
               <button
                 className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
                 type="button"
-                onClick={() => toggleFavorite({id: currentOffer.id, isFavorite: currentOffer.isFavorite})}
+                onClick={() => onFavoriteButtonClick({id: currentOffer.id, isFavorite: currentOffer.isFavorite})}
               >
                 <svg className="offer__bookmark-icon" width={31} height={33}>
                   <use xlinkHref="#icon-bookmark" />
@@ -170,7 +170,7 @@ function OfferPage(): JSX.Element | null {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <OffersList offers={nearbyOffers} onFavoriteToggleClick={toggleFavorite}/>
+            <OffersList offers={nearbyOffers} onFavoriteToggleClick={onFavoriteButtonClick}/>
           </div>
         </section>
       </div>

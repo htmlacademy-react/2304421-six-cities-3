@@ -27,11 +27,6 @@ const selectFilteredSortedOffers = createSelector([
   }
 });
 
-// const selectFavoriteOffers = createSelector(
-//   [(state: RootState) => state.offers.offersList],
-//   (offers) => offers.filter((offer) => offer.isFavorite)
-// );
-
 const selectFavoritesByCity = createSelector(
   [(state: RootState) => state.favoriteOffers.favorites],
   (offers) => {

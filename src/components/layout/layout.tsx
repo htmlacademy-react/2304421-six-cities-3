@@ -23,6 +23,7 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
 
   const isMainPage = location.pathname === AppRoute.Root;
   const isLoginPage = location.pathname === AppRoute.Login;
+  const isFavoritesPage = location.pathname === AppRoute.Favorites;
 
   if (isMainPage) {
     pageClass += ' page--gray page--main';
@@ -31,6 +32,10 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
 
   if (isLoginPage) {
     pageClass += ' page--gray page--login';
+  }
+
+  if (isFavoritesPage) {
+    pageClass += ' page--favorites-empty';
   }
 
   const handleLogOut = async () => {

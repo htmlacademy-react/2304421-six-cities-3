@@ -13,6 +13,7 @@ import { fetchOffersAction } from '../../store/api-actions';
 import Spinner from '../../components/spinner/spinner';
 import { useFavorite } from '../../hooks/useFavorite';
 import { useCallback } from 'react';
+import MainEmpty from '../../components/main-empty/main-empty';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -23,12 +24,11 @@ function MainPage(): JSX.Element {
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
   const handleToggleFavorite = useFavorite();
+  const isOffersNotAvailable = filteredSortedOffers.length === 0;
 
   useEffect(() => {
     dispatch(fetchOffersAction());
   }, [dispatch]);
-
-  const visibleOffers = filteredSortedOffers;
 
   const handleCityChange = useCallback((city: City) => {
     dispatch(setCity(city));
@@ -46,6 +46,14 @@ function MainPage(): JSX.Element {
   const handleOfferHover = useCallback((id: string | null) => {
     setActiveCardId(id);
   }, []);
+
+  if (isOffersLoading) {
+    return <Spinner />;
+  }
+
+  if (isOffersNotAvailable) {
+    return <MainEmpty cityName={currentCity.name} />;
+  }
 
   return (
     <main className="page__main page__main--index">
@@ -71,14 +79,14 @@ function MainPage(): JSX.Element {
               {isOffersLoading ? (
                 <Spinner />
               ) : (
-                <OffersList offers={visibleOffers} onHover={handleOfferHover} onFavoriteToggleClick={handleToggleFavorite}/>
+                <OffersList offers={filteredSortedOffers} onHover={handleOfferHover} onFavoriteToggleClick={handleToggleFavorite}/>
               )}
             </div>
           </section>
           <div className="cities__right-section">
             <Map
               city={currentCity}
-              offers={visibleOffers}
+              offers={filteredSortedOffers}
               className="cities__map map"
               activeOfferId={activeCardId}
             />
