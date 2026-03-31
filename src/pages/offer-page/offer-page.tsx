@@ -15,10 +15,11 @@ import Spinner from '../../components/spinner/spinner';
 import { VISIBLE_NEARBY_OFFERS_COUNT } from '../../const';
 import { AuthorizationStatus } from '../../const';
 import { useFavorite } from '../../hooks/useFavorite';
+import { useMemo } from 'react';
 
 function OfferPage(): JSX.Element | null {
   const currentOffer = useAppSelector((state) => state.currentOffer.currentOffer);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers.nearbyOffers).slice(0, VISIBLE_NEARBY_OFFERS_COUNT);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers.nearbyOffers);
   const comments = useAppSelector((state) => state.comments.comments);
   const isOfferLoading = useAppSelector((state) => state.currentOffer.isCurrentOfferLoading);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
@@ -27,6 +28,22 @@ function OfferPage(): JSX.Element | null {
   const onFavoriteButtonClick = useFavorite();
 
   const { id } = useParams<{ id: string }>();
+
+  const images = useMemo(() =>
+    currentOffer?.images.map((image) => (
+      <OfferImage key={image} img={image} />
+    )),
+  [currentOffer]);
+
+  const goods = useMemo(() =>
+    currentOffer?.goods.map((good) => (
+      <OfferInsideItem key={good} option={good} />
+    )),
+  [currentOffer]);
+
+  const visibleNearbyOffers = useMemo(() =>
+    nearbyOffers.slice(0, VISIBLE_NEARBY_OFFERS_COUNT),
+  [nearbyOffers]);
 
   useEffect(() => {
     if (id) {
@@ -49,7 +66,7 @@ function OfferPage(): JSX.Element | null {
   }
 
   const nearOffersPlusOffer: MapOffer[] = [
-    ...nearbyOffers.map((offer) => ({
+    ...visibleNearbyOffers.map((offer) => ({
       id: offer.id,
       location: offer.location,
     })),
@@ -67,9 +84,7 @@ function OfferPage(): JSX.Element | null {
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {currentOffer.images.map((image) => (
-              <OfferImage key={image} img={image} />
-            ))}
+            {images}
           </div>
         </div>
         <div className="offer__container container">
@@ -121,9 +136,7 @@ function OfferPage(): JSX.Element | null {
             <div className="offer__inside">
               <h2 className="offer__inside-title">What&apos;s inside</h2>
               <ul className="offer__inside-list">
-                {currentOffer.goods.map((good) => (
-                  <OfferInsideItem key={good} option={good} />
-                ))}
+                {goods}
               </ul>
             </div>
             <div className="offer__host">
@@ -170,7 +183,7 @@ function OfferPage(): JSX.Element | null {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <OffersList offers={nearbyOffers} onFavoriteToggleClick={onFavoriteButtonClick}/>
+            <OffersList offers={visibleNearbyOffers} onFavoriteToggleClick={onFavoriteButtonClick}/>
           </div>
         </section>
       </div>

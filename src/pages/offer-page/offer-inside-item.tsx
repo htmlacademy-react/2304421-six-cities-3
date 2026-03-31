@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 type OfferInsideItemProps = {
   option: string;
 }
@@ -8,4 +10,5 @@ function OfferInsideItem({option}: OfferInsideItemProps): JSX.Element {
   );
 }
 
-export default OfferInsideItem;
+const OfferInsideItemMemo = memo(OfferInsideItem);
+export default OfferInsideItemMemo;

@@ -2,6 +2,7 @@ import OffersSortingItem from './offers-sorting-item';
 import { OPTIONS } from '../../../const';
 import { SortOption } from '../../../types/options';
 import './offers-sorting.css';
+import { memo } from 'react';
 
 type OffersSortingProps = {
   activeOption: SortOption;
@@ -34,4 +35,5 @@ function OffersSorting({activeOption, onOptionChange, isOpen, onSortingToggle}: 
   );
 }
 
-export default OffersSorting;
+const OffersSortingMemo = memo(OffersSorting);
+export default OffersSortingMemo;

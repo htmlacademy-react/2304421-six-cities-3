@@ -34,14 +34,14 @@ function MainPage(): JSX.Element {
     dispatch(setCity(city));
   }, [dispatch]);
 
-  const handleSortChange = (option: SortOption) => {
+  const handleSortChange = useCallback((option: SortOption) => {
     setActiveOption(option);
     setIsOpen(false);
-  };
+  }, [setActiveOption, setIsOpen]);
 
-  const handleSortingToggle = () => {
+  const handleSortingToggle = useCallback(() => {
     setIsOpen((prev) => !prev);
-  };
+  }, [setIsOpen]);
 
   const handleOfferHover = useCallback((id: string | null) => {
     setActiveCardId(id);

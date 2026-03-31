@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postCommentAction } from '../../store/api-actions';
 import { setError } from '../../store/error/error-slice';
+import { memo } from 'react';
+
 type FormDataType = {
   rating: number | null;
   comment: string;
@@ -117,5 +119,5 @@ function OfferReviewForm(): JSX.Element {
     </form>
   );
 }
-
-export default OfferReviewForm;
+const OfferReviewFormMemo = memo(OfferReviewForm);
+export default OfferReviewFormMemo;

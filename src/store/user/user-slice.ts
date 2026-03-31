@@ -53,6 +53,7 @@ const userSlice = createSlice({
       .addCase(logoutAction.fulfilled, (state) => {
         state.user = null;
         state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.isLoginLoading = false;
       })
       .addCase(logoutAction.rejected, (state) => {
         state.isLoginLoading = false;
