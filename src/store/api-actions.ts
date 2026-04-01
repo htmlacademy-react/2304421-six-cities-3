@@ -115,12 +115,17 @@ export const loginAction = createAsyncThunk<AuthInfo, AuthData, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'user/login',
-  async({login: email, password}, {extra: api}) => {
-    const {data} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
-    saveToken(data.token);
-    return data;
+  async({login: email, password}, {extra: api, rejectWithValue}) => {
+    try {
+      const {data} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
+      saveToken(data.token);
+      return data;
+    } catch {
+      return rejectWithValue('Failed to login, try one more time');
+    }
   }
 );
 
@@ -128,11 +133,16 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'user/logout',
-  async (_arg, {extra: api}) => {
-    await api.delete(APIRoute.Logout);
-    dropToken();
+  async (_arg, {extra: api, rejectWithValue}) => {
+    try {
+      await api.delete(APIRoute.Logout);
+      dropToken();
+    } catch {
+      return rejectWithValue('Failded to logout, try one more time');
+    }
   },
 );
 

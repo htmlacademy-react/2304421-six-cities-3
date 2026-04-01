@@ -6,14 +6,24 @@ import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { Navigate } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
-import { setError } from '../../store/error/error-slice';
+import { processErrorHandle } from '../../services/process-error-handle';
+import { useEffect } from 'react';
+
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
   const dispatch = useAppDispatch();
+  const loginError = useAppSelector((state) => state.user.loginError);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const isLoginLoading = useAppSelector((state) => state.user.isLoginLoading);
+  const isValidPassword = (password: string): boolean =>
+    /^(?=.*[A-Za-z])(?=.*\d).+$/.test(password);
+
+  useEffect(() => {
+    if (loginError) {
+      processErrorHandle(loginError);
+    }
+  }, [loginError]);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return <Navigate to={AppRoute.Root} />;
@@ -27,7 +37,12 @@ function LoginPage(): JSX.Element {
       const password = passwordRef.current.value.trim();
 
       if (!password) {
-        dispatch(setError('Password must not be empty or contain only spaces'));
+        processErrorHandle('Password must not be empty');
+        return;
+      }
+
+      if (!isValidPassword(password)) {
+        processErrorHandle('Password must contain at least one letter and one number');
         return;
       }
 
@@ -54,6 +69,7 @@ function LoginPage(): JSX.Element {
                 name="email"
                 placeholder="Email"
                 required
+                disabled={isLoginLoading}
               />
             </div>
             <div className="login__input-wrapper form__input-wrapper">
@@ -64,7 +80,7 @@ function LoginPage(): JSX.Element {
                 type="password"
                 name="password"
                 placeholder="Password"
-                required
+                disabled={isLoginLoading}
               />
             </div>
             <button
