@@ -24,10 +24,10 @@ type OffersCardProps = {
   variant: 'vertical' | 'horizontal';
   data: Offer;
   onHover?: (id: string | null) => void;
-  onFavoriteClick: (params: FavoriteParams) => void;
+  onFavoriteButtonClick: (params: FavoriteParams) => void;
 };
 
-function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps): JSX.Element {
+function OfferCard({variant, data, onHover, onFavoriteButtonClick}: OffersCardProps): JSX.Element {
   const normalizedRating = Math.min(Math.max(data.rating, 0), 5);
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
@@ -40,8 +40,8 @@ function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps):
     onHover?.(null);
   };
 
-  const handleClick = () => {
-    onFavoriteClick({
+  const handleFavoriteButtonClick = () => {
+    onFavoriteButtonClick({
       id: data.id,
       isFavorite: data.isFavorite
     });
@@ -74,7 +74,7 @@ function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps):
           <button
             className={`place-card__bookmark-button ${data.isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
             type="button"
-            onClick={handleClick}
+            onClick={handleFavoriteButtonClick}
           >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
@@ -97,5 +97,5 @@ function OffersCard({variant, data, onHover, onFavoriteClick}: OffersCardProps):
   );
 }
 
-const OfferCardMemo = memo(OffersCard);
+const OfferCardMemo = memo(OfferCard);
 export default OfferCardMemo;

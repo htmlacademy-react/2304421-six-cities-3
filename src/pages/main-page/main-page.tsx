@@ -23,7 +23,7 @@ function MainPage(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city.city);
   const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
   const dispatch = useAppDispatch();
-  const handleToggleFavorite = useFavorite();
+  const handleToggleFavoriteClick = useFavorite();
   const isOffersNotAvailable = filteredSortedOffers.length === 0;
 
   useEffect(() => {
@@ -79,7 +79,7 @@ function MainPage(): JSX.Element {
               {isOffersLoading ? (
                 <Spinner />
               ) : (
-                <OffersList offers={filteredSortedOffers} onHover={handleOfferHover} onFavoriteToggleClick={handleToggleFavorite}/>
+                <OffersList offers={filteredSortedOffers} onHover={handleOfferHover} onFavoriteToggleClick={handleToggleFavoriteClick}/>
               )}
             </div>
           </section>

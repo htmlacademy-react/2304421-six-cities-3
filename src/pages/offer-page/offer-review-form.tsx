@@ -23,7 +23,7 @@ function OfferReviewForm(): JSX.Element {
     dispatch(setComment(evt.target.value));
   };
 
-  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (!id || rating === null) {
@@ -53,7 +53,7 @@ function OfferReviewForm(): JSX.Element {
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={(evt) => void handleSubmit(evt)}
+      onSubmit={(evt) => void handleFormSubmit(evt)}
     >
       <label className="reviews__label form__label" htmlFor="review">
         Your review

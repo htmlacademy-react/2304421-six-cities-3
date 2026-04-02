@@ -1,4 +1,4 @@
-import OffersCard from '../offers-card/offers-card';
+import OfferCard from '../offer-card/offer-card';
 import { Offer } from '../../types/offer';
 import { FavoriteParams } from '../../types/favorite';
 import { memo } from 'react';
@@ -14,12 +14,12 @@ function OffersList({ offers, onHover, onFavoriteToggleClick }: OffersListProps)
   return (
     <>
       {offers.map((offer) => (
-        <OffersCard
+        <OfferCard
           key={offer.id}
           variant="vertical"
           data={offer}
           onHover={onHover}
-          onFavoriteClick={onFavoriteToggleClick}
+          onFavoriteButtonClick={onFavoriteToggleClick}
         />
       ))}
     </>
