@@ -55,6 +55,8 @@ export const CITIES: City[] = [
   },
 ];
 
+export const CITY_NAMES = CITIES.map((city) => city.name);
+
 export const locations = [
   { latitude: 52.3909553943508, longitude: 4.85309666406198 },
   { latitude: 52.3609553943508, longitude: 4.85309666406198 },

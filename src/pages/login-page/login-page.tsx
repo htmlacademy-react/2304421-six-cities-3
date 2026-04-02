@@ -7,17 +7,30 @@ import { useAppSelector } from '../../hooks';
 import { Navigate } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import { processErrorHandle } from '../../services/process-error-handle';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { getRandomCity } from '../../utils/utils';
+import { setCity } from '../../store/city/city-slice';
+import { CITIES } from '../../const';
+import { useNavigate } from 'react-router-dom';
+import './login-page.css';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loginError = useAppSelector((state) => state.user.loginError);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const isLoginLoading = useAppSelector((state) => state.user.isLoginLoading);
   const isValidPassword = (password: string): boolean =>
     /^(?=.*[A-Za-z])(?=.*\d).+$/.test(password);
+
+  const city = useMemo(() => getRandomCity(CITIES), []);
+
+  const handleButtonClick = () => {
+    dispatch(setCity(city));
+    navigate(AppRoute.Root);
+  };
 
   useEffect(() => {
     if (loginError) {
@@ -94,9 +107,13 @@ function LoginPage(): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
-            </a>
+            <button
+              className="locations__item-link"
+              type="button"
+              onClick={handleButtonClick}
+            >
+              <span>{city.name}</span>
+            </button>
           </div>
         </section>
       </div>

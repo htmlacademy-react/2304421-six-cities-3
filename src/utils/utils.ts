@@ -1,22 +1,7 @@
+import { City } from '../types/city';
 
-export function getRandomCards<T>(data: readonly T[], count: number): T[] {
-  return [...data].sort(() => Math.random() - 0.5).slice(0, count);
+export function getRandomCity(cities: City[]): City {
+  const randomInt = Math.floor(Math.random() * cities.length);
+  return cities[randomInt];
 }
-
-export function shuffleArray<T>(data: readonly T[]): T[] {
-  return [...data].sort(() => Math.random() - 0.5);
-}
-
-export function getRandomUniqueInteger(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function formatReviewDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleString('en-US', {
-    month: 'long',
-    year: 'numeric',
-  });
-}
-
 
