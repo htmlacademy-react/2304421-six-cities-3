@@ -1,5 +1,3 @@
-import './main-empty.css';
-
 type MainEmptyProps = {
   cityName: string;
 }
