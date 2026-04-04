@@ -90,11 +90,16 @@ export const postFavoriteAction = createAsyncThunk<Offer, {offerId: string; stat
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'favorite/post',
-  async ({offerId, status}, {extra: api}) => {
-    const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
-    return data;
+  async ({offerId, status}, {extra: api, rejectWithValue}) => {
+    try {
+      const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
+      return data;
+    } catch {
+      return rejectWithValue('Failed to add/remove the offer to/from favorite');
+    }
   }
 );
 

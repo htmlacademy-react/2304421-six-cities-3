@@ -5,11 +5,13 @@ import { fetchOffersAction, postFavoriteAction } from '../api-actions';
 type OffersState = {
   offersList: Offer[];
   isOffersLoading: boolean;
+  isOfferPostingToFavorite: boolean;
 };
 
 const initialState: OffersState = {
   offersList: [],
   isOffersLoading: true,
+  isOfferPostingToFavorite: false,
 };
 
 const offersSlice = createSlice({
@@ -29,12 +31,19 @@ const offersSlice = createSlice({
       .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersLoading = false;
       })
+      .addCase(postFavoriteAction.pending, (state) => {
+        state.isOfferPostingToFavorite = true;
+      })
       .addCase(postFavoriteAction.fulfilled, (state, action) => {
         const updatedOffer = action.payload;
+        state.isOfferPostingToFavorite = false;
 
         state.offersList = state.offersList.map((offer) =>
           offer.id === updatedOffer.id ? updatedOffer : offer
         );
+      })
+      .addCase(postFavoriteAction.rejected, (state) => {
+        state.isOfferPostingToFavorite = false;
       });
   },
 });

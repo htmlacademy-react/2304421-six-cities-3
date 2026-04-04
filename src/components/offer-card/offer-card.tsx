@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { memo } from 'react';
 import { FavoriteParams } from '../../types/favorite';
+import { useAppSelector } from '../../hooks';
 
 
 const CARD_CONFIG = {
@@ -31,6 +32,7 @@ function OfferCard({variant, data, onHover, onFavoriteButtonClick}: OffersCardPr
   const normalizedRating = Math.min(Math.max(data.rating, 0), 5);
   const ratingWidth = `${Math.round(normalizedRating) * 20}%`;
   const { imageWidth, imageHeight, articleClass, imageWrapperClass } = CARD_CONFIG[variant];
+  const isPosting = useAppSelector((state) => state.offers.isOfferPostingToFavorite);
 
   const handleMouseEnter = () => {
     onHover?.(data.id);
@@ -75,6 +77,7 @@ function OfferCard({variant, data, onHover, onFavoriteButtonClick}: OffersCardPr
             className={`place-card__bookmark-button ${data.isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
             type="button"
             onClick={handleFavoriteButtonClick}
+            disabled={isPosting}
           >
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
