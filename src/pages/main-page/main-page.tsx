@@ -14,6 +14,7 @@ import Spinner from '../../components/spinner/spinner';
 import { useFavorite } from '../../hooks/useFavorite';
 import { useCallback } from 'react';
 import MainEmpty from '../../components/main-empty/main-empty';
+import { processErrorHandle } from '../../services/process-error-handle';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -31,7 +32,11 @@ function MainPage(): JSX.Element {
   const isOffersNotAvailable = filteredSortedOffers.length === 0;
 
   useEffect(() => {
-    dispatch(fetchOffersAction());
+    dispatch(fetchOffersAction()).then((result) => {
+      if (fetchOffersAction.rejected.match(result)) {
+        processErrorHandle(result.payload ?? 'Unknown error');
+      }
+    });
   }, [dispatch]);
 
   const handleCityChange = useCallback(

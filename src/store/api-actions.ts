@@ -16,11 +16,16 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'data/fetchOffers',
-  async (_arg, { extra: api}) => {
-    const {data} = await api.get<Offer[]>(APIRoute.Offers);
-    return data;
+  async (_arg, { extra: api, rejectWithValue}) => {
+    try {
+      const {data} = await api.get<Offer[]>(APIRoute.Offers);
+      return data;
+    } catch {
+      return rejectWithValue('Failed to fetch offers from server');
+    }
   }
 );
 
