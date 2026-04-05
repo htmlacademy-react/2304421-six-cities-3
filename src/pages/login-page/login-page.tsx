@@ -7,7 +7,7 @@ import { useAppSelector } from '../../hooks';
 import { Navigate } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import { processErrorHandle } from '../../services/process-error-handle';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { getRandomCity } from '../../utils/utils';
 import { setCity } from '../../store/city/city-slice';
 import { CITIES } from '../../const';
@@ -19,7 +19,6 @@ function LoginPage(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const loginError = useAppSelector((state) => state.user.loginError);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const isLoginLoading = useAppSelector((state) => state.user.isLoginLoading);
   const isValidPassword = (password: string): boolean =>
@@ -31,12 +30,6 @@ function LoginPage(): JSX.Element {
     dispatch(setCity(city));
     navigate(AppRoute.Root);
   };
-
-  useEffect(() => {
-    if (loginError) {
-      processErrorHandle(loginError);
-    }
-  }, [loginError]);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return <Navigate to={AppRoute.Root} />;
@@ -59,10 +52,11 @@ function LoginPage(): JSX.Element {
         return;
       }
 
-      dispatch(loginAction({
-        login: email,
-        password,
-      }));
+      dispatch(loginAction({login: email,password})).then((result) => {
+        if (loginAction.rejected.match(result)) {
+          processErrorHandle(result.payload ?? 'Unknown error');
+        }
+      });
     }
   };
 

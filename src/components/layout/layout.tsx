@@ -2,11 +2,10 @@ import { Outlet, useLocation, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import './layout.css';
 import { useNavigate } from 'react-router-dom';
 import { processErrorHandle } from '../../services/process-error-handle';
-import { useEffect } from 'react';
 
 type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
@@ -15,7 +14,6 @@ type LayoutProps = {
 }
 
 function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.Element {
-  const logoutError = useAppSelector((state) => state.user.logoutError);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -40,20 +38,14 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
     pageClass += ' page--favorites-empty';
   }
 
-  useEffect(() => {
-    if (logoutError) {
-      processErrorHandle(logoutError);
-    }
-  }, [logoutError]);
-
-
-  const handleLogOut = async () => {
-    await dispatch(logoutAction()).unwrap();
-    navigate(AppRoute.Login);
-  };
-
   const handleLogOutClick = () => {
-    handleLogOut();
+    dispatch(logoutAction()).then((result) => {
+      if (logoutAction.rejected.match(result)) {
+        processErrorHandle(result.payload ?? 'Unknow error');
+      }
+
+      navigate(AppRoute.Login);
+    });
   };
 
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
