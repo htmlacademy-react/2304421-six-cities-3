@@ -3,7 +3,7 @@ import { currentOfferReducer } from './current-offer-slice';
 import { mockOfferDetails, mockOffer } from '../../utils/utils';
 
 describe('CurrentOffer Slice', () => {
-  it('should set "isCurrentOfferLoading" to true, "isCurrentOfferNotFound" to false with fetchOfferByIdAction.pending', () => {
+  it('should set "isCurrentOfferLoading" to "true", "isCurrentOfferNotFound" to "false" with fetchOfferByIdAction.pending', () => {
     const expectedState = {
       currentOffer: null,
       isCurrentOfferLoading: true,
@@ -18,7 +18,7 @@ describe('CurrentOffer Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set "isCurrentOfferLoading" to false, "currentOffer" to object with fetchOfferByIdAction.fulfilled', () => {
+  it('should set "isCurrentOfferLoading" to "false", "currentOffer" to object with fetchOfferByIdAction.fulfilled', () => {
     const expectedState = {
       currentOffer: mockOfferDetails,
       isCurrentOfferLoading: false,
@@ -32,7 +32,7 @@ describe('CurrentOffer Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set "isCurrentOfferLoading" to false, "isCurrentOfferNotFound" to true with fetchOfferByIdAction.rejected', () => {
+  it('should set "isCurrentOfferLoading" to "false", "isCurrentOfferNotFound" to "true" with fetchOfferByIdAction.rejected', () => {
     const expectedState = {
       currentOffer: null,
       isCurrentOfferLoading: false,
@@ -44,7 +44,7 @@ describe('CurrentOffer Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set "currentOffer.isFavorite" to true, with postFavoriteAction.fulfilled', () => {
+  it('should set "currentOffer.isFavorite" to "true", with postFavoriteAction.fulfilled', () => {
     const initialState = {
       currentOffer: mockOfferDetails,
       isCurrentOfferLoading: false,
