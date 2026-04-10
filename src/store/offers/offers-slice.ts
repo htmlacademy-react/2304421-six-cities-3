@@ -10,7 +10,7 @@ type OffersState = {
 
 const initialState: OffersState = {
   offersList: [],
-  isOffersLoading: true,
+  isOffersLoading: false,
   isOfferPostingToFavorite: false,
 };
 
