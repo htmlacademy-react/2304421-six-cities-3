@@ -10,7 +10,7 @@ type UserState = {
 }
 
 const initialState: UserState = {
-  authorizationStatus: AuthorizationStatus.Unknown,
+  authorizationStatus: AuthorizationStatus.NoAuth,
   isLoginLoading: false,
   user: null,
 };
@@ -38,6 +38,7 @@ const userSlice = createSlice({
       })
       .addCase(loginAction.pending, (state) => {
         state.isLoginLoading = true;
+        state.authorizationStatus = AuthorizationStatus.Unknown;
       })
       .addCase(loginAction.fulfilled, (state, action) => {
         state.isLoginLoading = false;
@@ -46,9 +47,12 @@ const userSlice = createSlice({
       })
       .addCase(loginAction.rejected, (state) => {
         state.isLoginLoading = false;
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.user = null;
       })
       .addCase(logoutAction.pending, (state) => {
         state.isLoginLoading = true;
+        state.authorizationStatus = AuthorizationStatus.Unknown;
       })
       .addCase(logoutAction.fulfilled, (state) => {
         state.user = null;
@@ -57,6 +61,7 @@ const userSlice = createSlice({
       })
       .addCase(logoutAction.rejected, (state) => {
         state.isLoginLoading = false;
+        state.authorizationStatus = AuthorizationStatus.Auth;
       });
   }
 });

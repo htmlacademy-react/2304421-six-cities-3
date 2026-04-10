@@ -63,3 +63,16 @@ export const mockOffer: Offer = {
     zoom: 342342,
   },
 };
+
+export const mockUser = {
+  name: 'Some_name',
+  avatarUrl: 'url/3423',
+  isPro: false,
+  email: 'some_email',
+  token: '324234',
+};
+
+export const mockAuthData = {
+  login: 'Some_login',
+  password: '324kjl',
+};
