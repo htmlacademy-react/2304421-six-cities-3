@@ -1,23 +1,34 @@
 import { Comment } from '../../types/comment';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchCommentsAction, postCommentAction } from '../api-actions';
 
 type CommentsState = {
   comments: Comment[];
   isCommentsLoading: boolean;
   isPostingComment: boolean;
+  postingComment: string;
+  rating: number | null;
 }
 
 const initialState: CommentsState = {
   comments: [],
   isCommentsLoading: false,
   isPostingComment: false,
+  postingComment: '',
+  rating: null,
 };
 
 const commentsSlice = createSlice({
   name: 'comments',
   initialState,
-  reducers: {},
+  reducers: {
+    setComment(state, action: PayloadAction<string>) {
+      state.postingComment = action.payload;
+    },
+    setRating(state, action: PayloadAction<number | null>) {
+      state.rating = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCommentsAction.pending, (state) => {
@@ -35,6 +46,8 @@ const commentsSlice = createSlice({
       })
       .addCase(postCommentAction.fulfilled, (state) => {
         state.isPostingComment = false;
+        state.postingComment = '';
+        state.rating = null;
       })
       .addCase(postCommentAction.rejected, (state) => {
         state.isPostingComment = false;
@@ -42,4 +55,5 @@ const commentsSlice = createSlice({
   }
 });
 
+export const {setComment, setRating} = commentsSlice.actions;
 export const commentsReducer = commentsSlice.reducer;

@@ -14,34 +14,49 @@ import Spinner from '../../components/spinner/spinner';
 import { useFavorite } from '../../hooks/useFavorite';
 import { useCallback } from 'react';
 import MainEmpty from '../../components/main-empty/main-empty';
+import { processErrorHandle } from '../../services/process-error-handle';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [activeOption, setActiveOption] = useState<SortOption>('Popular');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isOffersLoading = useAppSelector((state) => state.offers.isOffersLoading);
+  const isOffersLoading = useAppSelector(
+    (state) => state.offers.isOffersLoading,
+  );
   const currentCity = useAppSelector((state) => state.city.city);
-  const filteredSortedOffers = useAppSelector((state) => selectFilteredSortedOffers(state, currentCity.name, activeOption));
+  const filteredSortedOffers = useAppSelector((state) =>
+    selectFilteredSortedOffers(state, currentCity.name, activeOption),
+  );
   const dispatch = useAppDispatch();
-  const handleToggleFavorite = useFavorite();
+  const handleToggleFavoriteClick = useFavorite();
   const isOffersNotAvailable = filteredSortedOffers.length === 0;
 
   useEffect(() => {
-    dispatch(fetchOffersAction());
+    dispatch(fetchOffersAction()).then((result) => {
+      if (fetchOffersAction.rejected.match(result)) {
+        processErrorHandle(result.payload ?? 'Unknown error');
+      }
+    });
   }, [dispatch]);
 
-  const handleCityChange = useCallback((city: City) => {
-    dispatch(setCity(city));
-  }, [dispatch]);
+  const handleCityChange = useCallback(
+    (city: City) => {
+      dispatch(setCity(city));
+    },
+    [dispatch],
+  );
 
-  const handleSortChange = (option: SortOption) => {
-    setActiveOption(option);
-    setIsOpen(false);
-  };
+  const handleSortChange = useCallback(
+    (option: SortOption) => {
+      setActiveOption(option);
+      setIsOpen(false);
+    },
+    [setActiveOption, setIsOpen],
+  );
 
-  const handleSortingToggle = () => {
+  const handleSortingToggle = useCallback(() => {
     setIsOpen((prev) => !prev);
-  };
+  }, [setIsOpen]);
 
   const handleOfferHover = useCallback((id: string | null) => {
     setActiveCardId(id);
@@ -51,12 +66,10 @@ function MainPage(): JSX.Element {
     return <Spinner />;
   }
 
-  if (isOffersNotAvailable) {
-    return <MainEmpty cityName={currentCity.name} />;
-  }
-
   return (
-    <main className="page__main page__main--index">
+    <main
+      className={`page__main page__main--index ${isOffersNotAvailable ? 'page__main--index-empty' : ''}`}
+    >
       <Helmet>
         <title>Main Page</title>
       </Helmet>
@@ -67,32 +80,46 @@ function MainPage(): JSX.Element {
           onCityChange={handleCityChange}
         />
       </div>
-      <div className="cities">
-        <div className="cities__places-container container">
-          <section className="cities__places places">
-            <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">
-              {filteredSortedOffers.length} places to stay in {currentCity.name}
-            </b>
-            <OffersSorting activeOption={activeOption} onOptionChange={handleSortChange} isOpen={isOpen} onSortingToggle={handleSortingToggle}/>
-            <div className="cities__places-list places__list tabs__content">
-              {isOffersLoading ? (
-                <Spinner />
-              ) : (
-                <OffersList offers={filteredSortedOffers} onHover={handleOfferHover} onFavoriteToggleClick={handleToggleFavorite}/>
-              )}
+      {isOffersNotAvailable ? (
+        <MainEmpty cityName={currentCity.name} />
+      ) : (
+        <div className="cities">
+          <div className="cities__places-container container">
+            <section className="cities__places places">
+              <h2 className="visually-hidden">Places</h2>
+              <b className="places__found">
+                {filteredSortedOffers.length} places to stay in{' '}
+                {currentCity.name}
+              </b>
+              <OffersSorting
+                activeOption={activeOption}
+                onOptionChange={handleSortChange}
+                isOpen={isOpen}
+                onSortingToggle={handleSortingToggle}
+              />
+              <div className="cities__places-list places__list tabs__content">
+                {isOffersLoading ? (
+                  <Spinner />
+                ) : (
+                  <OffersList
+                    offers={filteredSortedOffers}
+                    onHover={handleOfferHover}
+                    onFavoriteToggleClick={handleToggleFavoriteClick}
+                  />
+                )}
+              </div>
+            </section>
+            <div className="cities__right-section">
+              <Map
+                city={currentCity}
+                offers={filteredSortedOffers}
+                className="cities__map map"
+                activeOfferId={activeCardId}
+              />
             </div>
-          </section>
-          <div className="cities__right-section">
-            <Map
-              city={currentCity}
-              offers={filteredSortedOffers}
-              className="cities__map map"
-              activeOfferId={activeCardId}
-            />
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }

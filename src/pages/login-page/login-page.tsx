@@ -6,14 +6,30 @@ import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { Navigate } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
-import { setError } from '../../store/error/error-slice';
+import { processErrorHandle } from '../../services/process-error-handle';
+import { useMemo } from 'react';
+import { getRandomCity } from '../../utils/utils';
+import { setCity } from '../../store/city/city-slice';
+import { CITIES } from '../../const';
+import { useNavigate } from 'react-router-dom';
+import './login-page.css';
+
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const isLoginLoading = useAppSelector((state) => state.user.isLoginLoading);
+  const isValidPassword = (password: string): boolean =>
+    /^(?=.*[A-Za-z])(?=.*\d).+$/.test(password);
+
+  const city = useMemo(() => getRandomCity(CITIES), []);
+
+  const handleButtonClick = () => {
+    dispatch(setCity(city));
+    navigate(AppRoute.Root);
+  };
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return <Navigate to={AppRoute.Root} />;
@@ -27,14 +43,20 @@ function LoginPage(): JSX.Element {
       const password = passwordRef.current.value.trim();
 
       if (!password) {
-        dispatch(setError('Password must not be empty or contain only spaces'));
+        processErrorHandle('Password must not be empty');
         return;
       }
 
-      dispatch(loginAction({
-        login: email,
-        password,
-      }));
+      if (!isValidPassword(password)) {
+        processErrorHandle('Password must contain at least one letter and one number');
+        return;
+      }
+
+      dispatch(loginAction({login: email,password})).then((result) => {
+        if (loginAction.rejected.match(result)) {
+          processErrorHandle(result.payload ?? 'Unknown error');
+        }
+      });
     }
   };
 
@@ -54,6 +76,7 @@ function LoginPage(): JSX.Element {
                 name="email"
                 placeholder="Email"
                 required
+                disabled={isLoginLoading}
               />
             </div>
             <div className="login__input-wrapper form__input-wrapper">
@@ -64,7 +87,7 @@ function LoginPage(): JSX.Element {
                 type="password"
                 name="password"
                 placeholder="Password"
-                required
+                disabled={isLoginLoading}
               />
             </div>
             <button
@@ -78,9 +101,13 @@ function LoginPage(): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
-            </a>
+            <button
+              className="locations__item-link"
+              type="button"
+              onClick={handleButtonClick}
+            >
+              <span>{city.name}</span>
+            </button>
           </div>
         </section>
       </div>

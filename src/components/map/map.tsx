@@ -83,5 +83,4 @@ function Map({
 }
 
 const MemorizedMap = memo(Map);
-
 export default MemorizedMap;

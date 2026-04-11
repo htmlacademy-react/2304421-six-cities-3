@@ -6,6 +6,7 @@ import { AppRoute } from '../const';
 import { fetchFavoriteOffersActions, postFavoriteAction } from '../store/api-actions';
 import { FavoriteParams } from '../types/favorite';
 import { useCallback } from 'react';
+import { processErrorHandle } from '../services/process-error-handle';
 
 export const useFavorite = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,10 @@ export const useFavorite = () => {
 
     const status = isFavorite ? 0 : 1;
 
-    dispatch(postFavoriteAction({offerId: id, status})).then(() => {
+    dispatch(postFavoriteAction({offerId: id, status})).then((result) => {
+      if (postFavoriteAction.rejected.match(result)) {
+        processErrorHandle(result.payload ?? 'Unknown error');
+      }
       dispatch(fetchFavoriteOffersActions());
     });
   }, [authorizationStatus, dispatch, navigate]);

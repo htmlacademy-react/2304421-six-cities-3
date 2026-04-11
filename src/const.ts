@@ -1,9 +1,5 @@
 import { City } from './types/city';
 
-export const Setting = {
-  cardsCount: 5,
-};
-
 export const CITIES: City[] = [
   {
     name: 'Paris',
@@ -55,13 +51,6 @@ export const CITIES: City[] = [
   },
 ];
 
-export const locations = [
-  { latitude: 52.3909553943508, longitude: 4.85309666406198 },
-  { latitude: 52.3609553943508, longitude: 4.85309666406198 },
-  { latitude: 52.3909553943508, longitude: 4.929309666406198 },
-  { latitude: 52.3809553943508, longitude: 4.939309666406198 },
-];
-
 export const OPTIONS = [
   'Popular',
   'Price: low to high',
@@ -82,28 +71,6 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
-
-export const OfferImages = [
-  'img/room.jpg',
-  'img/apartment-01.jpg',
-  'img/apartment-02.jpg',
-  'img/apartment-03.jpg',
-  'img/studio-01.jpg',
-  'img/apartment-01.jpg',
-] as const;
-
-export const OfferInsideItems = [
-  'Wi-Fi',
-  'Washing machine',
-  'Towels',
-  'Heating',
-  'Coffee machine',
-  'Baby seat',
-  'Kitchen',
-  'Dishwasher',
-  'Cabel TV',
-  'Fridge',
-] as const;
 
 export const RATING = [
   { value: 5, label: 'perfect' },

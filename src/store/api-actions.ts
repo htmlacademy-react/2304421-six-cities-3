@@ -16,11 +16,16 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'data/fetchOffers',
-  async (_arg, { extra: api}) => {
-    const {data} = await api.get<Offer[]>(APIRoute.Offers);
-    return data;
+  async (_arg, { extra: api, rejectWithValue}) => {
+    try {
+      const {data} = await api.get<Offer[]>(APIRoute.Offers);
+      return data;
+    } catch {
+      return rejectWithValue('Failed to fetch offers from server');
+    }
   }
 );
 
@@ -90,11 +95,16 @@ export const postFavoriteAction = createAsyncThunk<Offer, {offerId: string; stat
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'favorite/post',
-  async ({offerId, status}, {extra: api}) => {
-    const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
-    return data;
+  async ({offerId, status}, {extra: api, rejectWithValue}) => {
+    try {
+      const {data} = await api.post<Offer>(`${APIRoute.Favorites}/${offerId}/${status}`);
+      return data;
+    } catch {
+      return rejectWithValue('Failed to add/remove the offer to/from favorite');
+    }
   }
 );
 
@@ -115,12 +125,17 @@ export const loginAction = createAsyncThunk<AuthInfo, AuthData, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'user/login',
-  async({login: email, password}, {extra: api}) => {
-    const {data} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
-    saveToken(data.token);
-    return data;
+  async({login: email, password}, {extra: api, rejectWithValue}) => {
+    try {
+      const {data} = await api.post<AuthInfo>(APIRoute.Login, {email, password});
+      saveToken(data.token);
+      return data;
+    } catch {
+      return rejectWithValue('Failed to login, try one more time');
+    }
   }
 );
 
@@ -128,11 +143,16 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: RootState;
   extra: AxiosInstance;
+  rejectValue: string;
 }>(
   'user/logout',
-  async (_arg, {extra: api}) => {
-    await api.delete(APIRoute.Logout);
-    dropToken();
+  async (_arg, {extra: api, rejectWithValue}) => {
+    try {
+      await api.delete(APIRoute.Logout);
+      dropToken();
+    } catch {
+      return rejectWithValue('Failded to logout, try one more time');
+    }
   },
 );
 

@@ -5,6 +5,7 @@ import { logoutAction } from '../../store/api-actions';
 import { useAppDispatch } from '../../hooks';
 import './layout.css';
 import { useNavigate } from 'react-router-dom';
+import { processErrorHandle } from '../../services/process-error-handle';
 
 type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
@@ -13,7 +14,6 @@ type LayoutProps = {
 }
 
 function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.Element {
-
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -38,13 +38,14 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
     pageClass += ' page--favorites-empty';
   }
 
-  const handleLogOut = async () => {
-    await dispatch(logoutAction());
-    navigate(AppRoute.Login);
-  };
-
   const handleLogOutClick = () => {
-    handleLogOut();
+    dispatch(logoutAction()).then((result) => {
+      if (logoutAction.rejected.match(result)) {
+        processErrorHandle(result.payload ?? 'Unknow error');
+      }
+
+      navigate(AppRoute.Login);
+    });
   };
 
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;

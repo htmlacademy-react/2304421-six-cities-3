@@ -1,67 +1,59 @@
-import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
+import { ChangeEvent, FormEvent, Fragment } from 'react';
 import { RATING } from '../../const';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postCommentAction } from '../../store/api-actions';
-import { setError } from '../../store/error/error-slice';
-type FormDataType = {
-  rating: number | null;
-  comment: string;
-};
+import { memo } from 'react';
+import { setComment, setRating } from '../../store/comments/comments-slice';
+import { processErrorHandle } from '../../services/process-error-handle';
 
 function OfferReviewForm(): JSX.Element {
   const { id } = useParams<{id: string }>();
   const dispatch = useAppDispatch();
   const isSending = useAppSelector((store) => store.comments.isPostingComment);
-
-  const [formData, setFormData] = useState<FormDataType>({
-    rating: null,
-    comment: '',
-  });
+  const postingComment = useAppSelector((store) => store.comments.postingComment);
+  const rating = useAppSelector((store) => store.comments.rating);
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, rating: Number(evt.target.value) });
+    dispatch(setRating(Number(evt.target.value)));
   };
 
   const handleCommentChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData({ ...formData, comment: evt.target.value });
+    evt.preventDefault();
+    dispatch(setComment(evt.target.value));
   };
 
-  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (!id || formData.rating === null) {
+    if (!id || rating === null) {
       return;
     }
 
     try {
       await dispatch(postCommentAction({
         offerId: id,
-        comment: formData.comment,
-        rating: formData.rating,
+        comment: postingComment,
+        rating: rating,
       })).unwrap();
 
-      setFormData({
-        rating: null,
-        comment: '',
-      });
     } catch {
-      dispatch(setError('Failed to post comment'));
+      processErrorHandle('Failed to post comment');
     }
   };
 
   const isDisabled =
     isSending ||
-    formData.rating === null ||
-    formData.comment.length < 50 ||
-    formData.comment.length > 300;
+    rating === null ||
+    postingComment.length < 50 ||
+    postingComment.length > 300;
 
   return (
     <form
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={(evt) => void handleSubmit(evt)}
+      onSubmit={(evt) => void handleFormSubmit(evt)}
     >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
@@ -75,7 +67,7 @@ function OfferReviewForm(): JSX.Element {
               value={value}
               id={`${value}-star`}
               type="radio"
-              checked={formData.rating === value}
+              checked={rating === value}
               onChange={handleRatingChange}
               disabled={isSending}
             />
@@ -96,7 +88,7 @@ function OfferReviewForm(): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        value={formData.comment}
+        value={postingComment}
         onChange={handleCommentChange}
         disabled={isSending}
       />
@@ -117,5 +109,5 @@ function OfferReviewForm(): JSX.Element {
     </form>
   );
 }
-
-export default OfferReviewForm;
+const OfferReviewFormMemo = memo(OfferReviewForm);
+export default OfferReviewFormMemo;
