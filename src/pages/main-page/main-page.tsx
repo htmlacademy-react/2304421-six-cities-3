@@ -34,7 +34,7 @@ function MainPage(): JSX.Element {
   useEffect(() => {
     dispatch(fetchOffersAction()).then((result) => {
       if (fetchOffersAction.rejected.match(result)) {
-        processErrorHandle(result.payload ?? 'Unknown error');
+        processErrorHandle(dispatch, result.payload ?? 'Unknown error');
       }
     });
   }, [dispatch]);

@@ -23,7 +23,7 @@ export const useFavorite = () => {
 
     dispatch(postFavoriteAction({offerId: id, status})).then((result) => {
       if (postFavoriteAction.rejected.match(result)) {
-        processErrorHandle(result.payload ?? 'Unknown error');
+        processErrorHandle(dispatch,result.payload ?? 'Unknown error');
       }
       dispatch(fetchFavoriteOffersActions());
     });

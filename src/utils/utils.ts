@@ -1,6 +1,10 @@
 import { City } from '../types/city';
 import { OfferDetails } from '../types/offer-details';
 import { Offer } from '../types/offer';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action } from 'redux';
+import { createAPI } from '../services/api';
+import { RootState } from '../types/state';
 
 export function getRandomCity(cities: City[]): City {
   const randomInt = Math.floor(Math.random() * cities.length);
@@ -76,3 +80,16 @@ export const mockAuthData = {
   login: 'Some_login',
   password: '324kjl',
 };
+
+export const mockCity = {
+  name: 'Some_city_name',
+  location: {
+    latitude: 34243,
+    longitude: 42343,
+    zoom: 6,
+  },
+};
+
+export type AppThunkDispatch = ThunkDispatch<RootState, ReturnType<typeof createAPI>, Action>;
+
+export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);

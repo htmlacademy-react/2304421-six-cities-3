@@ -38,7 +38,7 @@ function OfferReviewForm(): JSX.Element {
       })).unwrap();
 
     } catch {
-      processErrorHandle('Failed to post comment');
+      processErrorHandle(dispatch, 'Failed to post comment');
     }
   };
 

@@ -41,7 +41,7 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
   const handleLogOutClick = () => {
     dispatch(logoutAction()).then((result) => {
       if (logoutAction.rejected.match(result)) {
-        processErrorHandle(result.payload ?? 'Unknow error');
+        processErrorHandle(dispatch, result.payload ?? 'Unknow error');
       }
 
       navigate(AppRoute.Login);

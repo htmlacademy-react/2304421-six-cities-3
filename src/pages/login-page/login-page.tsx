@@ -43,18 +43,18 @@ function LoginPage(): JSX.Element {
       const password = passwordRef.current.value.trim();
 
       if (!password) {
-        processErrorHandle('Password must not be empty');
+        processErrorHandle(dispatch, 'Password must not be empty');
         return;
       }
 
       if (!isValidPassword(password)) {
-        processErrorHandle('Password must contain at least one letter and one number');
+        processErrorHandle(dispatch, 'Password must contain at least one letter and one number');
         return;
       }
 
       dispatch(loginAction({login: email,password})).then((result) => {
         if (loginAction.rejected.match(result)) {
-          processErrorHandle(result.payload ?? 'Unknown error');
+          processErrorHandle(dispatch, result.payload ?? 'Unknown error');
         }
       });
     }
