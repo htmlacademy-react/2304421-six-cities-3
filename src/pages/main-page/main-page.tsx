@@ -88,8 +88,7 @@ function MainPage(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {filteredSortedOffers.length} places to stay in{' '}
-                {currentCity.name}
+                {filteredSortedOffers.length} {filteredSortedOffers.length === 1 ? 'place' : 'places'} to stay in {currentCity.name}
               </b>
               <OffersSorting
                 activeOption={activeOption}

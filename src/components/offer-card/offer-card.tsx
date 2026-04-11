@@ -94,7 +94,7 @@ function OfferCard({variant, data, onHover, onFavoriteButtonClick}: OffersCardPr
         <h2 className="place-card__name">
           <Link to={AppRoute.Offer.replace(':id', data.id)}>{data.title}</Link>
         </h2>
-        <p className="place-card__type">{data.offerType}</p>
+        <p className="place-card__type">{data.type}</p>
       </div>
     </article>
   );

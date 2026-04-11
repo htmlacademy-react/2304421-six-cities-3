@@ -110,7 +110,7 @@ function OfferPage(): JSX.Element | null {
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
                 <span
-                  style={{ width: `${currentOffer.rating * 20}%` }}
+                  style={{ width: `${Math.round(currentOffer.rating) * 20}%` }}
                 />
                 <span className="visually-hidden">Rating</span>
               </div>
@@ -130,8 +130,8 @@ function OfferPage(): JSX.Element | null {
               </li>
             </ul>
             <div className="offer__price">
-              <b className="offer__price-value">{currentOffer.price}</b>
-              <span className="offer__price-text">&nbsp;night</span>
+              <b className="offer__price-value">&euro;{currentOffer.price}</b>
+              <span className="offer__price-text">night</span>
             </div>
             <div className="offer__inside">
               <h2 className="offer__inside-title">What&apos;s inside</h2>
@@ -142,7 +142,7 @@ function OfferPage(): JSX.Element | null {
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                <div className={`offer__avatar-wrapper ${currentOffer.host.isPro ? 'offer__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
                   <img
                     className="offer__avatar user__avatar"
                     src={currentOffer.host.avatarUrl}
