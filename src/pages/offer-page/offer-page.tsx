@@ -10,7 +10,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useEffect } from 'react';
 import { MapOffer } from '../../types/map-offers';
 import { fetchOfferByIdAction, fetchNearbyOffersAction, fetchCommentsAction } from '../../store/api-actions';
-import { AppRoute } from '../../const';
+import { AppRoute, offerCardVersions } from '../../const';
 import Spinner from '../../components/spinner/spinner';
 import { VISIBLE_NEARBY_OFFERS_COUNT } from '../../const';
 import { AuthorizationStatus } from '../../const';
@@ -30,7 +30,7 @@ function OfferPage(): JSX.Element | null {
   const { id } = useParams<{ id: string }>();
 
   const images = useMemo(() =>
-    currentOffer?.images.map((image) => (
+    currentOffer?.images.slice(0, 6).map((image) => (
       <OfferImage key={image} img={image} />
     )),
   [currentOffer]);
@@ -183,7 +183,7 @@ function OfferPage(): JSX.Element | null {
             Other places in the neighbourhood
           </h2>
           <div className="near-places__list places__list">
-            <OffersList offers={visibleNearbyOffers} onFavoriteToggleClick={onFavoriteButtonClick}/>
+            <OffersList offers={visibleNearbyOffers} onFavoriteToggleClick={onFavoriteButtonClick} cardVersion={offerCardVersions.VERTICAL_NEAR}/>
           </div>
         </section>
       </div>

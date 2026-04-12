@@ -11,9 +11,13 @@ type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
   email?: string;
   favoritesCount: number;
-}
+};
 
-function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.Element {
+function Layout({
+  authorizationStatus,
+  email,
+  favoritesCount,
+}: LayoutProps): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -66,40 +70,40 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
                 />
               </Link>
             </div>
-            {!isLoginPage && (
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  <li className="header__nav-item user">
-                    <Link
-                      className="header__nav-link header__nav-link--profile"
-                      to={AppRoute.Favorites}
-                    >
-                      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                      {isAuth ? (
-                        <>
-                          <span className="header__user-name user__name">
-                            {email}
-                          </span>
-                          <span className="header__favorite-count">{favoritesCount}</span>
-                        </>
-                      ) : (
-                        <span className="header__login">Sign in</span>
-                      )}
-                    </Link>
-                  </li>
-                  <li className="header__nav-item">
-                    {isAuth && (
-                      <button
-                        className="header__nav-link"
-                        onClick={handleLogOutClick}
-                      >
-                        <span className="header__signout">Sign out</span>
-                      </button>
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                <li className="header__nav-item user">
+                  <Link
+                    className="header__nav-link header__nav-link--profile"
+                    to={isAuth ? AppRoute.Favorites : AppRoute.Login}
+                  >
+                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                    {isAuth ? (
+                      <>
+                        <span className="header__user-name user__name">
+                          {email}
+                        </span>
+                        <span className="header__favorite-count">
+                          {favoritesCount}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="header__login">Sign in</span>
                     )}
-                  </li>
-                </ul>
-              </nav>
-            )}
+                  </Link>
+                </li>
+                <li className="header__nav-item">
+                  {isAuth && (
+                    <button
+                      className="header__nav-link"
+                      onClick={handleLogOutClick}
+                    >
+                      <span className="header__signout">Sign out</span>
+                    </button>
+                  )}
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </header>

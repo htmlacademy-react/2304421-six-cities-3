@@ -47,7 +47,7 @@ export const mockOfferDetails: OfferDetails = {
 export const mockOffer: Offer = {
   id: '34324',
   title: 'Some title',
-  offerType: 'hotel',
+  type: 'hotel',
   rating: 5,
   price: 1000,
   isPremium: false,

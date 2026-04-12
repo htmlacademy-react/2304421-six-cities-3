@@ -23,23 +23,24 @@ function OfferReviewForm(): JSX.Element {
     dispatch(setComment(evt.target.value));
   };
 
-  const handleFormSubmit = async (evt: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (!id || rating === null) {
       return;
     }
 
-    try {
-      await dispatch(postCommentAction({
+    dispatch(
+      postCommentAction({
         offerId: id,
         comment: postingComment,
         rating: rating,
-      })).unwrap();
-
-    } catch {
-      processErrorHandle(dispatch, 'Failed to post comment');
-    }
+      }),
+    ).then((result) => {
+      if (postCommentAction.rejected.match(result)) {
+        processErrorHandle(dispatch, 'Failed to post comment');
+      }
+    });
   };
 
   const isDisabled =
@@ -53,7 +54,7 @@ function OfferReviewForm(): JSX.Element {
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={(evt) => void handleFormSubmit(evt)}
+      onSubmit={(evt) => handleFormSubmit(evt)}
     >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
@@ -65,14 +66,14 @@ function OfferReviewForm(): JSX.Element {
               className="form__rating-input visually-hidden"
               name="rating"
               value={value}
-              id={`${value}-star`}
+              id={`${value}-stars`}
               type="radio"
               checked={rating === value}
               onChange={handleRatingChange}
               disabled={isSending}
             />
             <label
-              htmlFor={`${value}-star`}
+              htmlFor={`${value}-stars`}
               className="reviews__rating-label form__rating-label"
               title={label}
             >

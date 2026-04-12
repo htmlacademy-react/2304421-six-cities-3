@@ -15,6 +15,7 @@ import { useFavorite } from '../../hooks/useFavorite';
 import { useCallback } from 'react';
 import MainEmpty from '../../components/main-empty/main-empty';
 import { processErrorHandle } from '../../services/process-error-handle';
+import { offerCardVersions } from '../../const';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -104,6 +105,7 @@ function MainPage(): JSX.Element {
                     offers={filteredSortedOffers}
                     onHover={handleOfferHover}
                     onFavoriteToggleClick={handleToggleFavoriteClick}
+                    cardVersion={offerCardVersions.VERTICAL}
                   />
                 )}
               </div>

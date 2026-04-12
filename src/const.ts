@@ -72,6 +72,12 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum offerCardVersions {
+  VERTICAL = 'vertical',
+  VERTICAL_NEAR = 'verticalNear',
+  HORIZONTAL = 'horizontal',
+}
+
 export const RATING = [
   { value: 5, label: 'perfect' },
   { value: 4, label: 'good' },
