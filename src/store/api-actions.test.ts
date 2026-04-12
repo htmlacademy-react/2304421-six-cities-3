@@ -5,7 +5,7 @@ import { RootState } from '../types/state';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { AppThunkDispatch, extractActionsTypes, mockOffer, mockCity } from '../utils/utils';
-import { fetchOffersAction } from './api-actions';
+import { fetchFavoriteOffersActions, fetchOffersAction } from './api-actions';
 import MockAdapter from 'axios-mock-adapter';
 
 describe('Async actions', () => {
@@ -90,4 +90,33 @@ describe('Async actions', () => {
       expect(rejectedAction.payload).toBe('Failed to fetch offers from server');
     });
   });
+  describe('fetchFavoritesOffersActions', () => {
+    it('should dispatch "fetchFavoriteOffersActions.pending" and "fetchFavoriteOffersActions.fulfilled" with thunk "fetchFavoriteOffersAction"', async () => {
+      mockAxiosAdapter.onGet(APIRoute.Favorites).reply(200, [mockOffer]);
+
+      await store.dispatch(fetchFavoriteOffersActions());
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchFavoriteOffersActions.pending.type,
+        fetchFavoriteOffersActions.fulfilled.type,
+      ]);
+    });
+  });
+  describe('fetchFavoriteOffersActions', () => {
+    it('should dispatch "fetchFavoriteOffersActions.pending" and "fetchFavoriteOffersActions.rejected" with thunk "fetchFavoriteOffersAction"', async () => {
+      mockAxiosAdapter.onGet(APIRoute.Favorites).reply(400);
+
+      await store.dispatch(fetchFavoriteOffersActions());
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchFavoriteOffersActions.pending.type,
+        fetchFavoriteOffersActions.rejected.type,
+      ]);
+    });
+  });
 });
+
