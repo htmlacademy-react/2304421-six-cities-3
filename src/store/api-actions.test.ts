@@ -5,7 +5,7 @@ import { RootState } from '../types/state';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { extractActionsTypes, mockOffer, mockCity, mockOfferDetails, mockComment, mockUser } from '../mockData';
-import { fetchFavoriteOffersActions, fetchOffersAction, fetchOfferByIdAction, fetchNearbyOffersAction, fetchCommentsAction, postCommentAction, postFavoriteAction, checkAuthAction, loginAction } from './api-actions';
+import { fetchFavoriteOffersActions, fetchOffersAction, fetchOfferByIdAction, fetchNearbyOffersAction, fetchCommentsAction, postCommentAction, postFavoriteAction, checkAuthAction, loginAction, logoutAction } from './api-actions';
 import MockAdapter from 'axios-mock-adapter';
 import { AppThunkDispatch } from '../types/app-thunk-dispatch';
 import { mockAuthData } from '../mockData';
@@ -327,8 +327,45 @@ describe('Async actions', () => {
 
       await store.dispatch(loginAction(mockAuthData));
 
-      expect(mockSaveToken).toBeCalledTimes(1);
-      expect(mockSaveToken).toBeCalledWith(mockUser.token);
+      expect(mockSaveToken).toHaveBeenCalledTimes(1);
+      expect(mockSaveToken).toHaveBeenCalledWith(mockUser.token);
+    });
+  });
+
+  describe('logoutAction', () => {
+    it('should dispatch "logoutAction.pending" and "logoutAction.fulfilled" with logoutAction thunk', async () => {
+      mockAxiosAdapter.onDelete(APIRoute.Logout).reply(200);
+
+      await store.dispatch(logoutAction());
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        logoutAction.pending.type,
+        logoutAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "logoutAction.pending" and "logoutAction.rejected" with logoutAction thunk', async () => {
+      mockAxiosAdapter.onDelete(APIRoute.Logout).reply(400);
+
+      await store.dispatch(logoutAction());
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        logoutAction.pending.type,
+        logoutAction.rejected.type,
+      ]);
+    });
+
+    it('should call "dropToken" once with "logoutAction"', async () => {
+      mockAxiosAdapter.onDelete(APIRoute.Logout).reply(200);
+      const mockDropToken = vi.spyOn(tokenStorage, 'dropToken');
+
+      await store.dispatch(logoutAction());
+
+      expect(mockDropToken).toHaveBeenCalledTimes(1);
     });
   });
 });
