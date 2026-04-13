@@ -4,9 +4,12 @@ import { Action } from 'redux';
 import { RootState } from '../types/state';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { AppThunkDispatch, extractActionsTypes, mockOffer, mockCity } from '../utils/utils';
-import { fetchFavoriteOffersActions, fetchOffersAction } from './api-actions';
+import { extractActionsTypes, mockOffer, mockCity, mockOfferDetails, mockComment, mockUser } from '../mockData';
+import { fetchFavoriteOffersActions, fetchOffersAction, fetchOfferByIdAction, fetchNearbyOffersAction, fetchCommentsAction, postCommentAction, postFavoriteAction, checkAuthAction, loginAction } from './api-actions';
 import MockAdapter from 'axios-mock-adapter';
+import { AppThunkDispatch } from '../types/app-thunk-dispatch';
+import { mockAuthData } from '../mockData';
+import * as tokenStorage from '../services/token';
 
 describe('Async actions', () => {
   const axios = createAPI();
@@ -103,8 +106,7 @@ describe('Async actions', () => {
         fetchFavoriteOffersActions.fulfilled.type,
       ]);
     });
-  });
-  describe('fetchFavoriteOffersActions', () => {
+
     it('should dispatch "fetchFavoriteOffersActions.pending" and "fetchFavoriteOffersActions.rejected" with thunk "fetchFavoriteOffersAction"', async () => {
       mockAxiosAdapter.onGet(APIRoute.Favorites).reply(400);
 
@@ -118,5 +120,215 @@ describe('Async actions', () => {
       ]);
     });
   });
-});
 
+  describe('fetchOfferByIdAction', () => {
+    it('should dispatch "fetchOfferByIdAction.pending" and "fetchOfferByIdAction.fulfilled" with thunk "fetchOfferByIdAction"', async () => {
+      mockAxiosAdapter.onGet(`${APIRoute.Offers}/${mockOfferDetails.id}`).reply(200, mockOfferDetails);
+
+      await store.dispatch(fetchOfferByIdAction(mockOfferDetails.id));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchOfferByIdAction.pending.type,
+        fetchOfferByIdAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "fetchOfferByIdAction.pending" and "fetchOfferByIdAction.rejected" with thunk "fetchOfferByIdAction"', async () => {
+      mockAxiosAdapter.onGet(`${APIRoute.Offers}/${mockOfferDetails.id}`).reply(400);
+
+      await store.dispatch(fetchOfferByIdAction(mockOfferDetails.id));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchOfferByIdAction.pending.type,
+        fetchOfferByIdAction.rejected.type,
+      ]);
+    });
+  });
+
+  describe('fetchNearbyOffersAction', () => {
+    it('should dispatch "fetchNearbyOffersAction.pending" and "fetchNearbyOffersAction.fulfilled" with thunk "fetchNearbyOffersAction"', async () => {
+      mockAxiosAdapter.onGet(`${APIRoute.Offers}/${mockOfferDetails.id}/nearby`).reply(200, [mockOffer]);
+
+      await store.dispatch(fetchNearbyOffersAction(mockOfferDetails.id));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchNearbyOffersAction.pending.type,
+        fetchNearbyOffersAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "fetchNearbyOffersAction.pending" and "fetchNearbyOffersAction.rejected" with thunk "fetchNearbyOffersAction"', async () => {
+      mockAxiosAdapter.onGet(`${APIRoute.Offers}/${mockOfferDetails.id}/nearby`).reply(400);
+
+      await store.dispatch(fetchNearbyOffersAction(mockOfferDetails.id));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchNearbyOffersAction.pending.type,
+        fetchNearbyOffersAction.rejected.type,
+      ]);
+    });
+  });
+
+  describe('fetchCommentsAction', () => {
+    it('should dispatch "fetchCommentsAction.pending" and "fetchCommentsAction.fulfilled" with thunk "fetchCommentsAction"', async () => {
+      mockAxiosAdapter.onGet(`${APIRoute.Comments}/${mockOfferDetails.id}`).reply(200, [mockComment]);
+
+      await store.dispatch(fetchCommentsAction(mockOfferDetails.id));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchCommentsAction.pending.type,
+        fetchCommentsAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "fetchCommentsAction.pending" and "fetchCommentsAction.rejected" with thunk "fetchCommentsAction"', async () => {
+      mockAxiosAdapter.onGet(`${APIRoute.Comments}/${mockOfferDetails.id}`).reply(400);
+
+      await store.dispatch(fetchCommentsAction(mockOfferDetails.id));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        fetchCommentsAction.pending.type,
+        fetchCommentsAction.rejected.type,
+      ]);
+    });
+  });
+
+  describe('postCommentAction', () => {
+    it('should dispatch "postCommentAction.pending" and "postCommentAction.fulfilled" with "postCommentAction"', async () => {
+      mockAxiosAdapter.onPost(`${APIRoute.Comments}/${mockOfferDetails.id}`).reply(200);
+
+      await store.dispatch(postCommentAction({offerId: mockOfferDetails.id, rating: mockComment.rating, comment: mockComment.comment}));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        postCommentAction.pending.type,
+        fetchCommentsAction.pending.type,
+        postCommentAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "postCommentAction.pending" and "postCommentAction.rejected" with "postCommentAction"', async () => {
+      mockAxiosAdapter.onPost(`${APIRoute.Comments}/${mockOfferDetails.id}`).reply(400);
+
+      await store.dispatch(postCommentAction({offerId: mockOfferDetails.id, rating: mockComment.rating, comment: mockComment.comment}));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        postCommentAction.pending.type,
+        postCommentAction.rejected.type,
+      ]);
+    });
+  });
+
+  describe('postFavoriteAction', () => {
+    it('should dispatch "postFavoriteAction.pending" and "postFavoriteAction.fulfilled" with "postFavoriteAction"', async () => {
+      mockAxiosAdapter.onPost(`${APIRoute.Favorites}/${mockOffer.id}/1`).reply(200, mockOffer);
+
+      await store.dispatch(postFavoriteAction({offerId: mockOffer.id, status: 1}));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        postFavoriteAction.pending.type,
+        postFavoriteAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "postFavoriteAction.pending" and "postFavoriteAction.rejected" with expected payload', async () => {
+      mockAxiosAdapter.onPost(`${APIRoute.Favorites}/${mockOffer.id}/1`).reply(400);
+
+      await store.dispatch(postFavoriteAction({offerId: mockOffer.id, status: 1}));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+      const rejectedAction = actions[1] as ReturnType<typeof postFavoriteAction.rejected>;
+
+      expect(actionTypes).toEqual([
+        postFavoriteAction.pending.type,
+        postFavoriteAction.rejected.type,
+      ]);
+      expect(rejectedAction.payload).toBe('Failed to add/remove the offer to/from favorite');
+    });
+  });
+
+  describe('checkAuthAction', () => {
+    it('should dispatch "checkAuthAction.pending" and "checkAuthAction.fulfilled" with thunk checkAuthAction', async () => {
+      mockAxiosAdapter.onGet(APIRoute.Login).reply(200, mockUser);
+
+      await store.dispatch(checkAuthAction());
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        checkAuthAction.pending.type,
+        checkAuthAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "checkAuthAction.pending" and "checkAuthAction.rejected" with thunk checkAuthAction', async () => {
+      mockAxiosAdapter.onGet(APIRoute.Login).reply(400);
+
+      await store.dispatch(checkAuthAction());
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        checkAuthAction.pending.type,
+        checkAuthAction.rejected.type,
+      ]);
+    });
+  });
+
+  describe('loginAction', () => {
+    it('should dispatch "loginAction.pending" and "loginAction.fulfilled" with "loginAction"', async () => {
+      mockAxiosAdapter.onPost(APIRoute.Login, {email: mockAuthData.login, password: mockAuthData.password}).reply(200, mockUser);
+
+      await store.dispatch(loginAction({login: mockAuthData.login, password: mockAuthData.password}));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+
+      expect(actionTypes).toEqual([
+        loginAction.pending.type,
+        loginAction.fulfilled.type,
+      ]);
+    });
+
+    it('should dispatch "loginAction.pending" and "loginAction.rejected" with expected payload', async () => {
+      mockAxiosAdapter.onPost(APIRoute.Login, {email: mockAuthData.login, password: mockAuthData.password}).reply(400);
+
+      await store.dispatch(loginAction({login: mockAuthData.login, password: mockAuthData.password}));
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+      const rejectedAction = actions[1] as ReturnType<typeof loginAction.rejected>;
+
+      expect(actionTypes).toEqual([
+        loginAction.pending.type,
+        loginAction.rejected.type,
+      ]);
+      expect(rejectedAction.payload).toBe('Failed to login, try one more time');
+    });
+
+    it('should call "saveToken" once with the received token', async () => {
+      mockAxiosAdapter.onPost(APIRoute.Login).reply(200, mockUser);
+      const mockSaveToken = vi.spyOn(tokenStorage, 'saveToken');
+
+      await store.dispatch(loginAction(mockAuthData));
+
+      expect(mockSaveToken).toBeCalledTimes(1);
+      expect(mockSaveToken).toBeCalledWith(mockUser.token);
+    });
+  });
+});

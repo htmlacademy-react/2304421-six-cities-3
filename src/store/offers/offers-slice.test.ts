@@ -1,6 +1,6 @@
 import { fetchOffersAction, postFavoriteAction } from '../api-actions';
 import { offersReducer } from './offers-slice';
-import { mockOffer } from '../../utils/utils';
+import { mockOffer } from '../../mockData';
 
 describe('FetchOffers Slice', () => {
   it('should set "isOffersLoading" to "true" with fetchOffersAction.pending', () => {
