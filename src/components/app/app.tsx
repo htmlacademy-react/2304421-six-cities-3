@@ -7,7 +7,7 @@ import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { checkAuthAction } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -36,21 +36,19 @@ function App(): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus} email={user?.email} favoritesCount={favoritesCount}/>}>
-            <Route index element={<MainPage />} />
-            <Route path={AppRoute.Favorites} element={
-              <PrivateRoute><FavoritesPage /></PrivateRoute>
-            }
-            />
-            <Route path={AppRoute.Offer} element={<OfferPage />} />
-            <Route path={AppRoute.Login} element={<LoginPage />} />
-            <Route path={AppRoute.NotFound} element={<NotFoundPage />} />
-            <Route path="*" element={<Navigate to={AppRoute.NotFound} replace />}/>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path={AppRoute.Root} element={<Layout authorizationStatus={authorizationStatus} email={user?.email} favoritesCount={favoritesCount}/>}>
+          <Route index element={<MainPage />} />
+          <Route path={AppRoute.Favorites} element={
+            <PrivateRoute><FavoritesPage /></PrivateRoute>
+          }
+          />
+          <Route path={AppRoute.Offer} element={<OfferPage />} />
+          <Route path={AppRoute.Login} element={<LoginPage />} />
+          <Route path={AppRoute.NotFound} element={<NotFoundPage />} />
+          <Route path="*" element={<Navigate to={AppRoute.NotFound} replace />}/>
+        </Route>
+      </Routes>
     </HelmetProvider>
   );
 }
