@@ -4,11 +4,11 @@ import { Action } from 'redux';
 import { RootState } from '../types/state';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { extractActionsTypes, mockOffer, mockCity, mockOfferDetails, mockComment, mockUser } from '../mockData';
+import { extractActionsTypes, mockOffer, mockCity, mockOfferDetails, mockComment, mockUser } from '../mockTestData';
 import { fetchFavoriteOffersActions, fetchOffersAction, fetchOfferByIdAction, fetchNearbyOffersAction, fetchCommentsAction, postCommentAction, postFavoriteAction, checkAuthAction, loginAction, logoutAction } from './api-actions';
 import MockAdapter from 'axios-mock-adapter';
 import { AppThunkDispatch } from '../types/app-thunk-dispatch';
-import { mockAuthData } from '../mockData';
+import { mockAuthData } from '../mockTestData';
 import * as tokenStorage from '../services/token';
 
 describe('Async actions', () => {

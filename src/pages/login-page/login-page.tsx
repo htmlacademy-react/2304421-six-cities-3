@@ -77,6 +77,7 @@ function LoginPage(): JSX.Element {
                 placeholder="Email"
                 required
                 disabled={isLoginLoading}
+                data-testid='loginElement'
               />
             </div>
             <div className="login__input-wrapper form__input-wrapper">
@@ -88,6 +89,7 @@ function LoginPage(): JSX.Element {
                 name="password"
                 placeholder="Password"
                 disabled={isLoginLoading}
+                data-testid='passwordElement'
               />
             </div>
             <button
