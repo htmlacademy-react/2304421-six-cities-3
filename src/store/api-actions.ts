@@ -3,11 +3,9 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, RootState} from '../types/state.js';
 import {Offer} from '../types/offer';
 import {APIRoute} from '../const';
-// import { setError } from './error/error-slice.js';
 import { AuthData } from '../types/auth-data.js';
 import { AuthInfo } from '../types/user-data.js';
 import { saveToken, dropToken } from '../services/token.js';
-// import { TIMEOUT_SHOW_ERROR } from '../const';
 import { OfferDetails } from '../types/offer-details.js';
 import { Comment } from '../types/comment.js';
 
@@ -155,17 +153,5 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     }
   },
 );
-
-// export const clearErrorAction = createAsyncThunk(
-//   'clearError',
-//   (_arg, {dispatch}) => {
-//     setTimeout(
-//       () => {
-//         dispatch(setError(null));
-//       },
-//       TIMEOUT_SHOW_ERROR,
-//     );
-//   }
-// );
 
 
