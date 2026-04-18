@@ -6,7 +6,6 @@ import { FavoriteParams } from '../../types/favorite';
 import { useAppSelector } from '../../hooks';
 import { offerCardVersions } from '../../const';
 
-
 const CARD_CONFIG = {
   vertical: {
     imageHeight: 200,

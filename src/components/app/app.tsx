@@ -14,14 +14,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFavoriteOffersActions } from '../../store/api-actions';
 import { AuthorizationStatus } from '../../const';
 
-
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const user = useAppSelector((state) => state.user.user);
   const favoritesCount = useAppSelector((state) => state.favoriteOffers.favorites).length;
-
 
   useEffect(() => {
     dispatch(checkAuthAction());
@@ -32,7 +30,6 @@ function App(): JSX.Element {
       dispatch(fetchFavoriteOffersActions());
     }
   }, [authorizationStatus, dispatch]);
-
 
   return (
     <HelmetProvider>
