@@ -57,7 +57,7 @@ function Layout({
   return (
     <div className={pageClass}>
       <header className="header">
-        <div className="container">
+        <div className="container" data-testid='img-container'>
           <div className="header__wrapper">
             <div className="header__left">
               <Link className={logoLinkClass} to={AppRoute.Root}>
@@ -70,40 +70,40 @@ function Layout({
                 />
               </Link>
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <Link
-                    className="header__nav-link header__nav-link--profile"
-                    to={isAuth ? AppRoute.Favorites : AppRoute.Login}
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    {isAuth ? (
-                      <>
-                        <span className="header__user-name user__name">
-                          {email}
-                        </span>
-                        <span className="header__favorite-count">
-                          {favoritesCount}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="header__login">Sign in</span>
-                    )}
-                  </Link>
-                </li>
-                <li className="header__nav-item">
-                  {isAuth && (
-                    <button
-                      className="header__nav-link"
-                      onClick={handleLogOutClick}
+            {!isLoginPage && (
+              <nav className="header__nav">
+                <ul className="header__nav-list">
+                  <li className="header__nav-item user">
+                    <Link
+                      className="header__nav-link header__nav-link--profile"
+                      to={AppRoute.Favorites}
                     >
-                      <span className="header__signout">Sign out</span>
-                    </button>
-                  )}
-                </li>
-              </ul>
-            </nav>
+                      <div className="header__avatar-wrapper user__avatar-wrapper" data-testid='avatar-wrapper'></div>
+                      {isAuth ? (
+                        <>
+                          <span className="header__user-name user__name">
+                            {email}
+                          </span>
+                          <span className="header__favorite-count">{favoritesCount}</span>
+                        </>
+                      ) : (
+                        <span className="header__login">Sign in</span>
+                      )}
+                    </Link>
+                  </li>
+                  <li className="header__nav-item">
+                    {isAuth && (
+                      <button
+                        className="header__nav-link"
+                        onClick={handleLogOutClick}
+                      >
+                        <span className="header__signout">Sign out</span>
+                      </button>
+                    )}
+                  </li>
+                </ul>
+              </nav>
+            )}
           </div>
         </div>
       </header>

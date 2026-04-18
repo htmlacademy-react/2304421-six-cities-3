@@ -10,7 +10,6 @@ describe('Component: OfferImage', () => {
     render(<OfferImage img={mockImgUrl} alt={mockAltText} />);
 
     expect(screen.getByTestId(imgContainerTestId)).toBeInTheDocument();
-
     const image = screen.getByAltText(mockAltText);
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute('src', mockImgUrl);
