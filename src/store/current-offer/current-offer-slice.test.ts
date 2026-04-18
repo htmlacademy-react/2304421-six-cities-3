@@ -1,6 +1,6 @@
 import { fetchOfferByIdAction, postFavoriteAction } from '../api-actions';
 import { currentOfferReducer } from './current-offer-slice';
-import { mockOfferDetails, mockOffer } from '../../utils/utils';
+import { mockOfferDetails, mockOffer } from '../../mockTestData';
 
 describe('CurrentOffer Slice', () => {
   it('should set "isCurrentOfferLoading" to "true", "isCurrentOfferNotFound" to "false" with fetchOfferByIdAction.pending', () => {

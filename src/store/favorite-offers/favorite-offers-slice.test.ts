@@ -1,6 +1,6 @@
 import { fetchFavoriteOffersActions } from '../api-actions';
 import { favoriteOffersReducer } from './favorite-offers-slice';
-import { mockOffer } from '../../utils/utils';
+import { mockOffer } from '../../mockTestData';
 
 describe('FavoriteOffers Slice', () => {
   it('should return initialState with empty action', () => {

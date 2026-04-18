@@ -15,6 +15,7 @@ import { useFavorite } from '../../hooks/useFavorite';
 import { useCallback } from 'react';
 import MainEmpty from '../../components/main-empty/main-empty';
 import { processErrorHandle } from '../../services/process-error-handle';
+import { offerCardVersions } from '../../const';
 
 function MainPage(): JSX.Element {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -34,7 +35,7 @@ function MainPage(): JSX.Element {
   useEffect(() => {
     dispatch(fetchOffersAction()).then((result) => {
       if (fetchOffersAction.rejected.match(result)) {
-        processErrorHandle(result.payload ?? 'Unknown error');
+        processErrorHandle(dispatch, result.payload ?? 'Unknown error');
       }
     });
   }, [dispatch]);
@@ -88,8 +89,7 @@ function MainPage(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {filteredSortedOffers.length} places to stay in{' '}
-                {currentCity.name}
+                {filteredSortedOffers.length} {filteredSortedOffers.length === 1 ? 'place' : 'places'} to stay in {currentCity.name}
               </b>
               <OffersSorting
                 activeOption={activeOption}
@@ -105,6 +105,7 @@ function MainPage(): JSX.Element {
                     offers={filteredSortedOffers}
                     onHover={handleOfferHover}
                     onFavoriteToggleClick={handleToggleFavoriteClick}
+                    cardVersion={offerCardVersions.VERTICAL}
                   />
                 )}
               </div>

@@ -1,8 +1,8 @@
 import { AuthorizationStatus } from '../../const';
 import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
 import { userReducer } from './user-slice';
-import { mockUser } from '../../utils/utils';
-import { mockAuthData } from '../../utils/utils';
+import { mockUser } from '../../mockTestData';
+import { mockAuthData } from '../../mockTestData';
 
 describe('User Slice', () => {
   it('should set "isLoginLoading" to "true", "authorizationStatus" to "Unknown" with checkAuthAction.pending', () => {

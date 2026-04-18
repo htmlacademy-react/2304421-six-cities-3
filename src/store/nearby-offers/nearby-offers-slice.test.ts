@@ -1,6 +1,6 @@
 import { fetchNearbyOffersAction, postFavoriteAction } from '../api-actions';
 import { nearbyOffersReducer } from './nearby-offers-slice';
-import { mockOffer } from '../../utils/utils';
+import { mockOffer } from '../../mockTestData';
 
 describe('NearbyOffers Slice', () => {
   it('should set "isNearbyOffersLoading" to "true" with fetchNearbyOffersAction.pending', () => {

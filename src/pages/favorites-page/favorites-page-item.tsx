@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { City } from '../../types/city';
 import { AppRoute } from '../../const';
 import { FavoriteParams } from '../../types/favorite';
+import { offerCardVersions } from '../../const';
 
 type FavoritePageItemProps = {
   city: City;
@@ -22,7 +23,7 @@ function FavoritesPageItem({city, offers, onFavoriteToggleClick}: FavoritePageIt
         </div>
       </div>
       <div className="favorites__places">
-        {offers.map((card) => <OfferCard key={card.id} variant='horizontal' data={card} onFavoriteButtonClick={onFavoriteToggleClick} />)}
+        {offers.map((card) => <OfferCard key={card.id} variant={offerCardVersions.HORIZONTAL} data={card} onFavoriteButtonClick={onFavoriteToggleClick} />)}
       </div>
     </li>
   );

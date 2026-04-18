@@ -4,7 +4,7 @@ import { AppRoute } from '../../const';
 import { memo } from 'react';
 import { FavoriteParams } from '../../types/favorite';
 import { useAppSelector } from '../../hooks';
-
+import { offerCardVersions } from '../../const';
 
 const CARD_CONFIG = {
   vertical: {
@@ -12,6 +12,12 @@ const CARD_CONFIG = {
     imageWidth: 260,
     articleClass: 'cities__card place-card',
     imageWrapperClass: 'cities__image-wrapper place-card__image-wrapper',
+  },
+  verticalNear: {
+    imageHeight: 200,
+    imageWidth: 260,
+    articleClass: 'near-places__card place-card',
+    imageWrapperClass: 'near-places__image-wrapper place-card__image-wrapper',
   },
   horizontal: {
     imageWidth: 150,
@@ -22,7 +28,7 @@ const CARD_CONFIG = {
 } as const;
 
 type OffersCardProps = {
-  variant: 'vertical' | 'horizontal';
+  variant: offerCardVersions;
   data: Offer;
   onHover?: (id: string | null) => void;
   onFavoriteButtonClick: (params: FavoriteParams) => void;
@@ -94,7 +100,7 @@ function OfferCard({variant, data, onHover, onFavoriteButtonClick}: OffersCardPr
         <h2 className="place-card__name">
           <Link to={AppRoute.Offer.replace(':id', data.id)}>{data.title}</Link>
         </h2>
-        <p className="place-card__type">{data.offerType}</p>
+        <p className="place-card__type">{data.type}</p>
       </div>
     </article>
   );

@@ -11,9 +11,13 @@ type LayoutProps = {
   authorizationStatus: AuthorizationStatus;
   email?: string;
   favoritesCount: number;
-}
+};
 
-function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.Element {
+function Layout({
+  authorizationStatus,
+  email,
+  favoritesCount,
+}: LayoutProps): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -41,7 +45,7 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
   const handleLogOutClick = () => {
     dispatch(logoutAction()).then((result) => {
       if (logoutAction.rejected.match(result)) {
-        processErrorHandle(result.payload ?? 'Unknow error');
+        processErrorHandle(dispatch, result.payload ?? 'Unknow error');
       }
 
       navigate(AppRoute.Login);
@@ -53,7 +57,7 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
   return (
     <div className={pageClass}>
       <header className="header">
-        <div className="container">
+        <div className="container" data-testid='img-container'>
           <div className="header__wrapper">
             <div className="header__left">
               <Link className={logoLinkClass} to={AppRoute.Root}>
@@ -74,7 +78,7 @@ function Layout({authorizationStatus, email, favoritesCount}: LayoutProps): JSX.
                       className="header__nav-link header__nav-link--profile"
                       to={AppRoute.Favorites}
                     >
-                      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                      <div className="header__avatar-wrapper user__avatar-wrapper" data-testid='avatar-wrapper'></div>
                       {isAuth ? (
                         <>
                           <span className="header__user-name user__name">

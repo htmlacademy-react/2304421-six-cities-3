@@ -7,7 +7,7 @@ type OfferImageProps = {
 
 function OfferImage({img, alt}: OfferImageProps): JSX.Element {
   return (
-    <div className="offer__image-wrapper">
+    <div className="offer__image-wrapper" data-testid="img-container">
       <img className="offer__image" src={img} alt={alt ?? 'Photo studio'} />
     </div>
   );

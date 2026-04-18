@@ -43,18 +43,18 @@ function LoginPage(): JSX.Element {
       const password = passwordRef.current.value.trim();
 
       if (!password) {
-        processErrorHandle('Password must not be empty');
+        processErrorHandle(dispatch, 'Password must not be empty');
         return;
       }
 
       if (!isValidPassword(password)) {
-        processErrorHandle('Password must contain at least one letter and one number');
+        processErrorHandle(dispatch, 'Password must contain at least one letter and one number');
         return;
       }
 
       dispatch(loginAction({login: email,password})).then((result) => {
         if (loginAction.rejected.match(result)) {
-          processErrorHandle(result.payload ?? 'Unknown error');
+          processErrorHandle(dispatch, result.payload ?? 'Unknown error');
         }
       });
     }
@@ -77,6 +77,7 @@ function LoginPage(): JSX.Element {
                 placeholder="Email"
                 required
                 disabled={isLoginLoading}
+                data-testid='loginElement'
               />
             </div>
             <div className="login__input-wrapper form__input-wrapper">
@@ -88,6 +89,7 @@ function LoginPage(): JSX.Element {
                 name="password"
                 placeholder="Password"
                 disabled={isLoginLoading}
+                data-testid='passwordElement'
               />
             </div>
             <button
