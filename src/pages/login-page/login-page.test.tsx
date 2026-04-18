@@ -4,7 +4,6 @@ import { withHistory } from '../../utils/mock-component-with-history';
 import { withStore } from '../../utils/mock-component-with-store';
 import LoginPage from './login-page';
 import { AuthorizationStatus } from '../../const';
-import { CITIES } from '../../const';
 
 describe('Component: LoginPage', () => {
   it('should render correctly', () => {
